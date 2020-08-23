@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane hmin="400.0" maxHeight="-Infinity" maxWidth="-Infinity" 
+             minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vmin="600.0" 
+             xmlns="http://javafx.com/javafx/8.0.171" 
+             xmlns:fx="http://javafx.com/fxml/1"
+             fx:controller="com.spw.rr.RrToolsController">
+  <content>
+    <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="402.0" prefWidth="590.0">
+      <top>
+        <HBox>
+          <MenuBar prefHeight="25.0" prefWidth="271.0">
+            <menus>
+              <Menu mnemonicParsing="false" text="File">
+                <items>
+                  <MenuItem fx:id="createNewActionTarget" mnemonicParsing="false" text="Create New Car" />
+                  <MenuItem fx:id="closeActionTarget" mnemonicParsing="false" text="Close" />
+                </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="Edit">
+                <items>
+                  <MenuItem fx:id="editCarActionTarget" mnemonicParsing="false" text="Edit Car" />
+                  <MenuItem fx:id="deleteCarActionTarget" mnemonicParsing="false" text="Delete Selected Car" />
+                  <MenuItem fx:id="prefsActionTarget" mnemonicParsing="false" text="Preferences" />
+                </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="Maintain">
+                <items>
+                  <MenuItem fx:id="maintainCarTypeActionTarget" mnemonicParsing="false" text="Car Types" />
+                  <MenuItem fx:id="maintainAARTypeActionTarget" mnemonicParsing="false" text="AAR Types" />
+                  <MenuItem fx:id="maintainKitTypeActionTarget" mnemonicParsing="false" text="Kit Types" />
+                  <MenuItem fx:id="maintainCouplerTypeActionTarget" mnemonicParsing="false" text="Coupler Types" />
+                </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="View">
+                <items>
+                  <RadioMenuItem fx:id="selectViewDefectsActionTarget" mnemonicParsing="false" text="Cars with Defects">
+                    <toggleGroup>
+                      <ToggleGroup fx:id="radioView" />
+                    </toggleGroup>
+                  </RadioMenuItem>
+                  <RadioMenuItem fx:id="selectViewNoTagActionTarget" mnemonicParsing="false" text="Cars without a Tag" toggleGroup="$radioView" />
+                  <RadioMenuItem fx:id="selectViewCouplerTypeActionTarget" mnemonicParsing="false" text="Cars with Coupler TYPE:" toggleGroup="$radioView" />
+                  <RadioMenuItem fx:id="selectViewRoadNumberActionTarget" mnemonicParsing="false" text="Cars with Road Name:" toggleGroup="$radioView" />
+                </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="Help">
+                <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+                </items>
+              </Menu>
+            </menus>
+          </MenuBar>
+          <Label layoutX="279.0" layoutY="6.0" text="Select View:" />
+          <TextField fx:id="viewSelect" disable="true" layoutX="375.0" layoutY="2.0" visible="false" />
+          <ChoiceBox fx:id="viewChoiceBox" layoutX="386.0" layoutY="2.0" prefWidth="150.0" />
+        </HBox>
+      </top>
+      <center>
+        <TableView fx:id="carList" layoutX="-2.0" layoutY="23.0" prefHeight="364.0" prefWidth="590.0">
+          <columns>
+            <TableColumn fx:id="rptMark" prefWidth="75.0" text="RptMark" />
+            <TableColumn fx:id="carNumber" prefWidth="75.0" text="Car Number" />
+            <TableColumn fx:id="carType" editable="false" prefWidth="75.0" text="Car Type" />
+            <TableColumn fx:id="aarType" editable="false" prefWidth="75.0" text="AAR Type" />
+          </columns>
+        </TableView>
+      </center>
+         <bottom>
+            <HBox prefHeight="40.0" prefWidth="590.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="statusLine" text="Label">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </bottom>
+    </BorderPane>
+  </content>
+</ScrollPane>
