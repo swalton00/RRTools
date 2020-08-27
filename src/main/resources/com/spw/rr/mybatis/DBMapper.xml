@@ -1,0 +1,134 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spw.rr.mybatis.DBMapper">
+    <select id="listReferences" parameterType="String" resultType="com.spw.rr.model.ReferenceItem">
+        SELECT id,
+               type as typeName,
+               description as typeDescription,
+               last_updated FROM ${type}
+    </select>
+    <insert id="addReferenceItem" keyProperty="ID">
+        INSERT INTO ${type} (type, description) values ( #{typeName}, #{typeDescription} )
+    </insert>
+    <update id="saveReferenceItem" >
+        UPDATE ${type} set type = #{typeName},
+                           description = #{typeDescription},
+                           last_updated = current_timestamp()
+        where ID = #{id}
+    </update>
+    <select id="getReferenceItem">
+        SELECT id, type, description, last_updated FROM ${type}
+        WHERE id = #{id}
+    </select>
+    <select id="listReportingMarks" resultType="com.spw.rr.model.ReportingMark">
+        SELECT ID,
+               mark,
+               mark_desc as description,
+               last_updated
+        FROM RPT_Mark
+        ORDER BY mark
+    </select>
+    <insert id="addReportingMark" parameterType="com.spw.rr.model.ReportingMark">
+        INSERT INTO RPT_MARK
+             (mark,
+              mark_desc) VALUES (
+              #{mark},
+              #{description})
+    </insert>
+    <select id="listCarsForViewing" resultType="com.spw.rr.model.ViewCar">
+        SELECT
+            c.id,
+            car_number,
+            rpt.mark AS ReportingMark,
+            aar.type AS aarType,
+            ty.type  AS carType,
+            c.description
+        FROM
+            car c
+                INNER JOIN
+            rpt_mark rpt
+            ON
+                rpt.id = c.rpt_mark
+                LEFT OUTER JOIN
+            aar_type aar
+            ON
+                c.aar_type = aar.id
+                LEFT OUTER JOIN
+            car_type ty
+            ON
+                c.car_type = ty.id
+        ORDER BY
+            reportingMark,
+            car_number
+    </select>
+    <insert id="addRRCar" parameterType="com.spw.rr.model.RRCar" useGeneratedKeys="true">
+        INSERT INTO Car
+            ( car_number,
+              truck_type,
+              cplr_type,
+              kit_type,
+              car_type,
+              purchased,
+              in_service,
+              length,
+              weight,
+              rpt_mark,
+              aar_type,
+              description,
+              rfid,
+              wheels) VALUES (
+              #{carNumber},
+              #{truckTypeID},
+              #{couplerTypeID},
+              #{kitTypeID},
+              #{carTypeID},
+              #{datePurchased},
+              #{dateInService},
+              #{carLength},
+              #{carWeight},
+              #{reportingMarkID},
+              #{aarTypeID},
+              #{description},
+              #{RFIDtag}                       )
+    </insert>
+    <select id="getRRCar" resultType="com.spw.rr.model.RRCar">
+        SELECT
+             ID,
+             car_number as carNumber,
+             description,
+             rpt_mark as reportingMarkID,
+             cplr_type as couplerTypeID,
+             truck_type as truckTypeID,
+             car_type as carTypeID,
+             kit_type as kitTypeID,
+             aar_type as aarTypeID,
+             purchased as datePurchased,
+             in_service as dateInService,
+             length as carLength,
+             weight as carWeight,
+             wheels as carWheels,
+             rfid_tag as RFIDtag,
+             last_updated as lastUpdated
+        FROM CAR
+            WHERE ID = #{id}
+    </select>
+    <update id="updateCar" parameterType="com.spw.rr.model.RRCar">
+        UPDATE car SET
+            car_number = #{carNumber},
+            description  = #{description},
+            rpt_mark = #{reportingMarkID},
+            cplr_type = #{couplerTypeID},
+            truck_type = #{truckTypeID},
+            car_type = #{carTypeID},
+            kit_type = #{kitTypeID},
+            aar_type = #{aarTypeID},
+            purchased = #{datePurchased},
+            in_service = #{dateInService},
+            length = #{carLength},
+            weight = #{carWeight},
+            wheels = #{carWheels},
+            rfid_tag = #{RFIDtag},
+            last_updated = CURRENT_TIMESTAMP
+          WHERE ID = #{id}
+    </update>
+</mapper>

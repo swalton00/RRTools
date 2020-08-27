@@ -21,4 +21,10 @@ mvcGroups {
         view    = 'com.spw.rr.CarEditView'
         controller = 'com.spw.rr.CarEditController'
     }
+
+    'Prefs' {
+        model = 'com.spw.rr.PrefsModel'
+        view = 'com.spw.rr.PrefsView'
+        controller = 'com.spw.rr.PrefsController'
+    }
 }

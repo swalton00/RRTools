@@ -6,49 +6,53 @@ import griffon.metadata.ArtifactProviderFor
 import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.Scene
-import javafx.stage.Stage
+import javafx.scene.control.ChoiceBox
+import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
+import javafx.stage.Modality
+import javafx.stage.Stage
 import org.codehaus.griffon.runtime.javafx.artifact.AbstractJavaFXGriffonView
 import javax.annotation.Nonnull
-import javafx.scene.control.ScrollPane
-import javafx.scene.control.Label
 
 @ArtifactProviderFor(GriffonView)
-class RrToolsView extends AbstractJavaFXGriffonView {
+class PrefsView extends AbstractJavaFXGriffonView {
+    @MVCMember
+    @Nonnull
+    FactoryBuilderSupport builder
+    @MVCMember
+    @Nonnull
+    PrefsController controller
+    @MVCMember
+    @Nonnull
+    PrefsModel model
 
-    @MVCMember @Nonnull
-    RrToolsController controller
-    @MVCMember @Nonnull
-    RrToolsModel model
+    @FXML private ChoiceBox comPortList
 
-    @FXML
-    Label statusLine
 
-    @Override
-    public void initUI() {
+    void initUI() {
         Stage stage = (Stage) getApplication()
                 .createApplicationContainer(Collections.emptyMap());
-        stage.setTitle(getApplication().getConfiguration().getAsString("application.title"));
+        stage.setTitle("Set RRTools Preferences");
+        stage.initModality(Modality.APPLICATION_MODAL)
         //stage.setWidth(400);
         //stage.setHeight(600);
         stage.setScene(init());
-        getApplication().getWindowManager().attach("mainWindow", stage);
+        getApplication().getWindowManager().attach("prefsWindow", stage);
     }
+
 
     // build the UI
     private Scene init() {
         Scene scene = new Scene(new Group());
         scene.setFill(Color.WHITE);
-        scene.getStylesheets().add("bootstrapfx.css");
+        //scene.getStylesheets().add("bootstrapfx.css");
 
-        ScrollPane pane = loadFromFXML();
-        model.statusLineProperty().bindBidirectional(statusLine.textProperty())
-      //  model.inputProperty().bindBidirectional(input.textProperty());
-      //  model.outputProperty().bindBidirectional(output.textProperty());
+        GridPane pane = loadFromFXML();
+        //  model.inputProperty().bindBidirectional(input.textProperty());
+        //  model.outputProperty().bindBidirectional(output.textProperty());
         ((Group) scene.getRoot()).getChildren().addAll(pane);
         connectActions(pane, controller);
 
         return scene;
     }
-
 }

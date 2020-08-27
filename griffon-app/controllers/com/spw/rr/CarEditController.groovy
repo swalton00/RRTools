@@ -12,10 +12,22 @@ class CarEditController {
     @MVCMember @Nonnull
     CarEditModel model
 
+    private closeWindow() {
+        log.debug("closing the carEdit window")
+        application.windowManager.hide("carEditWindow")
+    }
+
     @ControllerAction
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
-    void click() {
-        int count = model.clickCount.toInteger()
-        model.clickCount = String.valueOf(count + 1)
+    void cancelChangesAction() {
+        log.debug("canceling any changes and closing the car edit window")
+        closeWindow()
+    }
+
+    @ControllerAction
+    void saveChangesAction() {
+        log.debug("saving the changes made to the car")
+        //TODO: add the save code
+        closeWindow()
     }
 }

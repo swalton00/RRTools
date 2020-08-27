@@ -6,5 +6,7 @@ import griffon.metadata.ArtifactProviderFor
 
 @ArtifactProviderFor(GriffonModel)
 class CarEditModel {
-    @FXObservable String clickCount = "0"
+
+    Integer carId           // id of car being edited, or null if new car
+    String  windowTitle
 }
