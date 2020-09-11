@@ -56,6 +56,7 @@ class PrefsController {
         log.debug("Setting the saved com port to {}", port)
         propertyService.setSavedComPort(port)
         serialDataService.setCommPort(port)
+        propertyService.saveProperites()
         closePrefs()
     }
 

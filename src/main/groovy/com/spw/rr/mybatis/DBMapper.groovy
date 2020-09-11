@@ -10,8 +10,8 @@ import griffon.plugins.mybatis.MybatisMapper
 @TypeProviderFor(MybatisMapper)
 interface DBMapper extends MybatisMapper {
     List<ReferenceItem> listReferences(String type)
-    int addReferenceItem(ReferenceItem newItem, String type)
-    int saveReferenceItem(ReferenceItem item, String type)
+    int addReferenceItem(ReferenceItem newItem)
+    int saveReferenceItem(ReferenceItem item)
     ReferenceItem getReferenceItem(int id, String type)
 
     List<ReportingMark> listReportingMarks()

@@ -15,12 +15,16 @@ class DBService {
     @Inject
     private MybatisHandler mybatisHandler
 
-    List<ReferenceItem> getKitTypes() {
-        mybatisHandler.withSqlsession {
+
+    void addReferenceItem(ReferenceItem newItem, String tableName) {
+        log.debug("adding a new item {}", newItem)
+        newItem.tableName = tableName
+        mybatisHandler.withSqlSession {
             String sessionFactoryName, SqlSession session ->
                 DBMapper mapper = session.getMapper(DBMapper.class)
-                return mapper.listReferences("KIT_TYPE")
+                return mapper.addReferenceItem(newItem)
         }
+        log.debug("Reference item is now {}", newItem)
     }
 
     List<ReferenceItem> getReferenceList(String tableName) {
@@ -31,6 +35,16 @@ class DBService {
                 return mapper.listReferences(tableName)
         }
     }
+
+    void saveReferenceItem(ReferenceItem item, String tableName) {
+        log.debug("Saving the Reference item values {}", item)
+        item.tableName = tableName
+        mybatisHandler.withSqlSession({String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            mapper.saveReferenceItem(item)
+        })
+    }
+
 
 
 }

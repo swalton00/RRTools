@@ -7,11 +7,11 @@
                description as typeDescription,
                last_updated FROM ${type}
     </select>
-    <insert id="addReferenceItem" keyProperty="ID">
-        INSERT INTO ${type} (type, description) values ( #{typeName}, #{typeDescription} )
+    <insert id="addReferenceItem" keyProperty="id" useGeneratedKeys="true" parameterType="com.spw.rr.model.ReferenceItem">
+        INSERT INTO ${tableName} (type, description) values ( #{typeName}, #{typeDescription} )
     </insert>
-    <update id="saveReferenceItem" >
-        UPDATE ${type} set type = #{typeName},
+    <update id="saveReferenceItem" parameterType="com.spw.rr.model.ReferenceItem">
+        UPDATE ${tableName} set type = #{typeName},
                            description = #{typeDescription},
                            last_updated = current_timestamp()
         where ID = #{id}

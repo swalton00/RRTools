@@ -91,7 +91,7 @@ class RrToolsController {
             String savedComPort = propertyService.getSavedComPort();
             if (savedComPort != null && !savedComPort.equals("<None>")) {
                 getLog().debug("setting comm port to {} ", savedComPort);
-                dataService.setComPort(savedComPort);
+                dataService.setCommPort(savedComPort);
             }
             model.setStatusLine(dataService.getCommPortStatus());
         }
@@ -99,6 +99,7 @@ class RrToolsController {
 
     public void onShutdownRequested(GriffonApplication application) {
         log.debug("Shutdown has been requested")
+        propertyService.saveProperites()
         dataService.doShutdown()
     }
 

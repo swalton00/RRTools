@@ -60,5 +60,6 @@ class PropertyService {
     public void setSavedComPort(String savedPort) {
         log.debug("saving the comPort value of {} ", savedPort  )
         savedComPort = savedPort
+        properties.setProperty("savedComPort", savedComPort)
     }
 }
