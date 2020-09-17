@@ -79,6 +79,7 @@ class ReferenceController {
             log.debug("TempList now has {} rows", tempList.size())
             runInsideUISync({
                 model.tableData.removeAll()
+                view.refTableView.getItems().removeAll()
                 log.debug("adding the temporary list to the TableView element")
                 tempList.each { refItem ->
                     view.refTableView.getItems().add(createRefItem(refItem))

@@ -7,6 +7,7 @@ import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.Scene
 import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.AnchorPane
@@ -25,12 +26,14 @@ class CarEditView extends AbstractJavaFXGriffonView {
     @MVCMember @Nonnull    CarEditModel model
 
     @FXML Label carId
-    @FXML private ChoiceBox carReportingMark
+    @FXML Label carTag
+    @FXML private ComboBox carReportingMark
     @FXML TextField carNumber
     @FXML private ChoiceBox carType
     @FXML private ChoiceBox carAARType
     @FXML private ChoiceBox carTruckType
     @FXML private ChoiceBox carCouplerType
+    @FXML private ChoiceBox carKitType
     @FXML TextField carLength
     @FXML TextField carWeight
 
@@ -44,6 +47,7 @@ class CarEditView extends AbstractJavaFXGriffonView {
         //stage.setWidth(400);
         //stage.setHeight(600);
         stage.setScene(init());
+        model.carTag.bindBidirectional(carTag.textProperty())
         getApplication().getWindowManager().attach("carEditWindow", stage);
     }
 

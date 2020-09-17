@@ -146,8 +146,6 @@ class ReferenceView extends AbstractJavaFXGriffonView {
         //scene.getStylesheets().add("bootstrapfx.css");
 
         AnchorPane pane = loadFromFXML();
-        //  model.inputProperty().bindBidirectional(input.textProperty());
-        //  model.outputProperty().bindBidirectional(output.textProperty());
         ((Group) scene.getRoot()).getChildren().addAll(pane);
         connectActions(pane, controller);
 

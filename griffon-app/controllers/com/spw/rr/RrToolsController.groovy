@@ -115,8 +115,10 @@ class RrToolsController {
         }
         if (carId == null) {
             carEdit.model.windowTitle = "Create a new Car"
+            carEdit.model.newCar = true
         } else {
             carEdit.model.windowTitle = "Edit an existing car"
+            carEdit.model.newCar = false
         }
         carEdit.model.carId = carId
         application.windowManager.show("carEditWindow")
