@@ -9,10 +9,10 @@
   <Appenders>
     <Console name="STDOUT">
       <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
-      <PatternLayout pattern="%d{HH:mm:ss,SSS} %p %t %m%n"/>
+      <PatternLayout pattern="%d{HH:mm:ss,SSS} %p %t %m%ex%n"/>
  -  </Console>
     <File name="File" fileName="${filename}" append="false">
-      <PatternLayout pattern="%d{DEFAULT} %p %t %m%n"/>
+      <PatternLayout pattern="%d{DEFAULT} %p %t %m%ex%n"/>
     </File>
   </Appenders>
 

@@ -43,6 +43,7 @@ class PrefsController {
         log.debug("view choiceBox is now {}", view.comPortList)
         view.comPortList.setItems(model.choiceBoxList)
         log.debug("portlist is now {}", model.choiceBoxList)
+        model.scaleRatio.bindBidirectional(view.scaleRatio.textProperty())
     }
 
     void onWindowShown(String windowName, Stage w) {

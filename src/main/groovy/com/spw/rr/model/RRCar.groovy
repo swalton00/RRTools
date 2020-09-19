@@ -1,23 +1,27 @@
 package com.spw.rr.model
 
+import groovy.transform.ToString
+
 import java.sql.Date
 
-
+@ToString(includeFields = true, includePackage = false)
 class RRCar {
     int id
     String carNumber
     String description
     int    reportingMarkID
-    int    couplerTypeID
-    int    truckTypeID
-    int    carTypeID
-    int    kitTypeID
-    int    aarTypeID
+    Integer    couplerTypeID
+    Integer    prrTypeID
+    Integer    carTypeID
+    Integer    kitTypeID
+    Integer    aarTypeID
     Date   datePurchased
     Date   dateInService
-    Float  carLength
-    Float  carWeight
+    String bltDate
+    Integer  carLength
+    Integer  carWeight
     String carWheels
+    String carColor
     String RFIDtag
     Date   lastUpdated
 

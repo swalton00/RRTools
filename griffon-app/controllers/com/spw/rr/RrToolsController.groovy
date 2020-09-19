@@ -41,12 +41,14 @@ class RrToolsController {
     private static final int MAINT_AAR_TYPE = 1
     private static final int MAINT_KIT_TYPE = 2
     private static final int MAINT_COUPLER_TYPE = 3
+    private static final int MAINT_PRR_TYPE = 4
     private static final String[] MAINT_TITLES = ["Maintain Car Types",
         "Maintian AAR Types",
         "Maintain Kit Types",
-        "Maintain Coupler Types"]
-    private static String[] TABLE_NAME = ["CAR_TYPE", "AAR_TYPE", "KIT_TYPE", "COUPLER_TYPE"]
-    private static String[] COLUMN_NAME = ["Car Type", "AAR Type", "Kit Type", "Coupler Type"]
+        "Maintain Coupler Types",
+        "Maintain PRR Types"]
+    private static String[] TABLE_NAME = ["CAR_TYPE", "AAR_TYPE", "KIT_TYPE", "COUPLER_TYPE", "PRR_TYPE"]
+    private static String[] COLUMN_NAME = ["Car Type", "AAR Type", "Kit Type", "Coupler Type", "PRR Type"]
 
 
     @ControllerAction

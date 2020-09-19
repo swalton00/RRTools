@@ -15,11 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane hmin="400.0" maxHeight="-Infinity" maxWidth="-Infinity" 
-             minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vmin="600.0" 
-             xmlns="http://javafx.com/javafx/8.0.171" 
-             xmlns:fx="http://javafx.com/fxml/1"
-             fx:controller="com.spw.rr.RrToolsController">
+<ScrollPane hmin="400.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vmin="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.spw.rr.RrToolsController">
   <content>
     <BorderPane minHeight="0.0" minWidth="0.0" prefHeight="402.0" prefWidth="590.0">
       <top>
@@ -45,6 +41,7 @@
                   <MenuItem fx:id="maintainAARTypeActionTarget" mnemonicParsing="false" text="AAR Types" />
                   <MenuItem fx:id="maintainKitTypeActionTarget" mnemonicParsing="false" text="Kit Types" />
                   <MenuItem fx:id="maintainCouplerTypeActionTarget" mnemonicParsing="false" text="Coupler Types" />
+                           <MenuItem mnemonicParsing="false" text="PRR Types" />
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="View">

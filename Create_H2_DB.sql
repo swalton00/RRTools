@@ -10,7 +10,7 @@ DROP TABLE
 DROP TABLE 
     IF EXISTS kit_type;
 DROP TABLE 
-    IF EXISTS truck_type;
+    IF EXISTS prr_type;
 DROP TABLE 
     IF EXISTS rpt_mark;
 DROP TABLE 
@@ -52,7 +52,7 @@ ON
         type
     );
 CREATE TABLE
-    Truck_type
+    PRR_type
     (
         id identity PRIMARY KEY,
         type         VARCHAR(64) NOT NULL,
@@ -60,9 +60,9 @@ CREATE TABLE
         last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
 CREATE UNIQUE INDEX
-    truck_type_idx
+    PRR_type_idx
 ON
-    truck_type
+    PRR_type
     (
         type
     );
@@ -101,28 +101,38 @@ CREATE TABLE
     car
     (
         id identity PRIMARY KEY,
-        truck_type   INT,
+        prr_type     INT,
         cplr_type    INT,
         kit_type     INT,
         car_type     INT,
         car_number   VARCHAR(64) NOT NULL,
         purchased    DATE,
+        kit_built    DATE,
         in_service   DATE,
         LENGTH       DECIMAL(9,1),
         weight       DECIMAL(9,1),
         rpt_mark     INT NOT NULL,
         aar_type     INT,
+        BLT_Date     CHAR(5),
+        car_Color    VARCHAR(48),
         description  VARCHAR(2000),
         rfid_tag     VARCHAR(18),
-        wheels       CHAR(50),
+        wheels       CHAR(64),
         last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        CONSTRAINT con_truck_type FOREIGN KEY ( truck_type ) REFERENCES truck_type ( id ),
+        CONSTRAINT con_prr_type FOREIGN KEY ( prr_type ) REFERENCES prr_type ( id ),
         CONSTRAINT con_cplr_type FOREIGN KEY (cplr_type ) REFERENCES coupler_type ( id ),
         CONSTRAINT con_kit_type FOREIGN KEY ( kit_type ) REFERENCES kit_type ( id ),
         CONSTRAINT number_unique UNIQUE (rpt_mark, car_number),
         CONSTRAINT rpt_mark_key FOREIGN KEY ( rpt_mark ) REFERENCES rpt_mark ( id ),
         CONSTRAINT aar_type_key FOREIGN KEY (aar_type ) REFERENCES aar_type (id),
         CONSTRAINT car_type_key FOREIGN KEY (car_type ) REFERENCES car_type (id)
+    );
+CREATE INDEX
+    rfid_idx
+ON
+    car
+    (
+        rfid_tag
     );
 CREATE TABLE
     inspection

@@ -13,6 +13,9 @@ class PropertyService {
 
     /*  these are the properties externalized to the properties file:   */
     String savedComPort = "<None>"  // key = savedComPort
+    int    savedUnits = 0 // key = savedUnits - 0 = English Units, 1 = Metric Units
+    int savedScaleRatio = 87 // key = savedScaleRatio - 1:X
+    String savedScaleName = "HO" // key = savedScale
     /* end of externalized properties */
 
     public void saveProperites() {
@@ -48,11 +51,49 @@ class PropertyService {
         } else {
             /* add all default value saved properties here */
             properties.setProperty("savedComPort", savedComPort)
+            properties.setProperty("savedUnits", Integer.toString(savedUnits))
+            properties.setProperty("savedScaleRatio", Integer.toString(savedScaleRatio))
+            properties.setProperty("savedScaleName", savedName)
+
         }
     }
 
+    public int getUnits() {
+        initTest()
+        return Integer.parseInt(properties.getProperty("savedUnits"))
+    }
+
+    /**
+     * Save the selected unit system
+     * @param units 0 = English, 1 = Metric
+     */
+    public void setUnits(int units) {
+        savedUnits = units
+        properties.setProperty("savedUnits", Integer.toString(units ))
+    }
+
+    public int getScaleRatio() {
+        initTest()
+        return Integer.parseInt(properties.getProperty("savedUnits"))
+    }
+
+    public void setScaleRatio(int ratio) {
+        savedScaleRatio = ratio
+        properties.setProperty("savedScaleRatio", Integer.toString(ratio))
+    }
+
+    public String getScaleName() {
+        initTest()
+        return properties.getProperty("savedScaleName")
+    }
+
+    public void setScaleName(String name) {
+        savedScaleName = name
+        properties.setProperty("savedScaleName", name)
+    }
+
     public String getSavedComPort() {
-        log.debug("returing saved com port value")
+        log.debug("returning saved com port value")
         initTest()
         return properties.getProperty("savedComPort")
     }

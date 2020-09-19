@@ -7,6 +7,7 @@ import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.Scene
 import javafx.scene.control.ChoiceBox
+import javafx.scene.control.TextField
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import javafx.stage.Modality
@@ -28,6 +29,11 @@ class PrefsView extends AbstractJavaFXGriffonView {
 
     @FXML private ChoiceBox comPortList
 
+    @FXML private ChoiceBox unitSystemList
+
+    @FXML private TextField scaleRatio
+
+    @FXML private ChoiceBox scaleName
 
     void initUI() {
         Stage stage = (Stage) getApplication()
@@ -37,6 +43,8 @@ class PrefsView extends AbstractJavaFXGriffonView {
         //stage.setWidth(400);
         //stage.setHeight(600);
         stage.setScene(init());
+        unitSystemList.getItems().addAll("English", "Metric")
+        scaleName.getItems().addAll("Z", "N", "TT", "HO", "OO", "S", "O", "F", "G", "1/4 In", "1 In", "Other")
         getApplication().getWindowManager().attach("prefsWindow", stage);
     }
 
