@@ -2,10 +2,11 @@ dataSource {
     driverClassName = 'org.h2.Driver'
     username = 'rr'
     password = 'rrpass'
+    jmx = 'true'
     pool {
         idleTimeout = 60000
-        maximumPoolSize = 8
-        minimumIdle = 5
+        maximumPoolSize = 2
+        minimumIdle = 1
     }
 }
 
@@ -13,7 +14,16 @@ environments {
     development {
         dataSource {
             dbCreate = 'skip' // one of ['create', 'skip']
-            url = 'jdbc:h2:file:D:/Projects/RailRoad_Database/Dev/test-dev;AUTO_SERVER=TRUE'
+            url = 'jdbc:h2:file:D:/Projects/RailRoad_Database/Dev/test-dev;AUTO_SERVER=TRUE;SCHEMA=RR'
+        }
+    }
+    DB2Dev {
+        dataSource {
+            dbCreate = 'skip'
+            driverClassName = 'com.ibm.db2.jcc.DB2Driver'
+            url='jdbc:db2://baker:50000/RRSample:currentSchema=RR;retrieveMessagesFromServerOnGetMessage=true;'
+            username="RRUser"
+            password="rrpass"
         }
     }
     test {

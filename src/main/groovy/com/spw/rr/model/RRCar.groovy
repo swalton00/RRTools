@@ -4,7 +4,7 @@ import groovy.transform.ToString
 
 import java.sql.Date
 
-@ToString(includeFields = true, includePackage = false)
+@ToString(includeFields = true, includePackage = false, includeNames = true)
 class RRCar {
     int id
     String carNumber
@@ -16,6 +16,7 @@ class RRCar {
     Integer    kitTypeID
     Integer    aarTypeID
     Date   datePurchased
+    Date   dateKitBuilt
     Date   dateInService
     String bltDate
     Integer  carLength

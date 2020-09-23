@@ -56,7 +56,7 @@ class ReferenceController {
         log.debug("in the window shown method for Reference")
         view.typeColumn.textProperty().set(model.columnName)
         if (name.equals("referenceWindow")) {
-            model.newTypeValue.addListener(new ChangeListener() {
+            /*model.newTypeValue.addListener(new ChangeListener() {
                 @Override
                 void changed(ObservableValue obs, Object oldVal, Object newVal) {
                     model.newTypedEntered = typedData(obs, oldVal, newVal, model.newTypedEntered, model.newDescriptionEntered)
@@ -67,8 +67,14 @@ class ReferenceController {
                 void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     model.newDescriptionEntered = typedData(observable, oldValue, newValue, model.newDescriptionEntered, model.newTypedEntered)
                 }
-            })
+            })*/
             window.setTitle(model.windowTitle)
+            model.refDataClean.setValue(true)
+            model.newDescriptionEntered.setValue(false)
+            model.newTypedEntered.setValue(false)
+            model.newDescriptionValue.setValue("")
+            model.newTypeValue.setValue("")
+
             List tempList = new ArrayList<ReferenceItem>()
             List referenceList = dbService.getReferenceList(model.referenceTable)
             log.debug("got back a list which has {} elements in it ", referenceList.size())
@@ -79,12 +85,13 @@ class ReferenceController {
             log.debug("TempList now has {} rows", tempList.size())
             runInsideUISync({
                 model.tableData.removeAll()
-                view.refTableView.getItems().removeAll()
+                view.refTableView.getItems().remove(0, view.refTableView.getItems().size())
                 log.debug("adding the temporary list to the TableView element")
                 tempList.each { refItem ->
                     view.refTableView.getItems().add(createRefItem(refItem))
                     log.debug("adding item {} to the TableView", refItem)
                 }
+                view.refTableView.getSelectionModel().clearSelection()
             })
         }
     }

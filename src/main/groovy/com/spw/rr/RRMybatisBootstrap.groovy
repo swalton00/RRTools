@@ -23,9 +23,9 @@ class RRMybatisBootstrap implements MybatisBootstrap {
         Connection conn = session.getConnection()
         try {
             PreparedStatement prep = conn.prepareStatement("SET schema RR")
-            prep.execute()
+            //prep.execute()
         } finally {
-            conn.close()
+            //conn.close()
             log.debug("connection now closed")
         }
 

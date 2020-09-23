@@ -1,11 +1,15 @@
 package com.spw.rr
 
+import com.spw.rr.model.ViewCar
 import griffon.core.artifact.GriffonView
 import griffon.inject.MVCMember
 import griffon.metadata.ArtifactProviderFor
 import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.Scene
+import javafx.scene.control.MenuItem
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
 import javafx.stage.Stage
 import javafx.scene.paint.Color
 import org.codehaus.griffon.runtime.javafx.artifact.AbstractJavaFXGriffonView
@@ -16,13 +20,27 @@ import javafx.scene.control.Label
 @ArtifactProviderFor(GriffonView)
 class RrToolsView extends AbstractJavaFXGriffonView {
 
-    @MVCMember @Nonnull
+    @MVCMember
+    @Nonnull
     RrToolsController controller
-    @MVCMember @Nonnull
+    @MVCMember
+    @Nonnull
     RrToolsModel model
 
     @FXML
     Label statusLine
+
+    @FXML
+    TableColumn rptMark
+    @FXML
+    TableColumn carNumber
+    @FXML
+    TableColumn carType
+    @FXML
+    TableColumn aarType
+    @FXML
+    TableView<ViewCar> carList
+    @FXML MenuItem editCarActionTarget
 
     @Override
     public void initUI() {
@@ -33,6 +51,7 @@ class RrToolsView extends AbstractJavaFXGriffonView {
         //stage.setHeight(600);
         stage.setScene(init());
         getApplication().getWindowManager().attach("mainWindow", stage);
+        editCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
     }
 
     // build the UI
@@ -43,8 +62,8 @@ class RrToolsView extends AbstractJavaFXGriffonView {
 
         ScrollPane pane = loadFromFXML();
         model.statusLineProperty().bindBidirectional(statusLine.textProperty())
-      //  model.inputProperty().bindBidirectional(input.textProperty());
-      //  model.outputProperty().bindBidirectional(output.textProperty());
+        //  model.inputProperty().bindBidirectional(input.textProperty());
+        //  model.outputProperty().bindBidirectional(output.textProperty());
         ((Group) scene.getRoot()).getChildren().addAll(pane);
         connectActions(pane, controller);
 

@@ -38,6 +38,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
@@ -74,10 +75,10 @@
                   <ChoiceBox fx:id="carWeightUnits" prefWidth="150.0" />
                </children>
             </HBox>
-             <Button fx:id="cancelChangesActionTarget" mnemonicParsing="false" text="Cancel Car Changes" GridPane.halignment="CENTER" GridPane.rowIndex="17" />
-             <Button fx:id="saveChangesActionTarget" mnemonicParsing="false" text="Save Car" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="17" />
-            <Label text="Description" GridPane.rowIndex="16" />
-            <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="90.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="16">
+             <Button fx:id="cancelChangesActionTarget" mnemonicParsing="false" text="Cancel Car Changes" GridPane.halignment="CENTER" GridPane.rowIndex="18" />
+             <Button fx:id="saveChangesActionTarget" mnemonicParsing="false" text="Save Car" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="18" />
+            <Label text="Description" GridPane.rowIndex="17" />
+            <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="90.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="17">
                <content>
                   <TextArea fx:id="carDescription" prefHeight="200.0" prefWidth="200.0" />
                </content>
@@ -86,12 +87,14 @@
             <Label text="Color of Car" GridPane.rowIndex="12" />
             <Label text="Date Purchased" GridPane.rowIndex="13" />
             <Label text="Date Placed in service" GridPane.rowIndex="14" />
-            <Label text="Built Date on car" GridPane.rowIndex="15" />
+            <Label text="Built Date on car" GridPane.rowIndex="16" />
             <TextField fx:id="carWheels" GridPane.columnIndex="1" GridPane.rowIndex="11" />
             <TextField fx:id="carColor" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-            <TextField fx:id="carBltDate" GridPane.columnIndex="1" GridPane.rowIndex="15" />
-            <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="13" />
-            <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="14" />
+            <TextField fx:id="carBltDate" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+            <DatePicker fx:id="datePuchased" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+            <DatePicker fx:id="inServiceDate" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+            <Label text="Date Kit Built" GridPane.rowIndex="15" />
+            <DatePicker fx:id="kitBuiltDate" GridPane.columnIndex="1" GridPane.rowIndex="15" />
          </children>
       </GridPane>
    </children>

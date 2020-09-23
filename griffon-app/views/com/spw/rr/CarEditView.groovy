@@ -10,8 +10,10 @@ import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.Scene
+import javafx.scene.control.Button
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.ComboBox
+import javafx.scene.control.DatePicker
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.TextArea
@@ -71,10 +73,16 @@ class CarEditView extends AbstractJavaFXGriffonView {
     @FXML
     TextField carColor
     @FXML
+    DatePicker datePuchased
+    @FXML
+    DatePicker inServiceDate
+    @FXML
+    DatePicker kitBuiltDate
+    @FXML
     TextField carBltDate
     @FXML
     TextArea carDescription
-
+    @FXML Button saveChangesActionTarget
 
     void initUI() {
         Stage stage = (Stage) getApplication()
@@ -85,7 +93,7 @@ class CarEditView extends AbstractJavaFXGriffonView {
         //stage.setHeight(600);
         stage.setScene(init());
         model.carTag.bindBidirectional(carTag.textProperty())
-        carLengthUnits.setItems(FXCollections.observableArrayList("inches", "centimeters"))
+        carLengthUnits.setItems(FXCollections.observableArrayList("Feet", "Meters"))
         carLengthUnits.getSelectionModel().select(0)
         carWeightUnits.setItems(FXCollections.observableArrayList("ounces", "grams"))
         carWeightUnits.getSelectionModel().select(0)
@@ -96,6 +104,9 @@ class CarEditView extends AbstractJavaFXGriffonView {
         model.carNumber.bindBidirectional(carNumber.textProperty())
         model.carLength.bindBidirectional(carLength.textProperty())
         model.carWeight.bindBidirectional(carWeight.textProperty())
+        saveChangesActionTarget.disableProperty().bind(carReportingMark.getSelectionModel().selectedItemProperty().isNull().and(
+               model.carNumber.isEmpty()
+        ))
         carReportingMark.setConverter(new StringConverter<ObsReference>() {
             @Override
             String toString(ObsReference object) {

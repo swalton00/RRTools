@@ -1,5 +1,6 @@
 package com.spw.rr
 
+import com.spw.rr.model.ViewCar
 import griffon.core.artifact.GriffonModel
 import griffon.metadata.ArtifactProviderFor
 import javafx.beans.property.SimpleStringProperty
@@ -10,7 +11,7 @@ import javax.annotation.Nonnull
 
 @ArtifactProviderFor(GriffonModel)
 class RrToolsModel {
-    private ObservableList<String> choiceBoxList = FXCollections.observableArrayList()
+    private ObservableList<ViewCar> tableContents = FXCollections.observableArrayList()
 
     private StringProperty statusLine = null
 

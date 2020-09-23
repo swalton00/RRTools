@@ -3,6 +3,7 @@ package com.spw.rr
 import com.spw.rr.model.RRCar
 import com.spw.rr.model.ReferenceItem
 import com.spw.rr.model.ReportingMark
+import com.spw.rr.model.ViewCar
 import griffon.core.artifact.GriffonService
 import griffon.metadata.ArtifactProviderFor
 import javax.inject.Inject
@@ -38,6 +39,19 @@ class DBService {
 
     }
 
+    List<ViewCar> getViewList() {
+        log.debug("returning a list of cars")
+        List<ViewCar> retList
+        mybatisHandler.withSqlSession {
+            String sessionFactoryName, SqlSession session ->
+                DBMapper mapper = session.getMapper(DBMapper.class)
+                retList = mapper.listCarsForViewing()
+        }
+        log.debug("returning a list with {}", retList.size())
+        log.debug("list has {}", retList)
+        return retList
+    }
+
     void addReferenceItem(ReferenceItem newItem, String tableName) {
         log.debug("adding a new item {}", newItem)
         newItem.tableName = tableName
@@ -47,6 +61,17 @@ class DBService {
                 return mapper.addReferenceItem(newItem)
         }
         log.debug("Reference item is now {}", newItem)
+    }
+
+    RRCar getRRCar(int id) {
+        RRCar car
+        mybatisHandler.withSqlSession {
+            String sessionFactoryName, SqlSession session ->
+                DBMapper mapper = session.getMapper(DBMapper.class)
+                car = mapper.getRRCar(id)
+        }
+        log.debug("read the car {}", car)
+        return car
     }
 
     List<ReportingMark> getReportingMarks() {

@@ -9,6 +9,12 @@ environments {
             lazyLoadingEnabled = false
         }
     }
+    db2dev {
+        sessionFactory {
+            lazyLoadingEnabled = false
+        }
+    }
+
     test {
         sessionFactory {
             lazyLoadingEnabled = false

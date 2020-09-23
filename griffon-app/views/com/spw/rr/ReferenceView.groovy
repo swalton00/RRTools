@@ -6,6 +6,7 @@ import griffon.core.artifact.GriffonView
 import griffon.core.controller.ControllerAction
 import griffon.inject.MVCMember
 import griffon.metadata.ArtifactProviderFor
+import javafx.beans.binding.Bindings
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -78,6 +79,8 @@ class ReferenceView extends AbstractJavaFXGriffonView {
         refSaveActionTarget.disableProperty().bind(model.refDataClean)
         refNewType.textProperty().bindBidirectional(model.newTypeValue)
         refNewDescription.textProperty().bindBidirectional(model.newDescriptionValue)
+        refSaveActionTarget.disableProperty().bind(Bindings.isNotEmpty(model.newTypeValue)
+        .and(Bindings.isNotEmpty(model.newDescriptionValue)))
     }
 
     class EditingCell extends TableCell<ReferenceItem, String> {

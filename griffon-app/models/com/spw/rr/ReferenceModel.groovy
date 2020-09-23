@@ -18,9 +18,9 @@ class ReferenceModel {
     SimpleBooleanProperty cleanData = new SimpleBooleanProperty(true)
     SimpleBooleanProperty newReady = new SimpleBooleanProperty(false)
     SimpleStringProperty newTypeValue = new SimpleStringProperty("")
-    boolean newTypedEntered = false
+    SimpleBooleanProperty newTypedEntered = new SimpleBooleanProperty(false)
     SimpleStringProperty newDescriptionValue = new SimpleStringProperty("")
-    boolean newDescriptionEntered = false
+    SimpleBooleanProperty newDescriptionEntered = new SimpleBooleanProperty(false)
     String windowTitle
     ObservableList<ObservableRefItem> tableData = FXCollections.observableArrayList()
     int referenceType

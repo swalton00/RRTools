@@ -1,5 +1,6 @@
 package com.spw.rr
 
+import com.spw.rr.model.ViewCar
 import griffon.core.GriffonApplication
 import griffon.core.artifact.GriffonController
 import griffon.core.controller.ControllerAction
@@ -9,6 +10,7 @@ import griffon.inject.MVCMember
 import griffon.metadata.ArtifactProviderFor
 import griffon.transform.Threading
 import javafx.fxml.FXML
+import javafx.scene.control.cell.PropertyValueFactory
 import javafx.stage.Stage
 
 import javax.inject.Inject
@@ -22,6 +24,12 @@ class RrToolsController {
     @Nonnull
     RrToolsModel model
 
+    @MVCMember
+    @Nonnull
+    RrToolsView view
+
+    @Inject
+    private DBService dbService
 
     @Inject
     private SerialDataService dataService
@@ -79,7 +87,25 @@ class RrToolsController {
             }
         }
         model.setStatusLine(dataService.getCommPortStatus());
+
     }
+
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    public void onRebuildCarList() {
+        log.debug("rebuilding the car list")
+        buildCarList()
+    }
+
+
+    private void buildCarList() {
+        log.debug("rebuilding car list")
+        List viewList = dbService.getViewList()
+        runInsideUIAsync  {
+            model.tableContents.removeAll()
+            model.tableContents.setAll(viewList)
+        }
+    }
+
 
     public void onStatus_Update(String newStatus) {
         log.debug("got a status update with {}", newStatus)
@@ -96,6 +122,14 @@ class RrToolsController {
                 dataService.setCommPort(savedComPort);
             }
             model.setStatusLine(dataService.getCommPortStatus());
+        }
+        if (name.equals("mainWindow")) {
+            view.carList.setItems(model.tableContents)
+            view.rptMark.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("reportingMark"))
+            view.carNumber.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("carNumber"))
+            view.carType.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("carType"))
+            view.aarType.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("aarType"))
+            buildCarList()
         }
     }
 
@@ -137,7 +171,8 @@ class RrToolsController {
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
     void editCarAction() {
         log.debug("Editing the car")
-
+        Integer id = view.carList.getSelectionModel().getSelectedItem().id
+        carEditWindow(id)
     }
 
     @ControllerAction
