@@ -120,11 +120,8 @@ class ReferenceController {
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
     refAddNewItemAction() {
         log.debug("adding a new item")
-        ObservableRefItem newItem = new ObservableRefItem()
-        SimpleStringProperty newType = new SimpleStringProperty(view.refNewType.getText())
-        newItem.typeName = newType
-        SimpleStringProperty typeDesc = new SimpleStringProperty(view.refNewDescription.getText())
-        newItem.typeDescription = typeDesc
+        ObservableRefItem newItem = new ObservableRefItem(typeName:  model.newTypeValue.getValue(),
+                                                           typeDescription: model.newDescriptionValue.getValue())
         view.refTableView.getItems().add(newItem)
         model.refDataClean.set(false)
         view.refNewType.setText("")

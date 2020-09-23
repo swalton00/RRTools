@@ -41,7 +41,7 @@
                   <MenuItem fx:id="maintainAARTypeActionTarget" mnemonicParsing="false" text="AAR Types" />
                   <MenuItem fx:id="maintainKitTypeActionTarget" mnemonicParsing="false" text="Kit Types" />
                   <MenuItem fx:id="maintainCouplerTypeActionTarget" mnemonicParsing="false" text="Coupler Types" />
-                           <MenuItem mnemonicParsing="false" text="PRR Types" />
+                           <MenuItem fx:id="maintainPRRTypeActionTarget" mnemonicParsing="false" text="PRR Types" />
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="View">

@@ -43,7 +43,9 @@ class ObservableRefItem {
 
     public ObservableRefItem(Map newItems) {
         tableName = newItems['tableName']
-        id.set(newItems['id'])
+        if (newItems['id'] != null) {
+            id.set(newItems['id'])
+        }
         typeName.set(newItems['typeName'])
         typeDescription.set(newItems['typeDescription'])
         addRequiredListeners()

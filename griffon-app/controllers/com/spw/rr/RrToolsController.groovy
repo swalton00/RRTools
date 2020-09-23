@@ -216,6 +216,13 @@ class RrToolsController {
         maintainWindow(MAINT_KIT_TYPE)
     }
 
+    @ControllerAction
+    void maintainPRRTypeAction() {
+        log.debug("Bring up Maintain PRR Type Window")
+        maintainWindow(MAINT_PRR_TYPE)
+    }
+
+
 
     @ControllerAction
     void maintainCouplerTypeAction() {

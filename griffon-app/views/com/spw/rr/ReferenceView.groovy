@@ -79,8 +79,8 @@ class ReferenceView extends AbstractJavaFXGriffonView {
         refSaveActionTarget.disableProperty().bind(model.refDataClean)
         refNewType.textProperty().bindBidirectional(model.newTypeValue)
         refNewDescription.textProperty().bindBidirectional(model.newDescriptionValue)
-        refSaveActionTarget.disableProperty().bind(Bindings.isNotEmpty(model.newTypeValue)
-        .and(Bindings.isNotEmpty(model.newDescriptionValue)))
+        refAddNewItemActionTarget.disableProperty().bind(Bindings.isEmpty(model.newTypeValue)
+        .or(Bindings.isEmpty(model.newDescriptionValue)))
     }
 
     class EditingCell extends TableCell<ReferenceItem, String> {
@@ -101,14 +101,14 @@ class ReferenceView extends AbstractJavaFXGriffonView {
         public void cancelEdit() {
             super.cancelEdit()
             setText((String)getItem())
-//            setGraphic(null)
+            setGraphic((javafx.scene.Node) null)
         }
         @Override
         public void updateItem(String item, boolean empty) {
             super.updateItem(item, empty)
             if (empty) {
                 setText(null)
-//                setGraphic(null)
+                setGraphic((javafx.scene.Node)null)
             } else {
                 if (isEditing()) {
                     if (textField != null) {
@@ -118,7 +118,7 @@ class ReferenceView extends AbstractJavaFXGriffonView {
                     setGraphic(textField)
                 } else  {
                     setText(getString())
-      //              setGraphic(null)
+                    setGraphic((javafx.scene.Node) null)
                 }
             }
         }
