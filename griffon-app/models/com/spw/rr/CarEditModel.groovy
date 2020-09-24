@@ -19,6 +19,7 @@ class CarEditModel {
     Integer carId           // id of car being edited, or null if new car
     RRCar car
     String  windowTitle
+    String newTag = null
     boolean newCar = true
     SimpleStringProperty carTag = new SimpleStringProperty("")
     ObservableList<ObsReference> reportingMark

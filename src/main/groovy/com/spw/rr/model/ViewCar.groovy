@@ -6,6 +6,7 @@ import groovy.transform.ToString
 class ViewCar {
     int    id
     String reportingMark
+    String rfidTag
     String carNumber
     String aarType
     String carType

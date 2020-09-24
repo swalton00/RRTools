@@ -38,6 +38,7 @@ class RrToolsController {
     private PropertyService propertyService
 
     private boolean initialized = false
+    private boolean windowActive = true
 
     @FXML
     private String statusLine
@@ -130,7 +131,33 @@ class RrToolsController {
             view.carType.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("carType"))
             view.aarType.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("aarType"))
             buildCarList()
+        } else {
+            windowActive = false
         }
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
+    public void onTag_Read(String newTag) {
+        log.debug("Main window got a tag of {} ", newTag)
+        if (windowActive) {
+            boolean foundIt = false
+            for (int i = 0; i < model.tableContents.size() ; i++) {
+                if (model.tableContents.get(i).rfidTag?.equals(newTag)) {
+                    view.carList.getSelectionModel().select(i)
+                    foundIt = true
+                    break
+                }
+            }
+            if (!foundIt) {
+                carEditWindow(null, newTag)
+            }
+        }
+    }
+
+        void onWindowHidden(String name, Stage window) {
+        log.debug("window hidden - window is {}", name)
+        windowActive = true
     }
 
     public void onShutdownRequested(GriffonApplication application) {
@@ -139,7 +166,7 @@ class RrToolsController {
         dataService.doShutdown()
     }
 
-    private void carEditWindow(Integer carId) {
+    private void carEditWindow(Integer carId, String newTag) {
         log.debug("creating a new car edit window for car id {}", carId)
         if (carEdit == null) {
             log.debug("finding an existing car edit window")
@@ -156,6 +183,7 @@ class RrToolsController {
             carEdit.model.windowTitle = "Edit an existing car"
             carEdit.model.newCar = false
         }
+        carEdit.model.newTag = newTag
         carEdit.model.carId = carId
         application.windowManager.show("carEditWindow")
     }
@@ -164,7 +192,7 @@ class RrToolsController {
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
     void createNewAction() {
         log.debug("Create a new Car has been requested")
-        carEditWindow(null)
+        carEditWindow(null, null)
     }
 
     @ControllerAction
@@ -172,7 +200,7 @@ class RrToolsController {
     void editCarAction() {
         log.debug("Editing the car")
         Integer id = view.carList.getSelectionModel().getSelectedItem().id
-        carEditWindow(id)
+        carEditWindow(id, null)
     }
 
     @ControllerAction

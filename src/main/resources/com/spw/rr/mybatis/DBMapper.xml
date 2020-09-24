@@ -47,7 +47,8 @@
                rpt.mark AS ReportingMark,
                aar.type AS aarType,
                ty.type  AS carType,
-               c.description
+               c.description,
+               c.rfid_tag as rfidTag
         FROM car c
                  INNER JOIN
              rpt_mark rpt

@@ -56,6 +56,9 @@ class CarEditController {
         }
         if (model.newCar) {
             initNewCar()
+            if (model.newTag != null) {
+                model.carTag.setValue(model.newTag)
+            }
         } else {
             initExistingCar(model.carId)
         }

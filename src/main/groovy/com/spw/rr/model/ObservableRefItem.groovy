@@ -10,6 +10,15 @@ import javafx.beans.value.ObservableValue
 class ObservableRefItem {
     boolean dirty = false
     String tableName
+
+    String getRfidTag() {
+        return rfidTag
+    }
+
+    void setRfidTag(String rfidTag) {
+        this.rfidTag = rfidTag
+    }
+    String rfidTag
     SimpleIntegerProperty id = new SimpleIntegerProperty()
     SimpleStringProperty typeName = new SimpleStringProperty()
     SimpleStringProperty typeDescription = new SimpleStringProperty()
@@ -48,6 +57,7 @@ class ObservableRefItem {
         }
         typeName.set(newItems['typeName'])
         typeDescription.set(newItems['typeDescription'])
+        rfidTag = newItems['rfidTag']
         addRequiredListeners()
     }
 
