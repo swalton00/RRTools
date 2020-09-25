@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
@@ -33,6 +34,21 @@
                   <MenuItem fx:id="editCarActionTarget" mnemonicParsing="false" text="Edit Car" />
                   <MenuItem fx:id="deleteCarActionTarget" mnemonicParsing="false" text="Delete Selected Car" />
                   <MenuItem fx:id="prefsActionTarget" mnemonicParsing="false" text="Preferences" />
+                           <MenuItem fx:id="inspectCarActionTarget" mnemonicParsing="false" text="Inspect Car">
+                              <accelerator>
+                                 <KeyCodeCombination alt="UP" code="I" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                              </accelerator>
+                           </MenuItem>
+                           <MenuItem fx:id="badOrderCarActionTarget" mnemonicParsing="false" text="Bad Order Car">
+                              <accelerator>
+                                 <KeyCodeCombination alt="UP" code="B" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                              </accelerator>
+                           </MenuItem>
+                           <MenuItem fx:id="maintainCarActionTarget" mnemonicParsing="false" text="Maintain Car">
+                              <accelerator>
+                                 <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                              </accelerator>
+                           </MenuItem>
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="Maintain">

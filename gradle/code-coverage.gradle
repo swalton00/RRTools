@@ -7,9 +7,9 @@ jacoco {
 jacocoTestReport {
     group = 'Reporting'
     description = 'Generate Jacoco coverage reports after running tests.'
-    additionalSourceDirs.from = project.files(sourceSets.main.allSource.srcDirs)
-    sourceDirectories.from = project.files(sourceSets.main.allSource.srcDirs)
-    classDirectories.from =  project.files(sourceSets.main.output)
+    additionalSourceDirs = project.files(sourceSets.main.allSource.srcDirs)
+    sourceDirectories = project.files(sourceSets.main.allSource.srcDirs)
+    classDirectories =  project.files(sourceSets.main.output)
     reports {
         xml.enabled = true
         csv.enabled = false

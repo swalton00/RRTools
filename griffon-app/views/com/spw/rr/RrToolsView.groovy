@@ -41,6 +41,9 @@ class RrToolsView extends AbstractJavaFXGriffonView {
     @FXML
     TableView<ViewCar> carList
     @FXML MenuItem editCarActionTarget
+    @FXML MenuItem maintainCarActionTarget
+    @FXML MenuItem badOrderCarActionTarget
+    @FXML MenuItem inspectCarActionTarget
 
     @Override
     public void initUI() {
@@ -52,6 +55,9 @@ class RrToolsView extends AbstractJavaFXGriffonView {
         stage.setScene(init());
         getApplication().getWindowManager().attach("mainWindow", stage);
         editCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
+        maintainCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
+        inspectCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
+        badOrderCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
     }
 
     // build the UI

@@ -27,4 +27,23 @@ mvcGroups {
         view = 'com.spw.rr.PrefsView'
         controller = 'com.spw.rr.PrefsController'
     }
+
+    'Inspection' {
+        model = 'com.spw.rr.InspectionModel'
+        view = 'com.spw.rr.InspectionView'
+        controller = 'com.spw.rr.InspectionController'
+    }
+
+    'BadOrder' {
+        model = 'com.spw.rr.BadOrderModel'
+        view = 'com.spw.rr.BadOrderView'
+        controller = 'com.spw.rr.BadOrderController'
+    }
+
+    'Maintenance' {
+        model = 'com.spw.rr.MaintenanceModel'
+        view = 'com.spw.rr.MaintenanceView'
+        controller = 'com.spw.rr.MaintenanceController'
+    }
+
 }

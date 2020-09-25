@@ -21,6 +21,7 @@ DROP TABLE
     IF EXISTS inspection;
 DROP TABLE 
     IF EXISTS bad_order;
+    Drop table IF EXISTS car_area;
 CREATE TABLE
     RPT_MARK
     (
@@ -97,6 +98,14 @@ ON
     (
         type
     );
+    CREATE TABLE 
+    Car_area
+    (
+        ID IDENTITY PRIMARY KEY
+        TYPE         VARCHAR(64) NOT NULL,
+        Description  VARCHAR(255),
+        LAST_Updated TIMESTAMP DEFAULT CURRENT TIMESTAMP NOT NULL
+    );
 CREATE TABLE
     car
     (
@@ -109,8 +118,8 @@ CREATE TABLE
         purchased    DATE,
         kit_built    DATE,
         in_service   DATE,
-        LENGTH       DECIMAL(9,1),
-        weight       DECIMAL(9,1),
+        LENGTH       DECIMAL(9,0),
+        weight       DECIMAL(9,0),
         rpt_mark     INT NOT NULL,
         aar_type     INT,
         BLT_Date     CHAR(5),

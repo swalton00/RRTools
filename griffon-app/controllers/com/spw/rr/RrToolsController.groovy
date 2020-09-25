@@ -28,6 +28,8 @@ class RrToolsController {
     @Nonnull
     RrToolsView view
 
+
+
     @Inject
     private DBService dbService
 
@@ -46,6 +48,10 @@ class RrToolsController {
     MVCGroup prefs = null
     MVCGroup reference = null
     MVCGroup carEdit = null
+    MVCGroup inspect = null
+    MVCGroup maintain = null
+    MVCGroup badOrder = null
+
     private static final int MAINT_CAR_TYPE = 0
     private static final int MAINT_AAR_TYPE = 1
     private static final int MAINT_KIT_TYPE = 2
@@ -60,21 +66,23 @@ class RrToolsController {
     private static String[] COLUMN_NAME = ["Car Type", "AAR Type", "Kit Type", "Coupler Type", "PRR Type"]
 
 
+    MVCGroup getGroup(MVCGroup group, String groupName) {
+        if (group != null) {
+            return group
+        }
+        MVCGroup retGroup = application.getMvcGroupManager().findGroup("Prefs")
+        if (retGroup != null)
+            return retGroup
+        return createMVCGroup(groupName)
+    }
+
     @ControllerAction
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
     public void prefsAction() {
         log.debug("Showing the prefs window")
-        if (prefs == null) {
-            prefs = application.getMvcGroupManager().findGroup("Prefs")
-            if (prefs == null) {
-                log.debug("Creating the Prefs MVC Group")
-                prefs = createMVCGroup("Prefs")
-                log.debug("Prefs created {}", prefs)
-            }
-        }
+        prefs = getGroup(prefs, 'Prefs')
         log.debug("showing the Prefs window")
-        def windowManager = application.getWindowManager()
-        windowManager.show("prefsWindow")
+        application.windowManager.show("prefsWindow")
     }
 
     public void onInitializeMVCGroup(MVCGroupConfiguration configuration, MVCGroup group) {
@@ -168,14 +176,7 @@ class RrToolsController {
 
     private void carEditWindow(Integer carId, String newTag) {
         log.debug("creating a new car edit window for car id {}", carId)
-        if (carEdit == null) {
-            log.debug("finding an existing car edit window")
-            carEdit = application.getMvcGroupManager().findGroup("CarEdit")
-            if (carEdit == null) {
-                log.debug("didn't find an existing Group - creating a new one")
-                carEdit = application.getMvcGroupManager().createMVCGroup("CarEdit")
-            }
-        }
+        carEdit = getGroup(carEdit, "CarEdit")
         if (carId == null) {
             carEdit.model.windowTitle = "Create a new Car"
             carEdit.model.newCar = true
@@ -212,12 +213,7 @@ class RrToolsController {
 
     private maintainWindow(int maintType) {
         log.debug("Maintain window creation")
-        if (reference == null) {
-            reference = application.getMvcGroupManager().findGroup("Reference")
-            if (reference == null) {
-                reference = application.getMvcGroupManager().createMVCGroup("Reference")
-            }
-        }
+        reference = getGroup(reference, "Reference")
         reference.model.windowTitle = MAINT_TITLES[maintType]
         reference.model.referenceType = maintType
         reference.model.referenceTable = TABLE_NAME[maintType]
@@ -250,12 +246,37 @@ class RrToolsController {
         maintainWindow(MAINT_PRR_TYPE)
     }
 
-
-
     @ControllerAction
     void maintainCouplerTypeAction() {
         log.debug("Bring up Coupler Type Window")
         maintainWindow(MAINT_COUPLER_TYPE)
     }
 
+    @ControllerAction
+    void inspectCarAction() {
+        log.debug("Inspecting the selected car")
+        inspect = getGroup(inspect, "Inspection")
+        Integer id = view.carList.getSelectionModel().getSelectedItem().id
+        inspect.model.carId = id
+        application.windowManager.show("InspectionWindow")
+    }
+
+    @ControllerAction
+    void badOrderCarAction() {
+        log.debug("entering a bad order for the selected car")
+        badOrder = getGroup(badOrder, "BadOrder")
+        Integer id = view.carList.getSelectionModel().getSelectedItem().id
+        badOrder.model.carId = id
+        application.windowManager.show("BadOrderWindow")
+    }
+
+    @ControllerAction
+    void maintainCarAction() {
+        log.debug("performing maintenance on selected car")
+        maintain = getGroup(maintain, "Maintenance")
+        Integer id = view.carList.getSelectionModel().getSelectedItem().id
+        maintain.model.carId = id
+        application.windowManager.show("MaintenanceWindow")
+
+    }
 }
