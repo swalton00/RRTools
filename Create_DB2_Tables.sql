@@ -261,6 +261,7 @@ SELECT
 DELETE
 ON
     TABLE Car TO Role Railroad;
+DROP TABLE Inspection;    
 CREATE TABLE
     Inspection
     (
@@ -268,13 +269,31 @@ CREATE TABLE
         MINVALUE -2147483648 MAXVALUE 2147483647 NO CYCLE CACHE 20 NO ORDER ),
         car_ID             INT NOT NULL,
         inspect_Date       DATE NOT NULL,
-        passed             CHAR(1) NOT NULL DEFAULT '0',
+	carWeight	   decimal(5,1),
+        carLength          decimal(5,1),
+        inspectionTime     decimal(7,1),
+        OVERALL_passed     CHAR(1) NOT NULL DEFAULT '0',
         weightPassed       CHAR(1) NOT NULL DEFAULT '0',
-        cplr_height_passed CHAR(1) NOT NULL DEFAULT '0',
-        guage_passed       CHAR(1) NOT NULL DEFAULT '0',
+	CPLR_A_HEIGHT      CHAR(1) NOT NULL DEFAULT '0',
+        CPLR_B_HEIGHT      CHAR(1) NOT NULL DEFAULT '0',
+        CPLR_A_ACTION	   CHAR(1) NOT NULL DEFAULT '0',
+        CPLR_B_ACTION	   CHAR(1) NOT NULL DEFAULT '0',
+        METAL_WHEELS_A     CHAR(1) NOT NULL DEFAULT '0',
+        METAL_WHEELS_B     CHAR(1) NOT NULL DEFAULT '0',
+        RESIST_WHEELS_A    CHAR(1) NOT NULL DEFAULT '0',
+        RESIST_WHEELS_B    CHAR(1) NOT NULL DEFAULT '0',
+        WHEEL_GAUGE_A      CHAR(1) NOT NULL DEFAULT '0',
+        WHEEL_GAUGE_B      CHAR(1) NOT NULL DEFAULT '0',
+        WHEEL_TREAD_A      CHAR(1) NOT NULL DEFAULT '0',
+        WHEEL_TREAD_B      CHAR(1) NOT NULL DEFAULT '0',
+        TRUCK_SCREW_LOOSE_A CHAR(1) NOT NULL DEFAULT '0',
+        TRUCK_SCREW_TIGHT_B CHAR(1) NOT NULL DEFAULT '0',
+        CAR_SITS_LEVEL     CHAR(1) NOT NULL DEFAULT '0',
+        CAR_DOESNT_ROCK    CHAR(1) NOT NULL DEFAULT '0',
+        ALL_WHEELS_TOUCH   CHAR(1) NOT NULL DEFAULT '0',
         last_updated       TIMESTAMP DEFAULT CURRENT TIMESTAMP NOT NULL,
         CONSTRAINT inspect_parent_key FOREIGN KEY (Car_ID) REFERENCES car(ID)
-    );
+    ) DATA CAPTURE NONE INDEX IN RRSPACE LONG IN RRSPACE COMPRESS YES STATIC VALUE COMPRESSION;
 CREATE UNIQUE INDEX
     IDX_Inspection_Pri
 ON

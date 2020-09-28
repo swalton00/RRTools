@@ -1,27 +1,26 @@
 CREATE schema
 IF NOT EXISTS RR;
 SET schema RR;
-DROP TABLE 
+DROP TABLE
     IF EXISTS aar_type;
-DROP TABLE 
+DROP TABLE
     IF EXISTS car_type;
-DROP TABLE 
+DROP TABLE
     IF EXISTS coupler_type;
-DROP TABLE 
+DROP TABLE
     IF EXISTS kit_type;
-DROP TABLE 
+DROP TABLE
     IF EXISTS prr_type;
-DROP TABLE 
+DROP TABLE
     IF EXISTS rpt_mark;
-DROP TABLE 
+DROP TABLE
     IF EXISTS car;
-DROP TABLE 
+DROP TABLE
     IF EXISTS maintenance;
-DROP TABLE 
-    IF EXISTS inspection;
-DROP TABLE 
+DROP TABLE
     IF EXISTS bad_order;
-    Drop table IF EXISTS car_area;
+DROP TABLE
+    IF EXISTS car_area;
 CREATE TABLE
     RPT_MARK
     (
@@ -98,13 +97,13 @@ ON
     (
         type
     );
-    CREATE TABLE 
+CREATE TABLE
     Car_area
     (
-        ID IDENTITY PRIMARY KEY
+        ID IDENTITY PRIMARY KEY, 
         TYPE         VARCHAR(64) NOT NULL,
         Description  VARCHAR(255),
-        LAST_Updated TIMESTAMP DEFAULT CURRENT TIMESTAMP NOT NULL
+        LAST_Updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
 CREATE TABLE
     car
@@ -143,17 +142,37 @@ ON
     (
         rfid_tag
     );
+DROP TABLE
+    IF EXISTS inspection;
 CREATE TABLE
-    inspection
+    Inspection
     (
-        id identity PRIMARY KEY,
-        car_id             INT NOT NULL,
-        inspect_date       DATE NOT NULL,
-        passed             CHAR(1) NOT NULL DEFAULT '0',
-        weightPassed       CHAR(1) NOT NULL DEFAULT '0',
-        cplr_height_Passed CHAR(1) NOT NULL DEFAULT '0',
-        gauge_passed       CHAR(1) NOT NULL DEFAULT '0',
-        last_updated       TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        ID identity PRIMARY KEY,
+        car_ID              INT NOT NULL,
+        inspect_Date        DATE NOT NULL,
+        carWeight           DECIMAL(5,1),
+        carLength           DECIMAL(5,1),
+        inspectionTime      DECIMAL(7,1),
+        OVERALL_passed      CHAR(1) NOT NULL DEFAULT '0',
+        weightPassed        CHAR(1) NOT NULL DEFAULT '0',
+        CPLR_A_HEIGHT       CHAR(1) NOT NULL DEFAULT '0',
+        CPLR_B_HEIGHT       CHAR(1) NOT NULL DEFAULT '0',
+        CPLR_A_ACTION       CHAR(1) NOT NULL DEFAULT '0',
+        CPLR_B_ACTION       CHAR(1) NOT NULL DEFAULT '0',
+        METAL_WHEELS_A      CHAR(1) NOT NULL DEFAULT '0',
+        METAL_WHEELS_B      CHAR(1) NOT NULL DEFAULT '0',
+        RESIST_WHEELS_A     CHAR(1) NOT NULL DEFAULT '0',
+        RESIST_WHEELS_B     CHAR(1) NOT NULL DEFAULT '0',
+        WHEEL_GAUGE_A       CHAR(1) NOT NULL DEFAULT '0',
+        WHEEL_GAUGE_B       CHAR(1) NOT NULL DEFAULT '0',
+        WHEEL_TREAD_A       CHAR(1) NOT NULL DEFAULT '0',
+        WHEEL_TREAD_B       CHAR(1) NOT NULL DEFAULT '0',
+        TRUCK_SCREW_LOOSE_A CHAR(1) NOT NULL DEFAULT '0',
+        TRUCK_SCREW_TIGHT_B CHAR(1) NOT NULL DEFAULT '0',
+        CAR_SITS_LEVEL      CHAR(1) NOT NULL DEFAULT '0',
+        CAR_DOESNT_ROCK     CHAR(1) NOT NULL DEFAULT '0',
+        ALL_WHEELS_TOUCH    CHAR(1) NOT NULL DEFAULT '0',
+        last_updated        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         CONSTRAINT inspect_parent_key FOREIGN KEY ( car_id ) REFERENCES car ( id )
     );
 CREATE TABLE

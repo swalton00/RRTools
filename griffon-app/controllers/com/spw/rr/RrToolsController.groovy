@@ -258,6 +258,8 @@ class RrToolsController {
         inspect = getGroup(inspect, "Inspection")
         Integer id = view.carList.getSelectionModel().getSelectedItem().id
         inspect.model.carId = id
+        inspect.model.carNumber = view.carList.getSelectionModel().getSelectedItem().carNumber
+        inspect.model.reportingMark = view.carList.getSelectionModel().getSelectedItem().reportingMark
         application.windowManager.show("InspectionWindow")
     }
 

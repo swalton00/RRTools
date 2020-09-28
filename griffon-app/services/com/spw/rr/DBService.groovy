@@ -1,5 +1,6 @@
 package com.spw.rr
 
+import com.spw.rr.model.Inspection
 import com.spw.rr.model.RRCar
 import com.spw.rr.model.ReferenceItem
 import com.spw.rr.model.ReportingMark
@@ -109,6 +110,15 @@ class DBService {
             DBMapper mapper = session.getMapper(DBMapper.class)
             mapper.saveReferenceItem(item)
         })
+    }
+
+    void addInspection(Inspection newInspection) {
+        log.debug("adding the Inspection {}", newInspection)
+        mybatisHandler.withSqlSession {
+            String sessionFactoryName, SqlSession session ->
+                DBMapper mapper = session.getMapper(DBMapper.class)
+                mapper.addInspection(newInspection)
+        }
     }
 
 

@@ -65,6 +65,58 @@
         ORDER BY reportingMark,
                  car_number
     </select>
+    <insert id="addInspection" parameterType="com.spw.rr.model.Inspection" useGeneratedKeys="true">
+        INSERT INTO Inspection
+         (car_ID,
+          inspect_Date,
+          carWeight,
+          carLength,
+          inspectionTime,
+          Overall_passed,
+          weight_passed,
+          CPLR_A_Height,
+          CPLR_B_Height,
+          CPLR_A_Action,
+          CPRL_B_Action,
+          Metal_Wheels_A,
+          Metal_Wheels_B,
+          Resist_Wheels_A,
+          Resist_Wheels_B,
+          Wheel_Gauge_A,
+          Wheel_Gauge_B,
+          Wheel_Tread_A,
+          Wheel_Tread_B,
+          Truck_screw_Loose_A,
+          Truck_screw_Tight_B,
+          car_sits_level,
+          car_doesnt_rock,
+          All_wheels_touch
+          ) VALUES (#{carId},
+                    #{inspectionDate},
+                    #{carWeight},
+                    #{carLength},
+                    #{inspectionTime},
+                    #{overallPassed},
+                    #{weightPassed},
+                    #{couplerHeightA},
+                    #{couplerHeightB},
+                    #{couplerActionA},
+                    #{couplerActionB},
+                    #{metalWheelsA},
+                    #{metalWheelsB},
+                    #{resistWheelsA},
+                    #{resistWheelsB},
+                    #{wheelGaugeA},
+                    #{wheelGaugeB},
+                    #{wheelTreadA},
+                    #{wheelTreadB},
+                    #{truckScrewLooseA},
+                    #{truckScrewTightB},
+                    #{carSitsLevel},
+                    #{carDoesntRock},
+                    #{allWheelsTouch}
+                           )
+    </insert>
     <insert id="addRRCar" parameterType="com.spw.rr.model.RRCar" useGeneratedKeys="true">
         INSERT INTO Car
         (car_number,

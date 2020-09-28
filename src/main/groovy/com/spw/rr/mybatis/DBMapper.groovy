@@ -1,5 +1,6 @@
 package com.spw.rr.mybatis
 
+import com.spw.rr.model.Inspection
 import com.spw.rr.model.RRCar
 import com.spw.rr.model.ReferenceItem
 import com.spw.rr.model.ReportingMark
@@ -20,4 +21,5 @@ interface DBMapper extends MybatisMapper {
     int addRRCar(RRCar)
     RRCar getRRCar(int id)
     int updateCar(RRCar)
+    int addInspection(Inspection inspection)
 }
