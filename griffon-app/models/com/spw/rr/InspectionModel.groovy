@@ -15,6 +15,11 @@ import java.sql.Date
 @ArtifactProviderFor(GriffonModel)
 class InspectionModel {
     Integer carId
+    BigDecimal carWeightDecoded = new BigDecimal(0.0)
+    BigDecimal carLengthDecoded = new BigDecimal(0.0)
+    BigDecimal timeRequiredDecoded = new BigDecimal(0.0)
+    BigDecimal calculatedWeight
+
     @FXObservable String carNumber = ""
     @FXObservable String reportingMark = ""
     SimpleStringProperty startTime = new SimpleStringProperty("")

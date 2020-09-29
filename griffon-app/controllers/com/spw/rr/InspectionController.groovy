@@ -32,6 +32,9 @@ class InspectionController {
 
     private void initInspection() {
         view.inspectionDate.setValue(LocalDate.now())
+        model.carLengthDecoded = new BigDecimal(0.0)
+        model.carWeightDecoded = new BigDecimal(0.0)
+        model.timeRequiredDecoded = new BigDecimal(0.0)
         model.weightCalculated.set("")
         model.timeRequired.set("")
         model.carWeight.set("")
@@ -54,32 +57,20 @@ class InspectionController {
         model.carSitsLevel.set(false)
         model.carDoesNotRock.set(false)
         model.allWheelsTouch.set(false)
-        model.overallResults.set(false)
         LocalTime currentTime = LocalTime.now()
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("kk:mm")
         model.startTime.set(currentTime.format(formatter))
         model.inspectionMessage.setValue("")
     }
 
-    void lengthListener(ObservableValue value, oldValue, newValue) {
-        if (newValue.length == 0)
-            return
-        def (left, right) = newValue.split(".")
-        if (right == null) {
-            right = "0"
+    private void checkWeight() {
+        if ((!model.carWeightDecoded.equals(0.0) & !model.carLengthDecoded.equals(0.0))) {
+            if (model.carWeightDecoded > model.calculatedWeight) {
+                model.doesWeightPass.set(true)
+            } else {
+                model.doesWeightPass.set(false)
+            }
         }
-        int intLeft = 0
-        int intRight = 0
-        try {
-            intLeft = Integer.parseInt(left)
-            intRight = Integer.parseInt(right)
-        } catch (NumberFormatException ex) {
-            newValue = "0"
-            model.inspectionMessage.set("Length must be entered as digits.digit (0.0)")
-            return
-        }
-        int calculatedWeight = (((intLeft * 10 + intRight) / 2) + 10) / 10
-        model.weightCalculated.set(Integer.toString(calculatedWeight))
     }
 
     private void initOnce() {
@@ -92,13 +83,50 @@ class InspectionController {
             BigDecimal resVal
             try {
                 resVal = new BigDecimal(newValue)
+                model.inspectionMessage.set("")
+                model.carLengthDecoded = resVal
             } catch (NumberFormatException ex) {
                 newValue = "0"
                 model.inspectionMessage.set("Length must be entered as digits.digit (0.0)")
                 return
             }
-            String calculated = resVal.divide(new BigDecimal(2)).add(new BigDecimal(1.0)).setScale(1).toString()
+            model.calculatedWeight = resVal.divide(new BigDecimal(2)).add(new BigDecimal(1.0)).setScale(1, BigDecimal.ROUND_HALF_UP)
+            String calculated = model.calculatedWeight.toString()
             model.weightCalculated.set(calculated)
+            checkWeight()
+        } as javafx.beans.value.ChangeListener
+        )
+        model.carWeight.addListener({ ObservableValue value, oldValue, newValue ->
+            if (newValue.length() == 0) {
+                return
+            }
+            BigDecimal resVal
+            try {
+                resVal = new BigDecimal(newValue)
+                model.inspectionMessage.set("")
+                model.carWeightDecoded = resVal
+            } catch (NumberFormatException ex) {
+                newValue = "0"
+                model.inspectionMessage.set("Weight must be entered as digits.digit (0.0)")
+                return
+            }
+            checkWeight()
+        } as javafx.beans.value.ChangeListener
+        )
+        model.timeRequired.addListener({ ObservableValue value, oldValue, newValue ->
+            if (newValue.length() == 0) {
+                return
+            }
+            BigDecimal resVal
+            try {
+                resVal = new BigDecimal(newValue)
+                model.inspectionMessage.set("")
+                model.timeRequiredDecoded = resVal
+            } catch (NumberFormatException ex) {
+                newValue = "0"
+                model.inspectionMessage.set("Time required must be entered as digits.digit (0.0)")
+                return
+            }
         } as javafx.beans.value.ChangeListener
         )
     }
@@ -126,7 +154,7 @@ class InspectionController {
     private Inspection createInspection() {
         Inspection ret = new Inspection()
         ret.carId = model.carId
-        ret.inspectionDate = model.inspectionDate.getValue()
+        ret.inspectionDate = new java.sql.Date(model.inspectionDate.getValue())
         ret.carWeight = new BigDecimal(model.carWeight.value)
         ret.carLength = new BigDecimal(model.carLength.value)
         ret.inspectionTime = new BigDecimal(model.timeRequired)

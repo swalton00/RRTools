@@ -3,6 +3,7 @@ package com.spw.rr
 import griffon.core.artifact.GriffonView
 import griffon.inject.MVCMember
 import griffon.metadata.ArtifactProviderFor
+import javafx.beans.binding.Bindings
 import javafx.collections.FXCollections
 import javafx.fxml.FXML
 import javafx.scene.Group
@@ -22,44 +23,78 @@ import javax.annotation.Nonnull
 
 @ArtifactProviderFor(GriffonView)
 class InspectionView extends AbstractJavaFXGriffonView {
-    @MVCMember @Nonnull
+    @MVCMember
+    @Nonnull
     FactoryBuilderSupport builder
-    @MVCMember @Nonnull
+    @MVCMember
+    @Nonnull
     InspectionController controller
-    @MVCMember @Nonnull
+    @MVCMember
+    @Nonnull
     InspectionModel model
 
-    @FXML Label carNumber
-    @FXML Label reportingMark
-    @FXML Label startTime
-    @FXML Label weightCalculated
-    @FXML public DatePicker inspectionDate
-    @FXML CheckBox doesWeightPass
-    @FXML TextField carWeight
-    @FXML TextField carLength
-    @FXML TextField timeRequired
-    @FXML ChoiceBox<String> weightUnits
-    @FXML ChoiceBox<String> lengthUnits
-    @FXML ChoiceBox<String> carScale
-    @FXML CheckBox couplerHeightPassA
-    @FXML CheckBox couplerHeightPassB
-    @FXML CheckBox couplerActionPassA
-    @FXML CheckBox couplerActionPassB
-    @FXML CheckBox metalWheelsA
-    @FXML CheckBox metalWheelsB
-    @FXML CheckBox resistanceWheelsA
-    @FXML CheckBox resistanceWheelsB
-    @FXML CheckBox wheelGaugeA
-    @FXML CheckBox wheelGaugeB
-    @FXML CheckBox wheelTreadA
-    @FXML CheckBox wheelTreadB
-    @FXML CheckBox truckScrewTightB
-    @FXML CheckBox truckScrewLooseA
-    @FXML CheckBox carSitsLevel
-    @FXML CheckBox carDoesNotRock
-    @FXML CheckBox allWheelsTouch
-    @FXML CheckBox overallResults
-    @FXML Label inspectionMessage
+    @FXML
+    Label carNumber
+    @FXML
+    Label reportingMark
+    @FXML
+    Label startTime
+    @FXML
+    Label weightCalculated
+    @FXML
+    public DatePicker inspectionDate
+    @FXML
+    CheckBox doesWeightPass
+    @FXML
+    TextField carWeight
+    @FXML
+    TextField carLength
+    @FXML
+    TextField timeRequired
+    @FXML
+    ChoiceBox<String> weightUnits
+    @FXML
+    ChoiceBox<String> lengthUnits
+    @FXML
+    ChoiceBox<String> carScale
+    @FXML
+    CheckBox couplerHeightPassA
+    @FXML
+    CheckBox couplerHeightPassB
+    @FXML
+    CheckBox couplerActionPassA
+    @FXML
+    CheckBox couplerActionPassB
+    @FXML
+    CheckBox metalWheelsA
+    @FXML
+    CheckBox metalWheelsB
+    @FXML
+    CheckBox resistanceWheelsA
+    @FXML
+    CheckBox resistanceWheelsB
+    @FXML
+    CheckBox wheelGaugeA
+    @FXML
+    CheckBox wheelGaugeB
+    @FXML
+    CheckBox wheelTreadA
+    @FXML
+    CheckBox wheelTreadB
+    @FXML
+    CheckBox truckScrewTightB
+    @FXML
+    CheckBox truckScrewLooseA
+    @FXML
+    CheckBox carSitsLevel
+    @FXML
+    CheckBox carDoesNotRock
+    @FXML
+    CheckBox allWheelsTouch
+    @FXML
+    CheckBox overallResults
+    @FXML
+    Label inspectionMessage
 
     void initUI() {
         Stage stage = (Stage) getApplication()
@@ -109,6 +144,13 @@ class InspectionView extends AbstractJavaFXGriffonView {
         lengthUnits.getSelectionModel().select(0)
         weightUnits.setItems((FXCollections.observableArrayList("Ounces", "Grams")))
         weightUnits.getSelectionModel().select(0)
+        model.overallResults.bind(doesWeightPass.selectedProperty()
+                .and(couplerHeightPassB.selectedProperty()
+                        .and(couplerHeightPassA.selectedProperty()
+                                .and(couplerActionPassB.selectedProperty()
+                                        .and(metalWheelsB.selectedProperty()
+                                                .and(metalWheelsA.selectedProperty())))
+                        )))
     }
 
     private Scene init() {
