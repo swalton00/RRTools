@@ -155,9 +155,9 @@ class InspectionController {
         Inspection ret = new Inspection()
         ret.carId = model.carId
         ret.inspectionDate = new java.sql.Date(model.inspectionDate.getValue())
-        ret.carWeight = new BigDecimal(model.carWeight.value)
-        ret.carLength = new BigDecimal(model.carLength.value)
-        ret.inspectionTime = new BigDecimal(model.timeRequired)
+        ret.carWeight = model.carWeightDecoded
+        ret.carLength = model.carLengthDecoded
+        ret.inspectionTime = model.timeRequiredDecoded
         ret.overallPassed = model.overallResults.get() ? "1" : "0"
         ret.weightPassed = model.doesWeightPass.get() ? "1" : "0"
         ret.couplerHeightA = model.couplerHeightPassA.get() ? "1" : "0"
@@ -176,7 +176,9 @@ class InspectionController {
         ret.truckScrewTightB = model.truckScrewTightB.get() ? "1" : "0"
         ret.carSitsLevel = model.carSitsLevel.get() ? "1" : "0"
         ret.carDoesntRock = model.carDoesNotRock.get() ? "1" : "0"
-        ret.allWheelsTouch = model.allWheelsTouch.get() ? "1" : "0"
+        ret.allWheelsTouch =  model.allWheelsTouch.get() ? "1" : "0"
+        log.debug("inspection to be returned is {}", ret)
+        return ret
     }
 
     @ControllerAction
