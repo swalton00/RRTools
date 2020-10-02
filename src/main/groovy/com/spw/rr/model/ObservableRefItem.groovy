@@ -19,7 +19,7 @@ class ObservableRefItem {
         this.rfidTag = rfidTag
     }
     String rfidTag
-    SimpleIntegerProperty id = new SimpleIntegerProperty()
+    Integer id = null
     SimpleStringProperty typeName = new SimpleStringProperty()
     SimpleStringProperty typeDescription = new SimpleStringProperty()
 
@@ -52,9 +52,7 @@ class ObservableRefItem {
 
     public ObservableRefItem(Map newItems) {
         tableName = newItems['tableName']
-        if (newItems['id'] != null) {
-            id.set(newItems['id'])
-        }
+        id  = newItems['id']
         typeName.set(newItems['typeName'])
         typeDescription.set(newItems['typeDescription'])
         rfidTag = newItems['rfidTag']
@@ -62,11 +60,11 @@ class ObservableRefItem {
     }
 
     public Integer getId() {
-        return id.get()
+        return id
     }
 
     public void setId(Integer intVal) {
-        id.set(intVal)
+        id = intVal
     }
 
     public String getTypeName() {

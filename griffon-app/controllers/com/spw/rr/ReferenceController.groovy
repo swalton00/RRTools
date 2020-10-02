@@ -38,37 +38,11 @@ class ReferenceController {
         application.windowManager.hide("referenceWindow")
     }
 
-    private boolean typedData(obs, oldVal, newVal, thisChanged, thatChanged) {
-        if (newVal) {
-            thisChanged = true
-        } else {
-            thisChanged = false
-        }
-        if (thisChanged && thatChanged)
-            model.refEnterNotReady.setValue(false)
-        else
-            model.refEnterNotReady.setValue(true)
-        return thisChanged
-    }
-
-
-    void onWindowShown(String name, Stage window) {
+   void onWindowShown(String name, Stage window) {
         log.debug("in the window shown method for Reference")
         view.typeColumn.textProperty().set(model.columnName)
         if (name.equals("referenceWindow")) {
-            /*model.newTypeValue.addListener(new ChangeListener() {
-                @Override
-                void changed(ObservableValue obs, Object oldVal, Object newVal) {
-                    model.newTypedEntered = typedData(obs, oldVal, newVal, model.newTypedEntered, model.newDescriptionEntered)
-                }
-            })
-            model.newDescriptionValue.addListener(new ChangeListener<String>() {
-                @Override
-                void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    model.newDescriptionEntered = typedData(observable, oldValue, newValue, model.newDescriptionEntered, model.newTypedEntered)
-                }
-            })*/
-            window.setTitle(model.windowTitle)
+                window.setTitle(model.windowTitle)
             model.refDataClean.setValue(true)
             model.newDescriptionEntered.setValue(false)
             model.newTypedEntered.setValue(false)
@@ -122,6 +96,7 @@ class ReferenceController {
         log.debug("adding a new item")
         ObservableRefItem newItem = new ObservableRefItem(typeName:  model.newTypeValue.getValue(),
                                                            typeDescription: model.newDescriptionValue.getValue())
+        newItem.dirty = true
         view.refTableView.getItems().add(newItem)
         model.refDataClean.set(false)
         view.refNewType.setText("")
@@ -136,7 +111,9 @@ class ReferenceController {
             dataList.each { item ->
                 ReferenceItem ref = new ReferenceItem(typeName: item.getTypeName(),
                         typeDescription: item.getTypeDescription())
-                ref.id = item.getId()
+                if (item.id != null) {
+                    ref.id = item.id
+                }
                 ref.tableName = model.referenceTable
                 if (ref.id == null) {
                     log.debug("adding new reference item {}", item)

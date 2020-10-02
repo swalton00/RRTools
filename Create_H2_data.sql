@@ -230,3 +230,16 @@ INSERT INTO
         'RFID Tag'
     );
 
+INSERT INTO
+    car_area
+    (
+        TYPE,
+        description
+    )
+    VALUES
+    (
+        'Other',
+        'other than a standard area'
+    );
+
+

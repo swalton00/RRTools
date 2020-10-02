@@ -10,6 +10,7 @@ class PropertyService {
     private boolean inited = false
     private static String PROPERTY_FILE_NAME = "rrtools.properties"
     Properties properties = new Properties()
+    Properties defaultProperties
 
     /*  these are the properties externalized to the properties file:   */
     String savedComPort = "<None>"  // key = savedComPort
@@ -33,6 +34,12 @@ class PropertyService {
             return
         }
         log.debug("Initializing the Property file")
+        defaultProperties = properties
+        /* add all default value saved properties here */
+        defaultProperties.setProperty("savedComPort", savedComPort)
+        defaultProperties.setProperty("savedUnits", Integer.toString(savedUnits))  // 0 = English, 1 = Metric
+        defaultProperties.setProperty("savedScaleRatio", Integer.toString(savedScaleRatio))
+        defaultProperties.setProperty("savedScaleName", savedScaleName)
         File file
         InputStream propertiesInput = null
         try {
@@ -49,12 +56,8 @@ class PropertyService {
             }
 
         } else {
+            properties = defaultProperties
             /* add all default value saved properties here */
-            properties.setProperty("savedComPort", savedComPort)
-            properties.setProperty("savedUnits", Integer.toString(savedUnits))
-            properties.setProperty("savedScaleRatio", Integer.toString(savedScaleRatio))
-            properties.setProperty("savedScaleName", savedName)
-
         }
     }
 
@@ -74,7 +77,12 @@ class PropertyService {
 
     public int getScaleRatio() {
         initTest()
-        return Integer.parseInt(properties.getProperty("savedUnits"))
+        String prop = properties.getProperty("savedUnits")
+        if (prop == null) {
+            log.debug("using default scale ratio property")
+            prop = defaultProperties.getProperty("savedUnits")
+        }
+        return Integer.parseInt(prop)
     }
 
     public void setScaleRatio(int ratio) {
@@ -84,7 +92,12 @@ class PropertyService {
 
     public String getScaleName() {
         initTest()
-        return properties.getProperty("savedScaleName")
+        String prop = properties.getProperty("savedScaleName")
+        if (prop == null) {
+            log.debug("using default scale ratio property")
+            prop = defaultProperties.getProperty("savedScaleName")
+        }
+        return prop
     }
 
     public void setScaleName(String name) {

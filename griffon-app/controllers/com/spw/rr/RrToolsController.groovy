@@ -116,6 +116,32 @@ class RrToolsController {
     }
 
 
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void viewAllCarsAction() {
+        log.debug("opening view to all cars")
+    }
+
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void viewCarsInspectionAction() {
+        log.debug("restricting view to cars needing inspection")
+    }
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void viewCarsMaintenanceAction() {
+        log.debug("restricting view to cars needing maintenance (with a Bad Order)")
+    }
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void viewCarsNoTagAction() {
+        log.debug("restricting view to cars needing an RFID Tag")
+    }
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void viewCarsWithCplrAction() {
+        log.debug("restricting view to cars with a specific Coupler Type")
+    }
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void viewCarsWithRptAction() {
+        log.debug("restricting view to cars with a specific Reporting Mark")
+    }
+
     public void onStatus_Update(String newStatus) {
         log.debug("got a status update with {}", newStatus)
         runInsideUISync({ -> model.setStatusLine(newStatus)})

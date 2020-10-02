@@ -17,7 +17,7 @@
         UPDATE \${tableName}
         set type         = #{typeName},
             description  = #{typeDescription},
-            last_updated = current_timestamp()
+            last_updated = current timestamp
         where ID = #{id}
     </update>
     <select id="getReferenceItem">
@@ -191,7 +191,7 @@
             weight       = #{carWeight},
             wheels       = #{carWheels},
             rfid_tag     = #{RFIDtag},
-            last_updated = CURRENT_TIMESTAMP
+            last_updated = CURRENT TIMESTAMP
         WHERE ID = #{id}
     </update>
 </mapper>

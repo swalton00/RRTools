@@ -28,7 +28,7 @@ CREATE TABLE
         MINVALUE -2147483648 MAXVALUE 2147483647 NO CYCLE CACHE 20 NO ORDER ),
         Mark         VARCHAR(64) NOT NULL,
         Mark_Desc    VARCHAR(255),
-        LAST_Updated TIMESTAMP NOT NULL
+        LAST_Updated TIMESTAMP DEFAULT CURRENT TIMESTAMP NOT NULL
     )
     DATA CAPTURE NONE INDEX IN RRSPACE LONG IN RRSPACE COMPRESS YES STATIC VALUE COMPRESSION;
 CREATE UNIQUE INDEX
@@ -101,6 +101,14 @@ ON
     CLUSTER ALLOW Reverse Scans Compress Yes;
 ALTER TABLE
     PRR_Type ADD CONSTRAINT PRR_Type_Pri_key PRIMARY KEY ( ID );
+CREATE UNIQUE INDEX
+    IDX_PRR_TYPE_IX1
+ON
+    PRR_type
+    (
+        type
+    );
+    
 GRANT
 INSERT
     ,
@@ -655,6 +663,17 @@ INSERT INTO
     (
         'rfidtag',
         'RFID Tag'
+    );
+INSERT INTO
+    car_area
+    (
+        TYPE,
+        description
+    )
+    VALUES
+    (
+        'Other',
+        'other than a standard area'
     );
 
 

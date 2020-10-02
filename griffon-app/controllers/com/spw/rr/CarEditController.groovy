@@ -9,6 +9,7 @@ import griffon.inject.MVCMember
 import griffon.metadata.ArtifactProviderFor
 import griffon.transform.Threading
 import javafx.beans.property.SimpleStringProperty
+import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.DatePicker
@@ -16,6 +17,7 @@ import javafx.stage.Stage
 
 import javax.annotation.Nonnull
 import javax.inject.Inject
+import java.math.RoundingMode
 import java.sql.Date
 
 @ArtifactProviderFor(GriffonController)
@@ -31,6 +33,8 @@ class CarEditController {
     @Inject
     DBService dbService
 
+    private boolean initialized = false
+
     void doReporting() {
         List rptMarks = dbService.getReportingMarks()
         model.reportingMark = FXCollections.observableArrayList()
@@ -43,9 +47,77 @@ class CarEditController {
         view.carReportingMark.setItems(model.reportingMark)
     }
 
+    private void performInitialization() {
+        log.debug("setting up the carEdit window elements")
+        model.carLength.addListener({ ObservableValue value, oldValue, newValue ->
+            if (newValue.length() == 0) {
+                return
+            }
+            Integer resVal
+            try {
+                resVal = new BigDecimal(newValue)
+                model.messageText.set("")
+                model.carLengthDecoded = resVal
+            } catch (NumberFormatException ex) {
+                newValue = "0"
+                model.messageText.set("Length must be numeric, to one decimal place")
+                return
+            }
+        } as javafx.beans.value.ChangeListener)
+        model.carWeight.addListener({ ObservableValue value, oldValue, newValue ->
+            if (newValue.length() == 0) {
+                return
+            }
+            Integer resVal
+            try {
+                resVal = new BigDecimal(newValue)
+                model.messageText.set("")
+                model.carWeightDecoded = resVal
+            } catch (NumberFormatException ex) {
+                newValue = "0"
+                model.messageText.set("Car length must be numeric, to one decimal place")
+                return
+            }
+        } as javafx.beans.value.ChangeListener)
+        model.obsWeightUnits.addListener({ ObservableValue value, oldValue, newValue ->
+            if (newValue == oldValue) {
+                return
+            }
+            if (newValue == 0) {
+                // switch from grams to ounces
+                model.carWeightDecoded = model.carWeightDecoded.divide(new BigDecimal(28.3495), RoundingMode.HALF_UP).setScale(1, RoundingMode.HALF_UP)
+                model.carWeight.set(model.carWeightDecoded.toString())
+            } else {
+                // switch from ounces to grams
+                model.carWeightDecoded = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(1, RoundingMode.HALF_UP)
+                model.carWeight.set(model.carWeightDecoded.toString())
+
+            }
+        } as javafx.beans.value.ChangeListener)
+        model.obsLengthUnits.addListener({ ObservableValue value, oldValue, newValue ->
+            if (newValue == oldValue) {
+                return
+            }
+            if (newValue == 0) {
+                // switch from meters to feet
+                model.carLengthDecoded = model.carLengthDecoded.divide(new BigDecimal(0.3048), RoundingMode.HALF_UP).setScale(1, RoundingMode.HALF_UP)
+                model.carLength.set(model.carLengthDecoded.toString())
+            } else {
+                // switch from feet to meters
+                model.carLengthDecoded = model.carLengthDecoded.multiply(new BigDecimal(0.3048)).setScale(1, RoundingMode.HALF_UP)
+                model.carLength.set(model.carLengthDecoded.toString())
+            }
+        } as javafx.beans.value.ChangeListener)
+    }
+
     void onWindowShown(String name, Stage window) {
         log.debug("in the window shown method for CarEdit")
         if (name.equals("carEditWindow")) {
+            if (!initialized) {
+                initialized = true
+                performInitialization()
+            }
+            model.messageText.set("")
             model.carTag.setValue("")
             doChoice(view.carType, "CAR_TYPE", model.carType)
             doChoice(view.carAARType, "AAR_TYPE", model.aarType)
@@ -140,14 +212,6 @@ class CarEditController {
         }
     }
 
-    private void doIntegerField(Integer carField, SimpleStringProperty property) {
-        if (carField != null) {
-            property.set(Integer.toString(carField))
-        } else {
-            property.set("")
-        }
-    }
-
     void selectDate(java.sql.Date curDate, DatePicker datePicker) {
         if (curDate == null) {
             datePicker.setValue(null)
@@ -164,8 +228,35 @@ class CarEditController {
         model.carId = id
         doText(car.RFIDtag, model.carTag)
         doText(car.bltDate, model.bltDate)
-        doIntegerField(car.carLength, model.carLength)
-        doIntegerField(car.carWeight, model.carWeight)
+        if (car.carLength == null) {
+            model.carLengthDecoded = new BigDecimal(0.0)
+            model.carLength.set("")
+        } else {
+            if (model.obsLengthUnits.get() == 0) {
+                // have feet, leave as is
+                model.carLengthDecoded = new BigDecimal(car.carLength)
+                model.carLength.set(Integer.toString(car.carLength))
+            } else {
+                // convert feet to meters
+                BigDecimal meterVal = new BigDecimal(car.carLength).multiply(new BigDecimal(0.3048)).setScale(1, RoundingMode.HALF_UP)
+                model.carLengthDecoded = meterVal
+                model.carLength.set(meterVal.toString())
+            }
+        }
+        if (car.carWeight == null) {
+            model.carWeightDecoded = new BigDecimal(0.0)
+            model.carWeight.set("")
+        } else {
+            if (model.obsWeightUnits.get() == 0) {
+                // have grams, convert to ounces
+                model.carWeightDecoded = new BigDecimal(car.carWeight).divide(new BigDecimal(28.3495), RoundingMode.HALF_UP).setScale(1, RoundingMode.HALF_UP)
+                model.carWeight.set(model.carWeightDecoded.toString())
+            } else {
+                // have grams, leave alone
+                model.carWeightDecoded = new BigDecimal(car.carWeight)
+                model.carWeight.set(model.carWeightDecoded.toString())
+            }
+        }
         doText(car.carWheels, model.carWheels)
         doText(car.carColor, model.carColor)
         doText(car.carNumber, model.carNumber)
@@ -188,6 +279,7 @@ class CarEditController {
             }
         }
     }
+
     Integer decodeChoice(ChoiceBox<ObsReference> choice) {
         if (choice.getSelectionModel().selectedItem != null) {
             return choice.getSelectionModel().getSelectedItem().id
@@ -201,19 +293,7 @@ class CarEditController {
         }
         return null
     }
-    Integer decodeInt(SimpleStringProperty stringVal) {
-        if (stringVal.isNotEmpty()) {
-            Integer newLength
-            try {
-                newLength = Integer.parseInt(stringVal.getValue())
-                return newLength
-            } catch (Exception e) {
-                log.error("Bad value entered for Length {}", stringVal.getValue(), e)
-                return null
-            }
-        }
-        return null
-    }
+
     Date decodeDate(DatePicker datePicker) {
         if (datePicker.getValue() != null) {
             return Date.valueOf(datePicker.getValue())
@@ -227,10 +307,22 @@ class CarEditController {
         }
         car.description = decodeText(model.carDescription)
         car.carNumber = decodeText(model.carNumber)
-        car.bltDate =decodeText(model.bltDate)
+        car.bltDate = decodeText(model.bltDate)
         car.carWheels = decodeText(model.carWheels)
-        car.carLength = decodeInt(model.carLength)
-        car.carWeight = decodeInt(model.carWeight)
+        if (model.obsLengthUnits.get() == 0) {
+            // have English, leave alone
+            car.carLength = model.carLengthDecoded.setScale(0, RoundingMode.HALF_UP).toInteger()
+        } else {
+            // convert Feet to meters
+            car.carLength = model.carLengthDecoded.multiply(new BigDecimal(0.3048)).setScale(0, RoundingMode.HALF_UP).toInteger()
+        }
+        if (model.obsWeightUnits.get() == 0) {
+            // have grams, convert to ounces
+            car.carWeight = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(0, RoundingMode.HALF_UP).toInteger()
+        } else {
+            // leave only (stored in grams)
+            car.carWeight = model.carWeightDecoded.toInteger()
+        }
         car.couplerTypeID = decodeChoice(view.carCouplerType)
         car.carTypeID = decodeChoice(view.carType)
         car.aarTypeID = decodeChoice(view.carAARType)

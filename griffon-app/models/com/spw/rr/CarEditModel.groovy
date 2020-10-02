@@ -7,6 +7,7 @@ import com.spw.rr.model.ReferenceItem
 import griffon.core.artifact.GriffonModel
 import griffon.transform.FXObservable
 import griffon.metadata.ArtifactProviderFor
+import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.value.ObservableValue
@@ -21,6 +22,12 @@ class CarEditModel {
     String  windowTitle
     String newTag = null
     boolean newCar = true
+    SimpleIntegerProperty obsWeightUnits = new SimpleIntegerProperty(0)
+    SimpleIntegerProperty obsLengthUnits = new SimpleIntegerProperty(0)
+    BigDecimal carWeightDecoded = new BigDecimal(0.0)
+    BigDecimal carLengthDecoded = new BigDecimal(0.0)
+    int currentUnitsWeight = 0
+    int currentUnitsLength = 0
     SimpleStringProperty carTag = new SimpleStringProperty("")
     ObservableList<ObsReference> reportingMark
     ObservableList<ObsReference> aarType
@@ -35,5 +42,5 @@ class CarEditModel {
     SimpleStringProperty carColor = new SimpleStringProperty("")
     SimpleStringProperty carNumber = new SimpleStringProperty("")
     SimpleStringProperty carDescription = new SimpleStringProperty("")
-
+    SimpleStringProperty messageText = new SimpleStringProperty("")
 }

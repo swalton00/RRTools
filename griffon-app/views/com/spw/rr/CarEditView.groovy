@@ -28,6 +28,8 @@ import javafx.util.Callback
 import javafx.util.StringConverter
 import org.codehaus.griffon.runtime.javafx.artifact.AbstractJavaFXGriffonView
 import javax.annotation.Nonnull
+import javax.inject.Inject
+import javax.swing.event.ChangeListener
 import javax.swing.text.html.ListView
 
 @ArtifactProviderFor(GriffonView)
@@ -41,6 +43,9 @@ class CarEditView extends AbstractJavaFXGriffonView {
     @MVCMember
     @Nonnull
     CarEditModel model
+
+    @Inject
+    PropertyService propertyService
 
     @FXML
     Label carId
@@ -83,6 +88,7 @@ class CarEditView extends AbstractJavaFXGriffonView {
     @FXML
     TextArea carDescription
     @FXML Button saveChangesActionTarget
+    @FXML Label messageText
 
     void initUI() {
         Stage stage = (Stage) getApplication()
@@ -94,9 +100,13 @@ class CarEditView extends AbstractJavaFXGriffonView {
         stage.setScene(init());
         model.carTag.bindBidirectional(carTag.textProperty())
         carLengthUnits.setItems(FXCollections.observableArrayList("Feet", "Meters"))
-        carLengthUnits.getSelectionModel().select(0)
         carWeightUnits.setItems(FXCollections.observableArrayList("ounces", "grams"))
-        carWeightUnits.getSelectionModel().select(0)
+        model.obsLengthUnits.set(propertyService.getUnits())
+        model.obsWeightUnits.set(propertyService.getUnits())
+        carLengthUnits.getSelectionModel().select(model.obsLengthUnits.get())
+        carWeightUnits.getSelectionModel().select(model.obsWeightUnits.get())
+        model.obsWeightUnits.bind(carWeightUnits.getSelectionModel().selectedIndexProperty())
+        model.obsLengthUnits.bind(carLengthUnits.getSelectionModel().selectedIndexProperty())
         model.carDescription.bindBidirectional(carDescription.textProperty())
         model.carWheels.bindBidirectional(carWheels.textProperty())
         model.bltDate.bindBidirectional(carBltDate.textProperty())
@@ -105,7 +115,7 @@ class CarEditView extends AbstractJavaFXGriffonView {
         model.carLength.bindBidirectional(carLength.textProperty())
         model.carWeight.bindBidirectional(carWeight.textProperty())
         saveChangesActionTarget.disableProperty().bind(carReportingMark.getSelectionModel().selectedItemProperty().isNull().and(
-               model.carNumber.isEmpty()
+                model.carNumber.isEmpty()
         ))
         carReportingMark.setConverter(new StringConverter<ObsReference>() {
             @Override
@@ -122,6 +132,7 @@ class CarEditView extends AbstractJavaFXGriffonView {
         })
         carReportingMark.setCellFactory(ViewHelpers.cellHelper(carReportingMark))
         getApplication().getWindowManager().attach("carEditWindow", stage)
+        messageText.textProperty().bind(model.messageText)
     }
 
 

@@ -62,14 +62,16 @@
               </Menu>
               <Menu mnemonicParsing="false" text="View">
                 <items>
-                  <RadioMenuItem fx:id="selectViewDefectsActionTarget" mnemonicParsing="false" text="Cars with Defects">
-                    <toggleGroup>
+                           <RadioMenuItem id="viewAllCarsActionTarget" mnemonicParsing="false" text="View ALL cars">
+                              <toggleGroup>
                       <ToggleGroup fx:id="radioView" />
-                    </toggleGroup>
-                  </RadioMenuItem>
-                  <RadioMenuItem fx:id="selectViewNoTagActionTarget" mnemonicParsing="false" text="Cars without a Tag" toggleGroup="$radioView" />
-                  <RadioMenuItem fx:id="selectViewCouplerTypeActionTarget" mnemonicParsing="false" text="Cars with Coupler TYPE:" toggleGroup="$radioView" />
-                  <RadioMenuItem fx:id="selectViewRoadNumberActionTarget" mnemonicParsing="false" text="Cars with Road Name:" toggleGroup="$radioView" />
+                              </toggleGroup>
+                           </RadioMenuItem>
+                  <RadioMenuItem id="viewCarsMaintenanceAction" fx:id="selectViewDefectsActionTarget" mnemonicParsing="false" text="Cars needing Maintenance" toggleGroup="$radioView" />
+                           <RadioMenuItem id="viewCarsInspectionActionTarget" mnemonicParsing="false" text="Cars needing inspection" toggleGroup="$radioView" />
+                  <RadioMenuItem id="viewCarsNoTagActionTarget" fx:id="selectViewNoTagActionTarget" mnemonicParsing="false" text="Cars without a Tag" toggleGroup="$radioView" />
+                  <RadioMenuItem id="viewCarsWithCplrActionTarget" fx:id="selectViewCouplerTypeActionTarget" mnemonicParsing="false" text="Cars with Coupler TYPE:" toggleGroup="$radioView" />
+                  <RadioMenuItem id="viewCarsWithRptActionTarget" fx:id="selectViewRoadNumberActionTarget" mnemonicParsing="false" text="Cars with Road Name:" toggleGroup="$radioView" />
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="Help">
