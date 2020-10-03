@@ -65,7 +65,7 @@
         ORDER BY reportingMark,
                  car_number
     </select>
-    <insert id="addInspection" parameterType="com.spw.rr.model.Inspection" useGeneratedKeys="true">
+    <insert id="addInspection" parameterType="com.spw.rr.model.Inspection" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO Inspection
          (car_ID,
           inspect_Date,
@@ -117,7 +117,7 @@
                     #{allWheelsTouch}
                            )
     </insert>
-    <insert id="addRRCar" parameterType="com.spw.rr.model.RRCar" useGeneratedKeys="true">
+    <insert id="addRRCar" parameterType="com.spw.rr.model.RRCar" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO Car
         (car_number,
          rpt_Mark,
@@ -194,4 +194,19 @@
             last_updated = CURRENT TIMESTAMP
         WHERE ID = #{id}
     </update>
+    <insert id="addBadOrder" parameterType="com.spw.rr.model.BadOrder" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO bad_order
+        (car_Id,
+         Area_of_car,
+         in_effect,
+         out_of_service,
+         date_entered,
+         description)
+        VALUES (#{carId},
+                #{problemArea},
+                #{inEffect},
+                #{outOfService},
+                #{entryDate},
+                #{problemDescription})
+    </insert>
 </mapper>

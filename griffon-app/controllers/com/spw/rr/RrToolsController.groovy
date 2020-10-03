@@ -70,7 +70,7 @@ class RrToolsController {
         if (group != null) {
             return group
         }
-        MVCGroup retGroup = application.getMvcGroupManager().findGroup("Prefs")
+        MVCGroup retGroup = application.getMvcGroupManager().findGroup(groupName)
         if (retGroup != null)
             return retGroup
         return createMVCGroup(groupName)
@@ -293,8 +293,11 @@ class RrToolsController {
     void badOrderCarAction() {
         log.debug("entering a bad order for the selected car")
         badOrder = getGroup(badOrder, "BadOrder")
-        Integer id = view.carList.getSelectionModel().getSelectedItem().id
-        badOrder.model.carId = id
+        ViewCar car = view.carList.getSelectionModel().getSelectedItem()
+        Integer id = car.id
+        badOrder.model.carId = car.id
+        badOrder.model.carNumber.set(car.carNumber)
+        badOrder.model.reportingMark.set(car.reportingMark)
         application.windowManager.show("BadOrderWindow")
     }
 

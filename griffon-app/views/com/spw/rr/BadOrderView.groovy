@@ -43,6 +43,11 @@ class BadOrderView extends AbstractJavaFXGriffonView {
         //stage.setHeight(600);
         stage.setScene(init());
         getApplication().getWindowManager().attach("BadOrderWindow", stage)
+        carNumber.textProperty().bind(model.carNumber)
+        reportingMark.textProperty().bind(model.reportingMark)
+        badOrderDate.valueProperty().bindBidirectional(model.dateReported)
+        badOrderDetails.textProperty().bindBidirectional(model.problemDescription)
+        outOfService.selectedProperty().bindBidirectional(model.outOfService)
     }
     private Scene init() {
         Scene scene = new Scene(new Group());

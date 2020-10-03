@@ -1,5 +1,6 @@
 package com.spw.rr
 
+import com.spw.rr.model.BadOrder
 import com.spw.rr.model.Inspection
 import com.spw.rr.model.RRCar
 import com.spw.rr.model.ReferenceItem
@@ -119,6 +120,17 @@ class DBService {
                 DBMapper mapper = session.getMapper(DBMapper.class)
                 mapper.addInspection(newInspection)
         }
+    }
+
+    int addBadOrder(BadOrder bo) {
+        log.debug("adding a bad order record - {}", bo)
+        Integer newId
+        mybatisHandler.withSqlSession({String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            mapper.addBadOrder(bo)
+            newId = bo.id
+        })
+        return newId
     }
 
 

@@ -62,7 +62,7 @@
               </Menu>
               <Menu mnemonicParsing="false" text="View">
                 <items>
-                           <RadioMenuItem id="viewAllCarsActionTarget" mnemonicParsing="false" text="View ALL cars">
+                           <RadioMenuItem id="viewAllCarsActionTarget" mnemonicParsing="false" selected="true" text="View ALL cars">
                               <toggleGroup>
                       <ToggleGroup fx:id="radioView" />
                               </toggleGroup>

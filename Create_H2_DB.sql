@@ -175,6 +175,23 @@ CREATE TABLE
         last_updated        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         CONSTRAINT inspect_parent_key FOREIGN KEY ( car_id ) REFERENCES car ( id )
     );
+DROP TABLE
+    IF EXISTS Bad_Order;
+CREATE TABLE
+    Bad_Order
+    (
+        ID IDENTITY PRIMARY KEY,
+        Car_ID       INT NOT NULL,
+        in_effect    CHAR(1) NOT NULL DEFAULT '1',
+        out_of_service char(1) not Null default '1',
+        area_of_car  int not null,
+        date_entered date not null,
+        description  VARCHAR(2000),
+        last_updated TIMESTAMP DEFAULT CURRENT TIMESTAMP NOT NULL,
+        CONSTRAINT Bad_order_parent_key FOREIGN KEY (car_Id) REFERENCES car ( id ),
+        CONSTRAINT Bad_order_area       FOREIGN KEY (area_of_car) REFERENCES car_area ( id )
+    );
+    
 CREATE TABLE
     maintenance
     (
