@@ -10,6 +10,7 @@ class BadOrder {
     int carId
     int problemArea
     java.sql.Date entryDate
+    java.sql.Date closeDate
     String inEffect
     String outOfService
     String problemDescription

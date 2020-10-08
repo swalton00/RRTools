@@ -2,10 +2,12 @@ package com.spw.rr
 
 import com.spw.rr.model.BadOrder
 import com.spw.rr.model.Inspection
+import com.spw.rr.model.MaintenanceItem
 import com.spw.rr.model.RRCar
 import com.spw.rr.model.ReferenceItem
 import com.spw.rr.model.ReportingMark
 import com.spw.rr.model.ViewCar
+import com.spw.rr.parameter.BadOrderUpdateParameter
 import griffon.core.artifact.GriffonService
 import griffon.metadata.ArtifactProviderFor
 import javax.inject.Inject
@@ -41,13 +43,13 @@ class DBService {
 
     }
 
-    List<ViewCar> getViewList() {
+    List<ViewCar> listViewCars(int viewSelection) {
         log.debug("returning a list of cars")
         List<ViewCar> retList
         mybatisHandler.withSqlSession {
             String sessionFactoryName, SqlSession session ->
                 DBMapper mapper = session.getMapper(DBMapper.class)
-                retList = mapper.listCarsForViewing()
+                retList = mapper.listViewCars(viewSelection)
         }
         log.debug("returning a list with {}", retList.size())
         log.debug("list has {}", retList)
@@ -133,6 +135,30 @@ class DBService {
         return newId
     }
 
+    List<BadOrderView> getBadOrders(int carId) {
+        log.debug("getting all open bad orders for car {}", carId)
+        mybatisHandler.withSqlSession({String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            return mapper.getBadOrders(carId)
+        })
+    }
 
+    int addMaintenance(MaintenanceItem item) {
+        Integer newId
+        mybatisHandler.withSqlSession({String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            mapper.addMaintenanceItem(item)
+            newId = item.id
+        })
+        return newId
+    }
+
+    int updateBadOrders(BadOrderUpdateParameter boParm) {
+        log.debug("updating the relevant Bad Orders {}", boParm)
+        mybatisHandler.withSqlSession({String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            mapper.updateBadOrders(boParm)
+        })
+    }
 
 }

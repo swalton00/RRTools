@@ -15,6 +15,8 @@ class RrToolsModel {
 
     private StringProperty statusLine = null
 
+    static int currentView
+
     @Nonnull
     public final StringProperty statusLineProperty() {
         log.debug("in the empty call to StatusLineProperty")

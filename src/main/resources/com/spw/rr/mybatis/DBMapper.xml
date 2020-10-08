@@ -15,10 +15,10 @@
     </insert>
     <update id="saveReferenceItem" parameterType="com.spw.rr.model.ReferenceItem">
         UPDATE \${tableName}
-        set type         = #{typeName},
+        set type = #{typeName},
             description  = #{typeDescription},
             last_updated = current timestamp
-        where ID = #{id}
+            where ID = #{id}
     </update>
     <select id="getReferenceItem">
         SELECT id, type, description, last_updated
@@ -41,81 +41,111 @@
         VALUES (#{mark},
                 #{description})
     </insert>
-    <select id="listCarsForViewing" resultType="com.spw.rr.model.ViewCar">
+    <select id="listViewCars" resultType="com.spw.rr.model.ViewCar"
+            parameterType="int">
         SELECT c.id,
-               car_number as carNumber,
-               rpt.mark AS ReportingMark,
-               aar.type AS aarType,
-               ty.type  AS carType,
-               c.description,
-               c.rfid_tag as rfidTag
+        car_number as carNumber,
+        rpt.mark AS ReportingMark,
+        aar.type AS aarType,
+        ty.type AS carType,
+        c.description,
+        c.rfid_tag as rfidTag
         FROM car c
-                 INNER JOIN
-             rpt_mark rpt
-             ON
-                 rpt.id = c.rpt_mark
-                 LEFT OUTER JOIN
-             aar_type aar
-             ON
-                 c.aar_type = aar.id
-                 LEFT OUTER JOIN
-             car_type ty
-             ON
-                 c.car_type = ty.id
+        INNER JOIN
+        rpt_mark rpt
+        ON
+        rpt.id = c.rpt_mark
+        LEFT OUTER JOIN
+        aar_type aar
+        ON
+        c.aar_type = aar.id
+        LEFT OUTER JOIN
+        car_type ty
+        ON
+        c.car_type = ty.id
+        <where>
+            <choose>
+                <when test="parameter == 3">
+                    EXISTS
+                    ( SELECT
+                    *
+                    FROM
+                    bad_order b
+                    WHERE
+                    c.id = b.car_id
+                    AND in_effect = '1')
+                </when>
+                <when test="parameter == 1">
+                    c.cplr_type = #{id}
+                </when>
+                <when test="parameter == 4">
+                    rpt.mark = #{mark}
+                </when>
+                <when test="parameter == 2">
+                    NOT EXISTS
+                    ( SELECT
+                    1
+                    FROM
+                    inspection
+                    WHERE
+                    car_id = c.id
+                    AND inspect_date > #{last_updated})
+                </when>
+            </choose>
+        </where>
         ORDER BY reportingMark,
-                 car_number
+        car_number
     </select>
     <insert id="addInspection" parameterType="com.spw.rr.model.Inspection" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO Inspection
-         (car_ID,
-          inspect_Date,
-          carWeight,
-          carLength,
-          inspectionTime,
-          Overall_passed,
-          weightPassed,
-          CPLR_A_Height,
-          CPLR_B_Height,
-          CPLR_A_Action,
-          CPLR_B_Action,
-          Metal_Wheels_A,
-          Metal_Wheels_B,
-          Resist_Wheels_A,
-          Resist_Wheels_B,
-          Wheel_Gauge_A,
-          Wheel_Gauge_B,
-          Wheel_Tread_A,
-          Wheel_Tread_B,
-          Truck_screw_Loose_A,
-          Truck_screw_Tight_B,
-          car_sits_level,
-          car_doesnt_rock,
-          All_wheels_touch
-          ) VALUES (#{carId},
-                    #{inspectionDate},
-                    #{carWeight},
-                    #{carLength},
-                    #{inspectionTime},
-                    #{overallPassed},
-                    #{weightPassed},
-                    #{couplerHeightA},
-                    #{couplerHeightB},
-                    #{couplerActionA},
-                    #{couplerActionB},
-                    #{metalWheelsA},
-                    #{metalWheelsB},
-                    #{resistWheelsA},
-                    #{resistWheelsB},
-                    #{wheelGaugeA},
-                    #{wheelGaugeB},
-                    #{wheelTreadA},
-                    #{wheelTreadB},
-                    #{truckScrewLooseA},
-                    #{truckScrewTightB},
-                    #{carSitsLevel},
-                    #{carDoesntRock},
-                    #{allWheelsTouch}
-                           )
+        (car_ID,
+         inspect_Date,
+         carWeight,
+         carLength,
+         inspectionTime,
+         Overall_passed,
+         weightPassed,
+         CPLR_A_Height,
+         CPLR_B_Height,
+         CPLR_A_Action,
+         CPLR_B_Action,
+         Metal_Wheels_A,
+         Metal_Wheels_B,
+         Resist_Wheels_A,
+         Resist_Wheels_B,
+         Wheel_Gauge_A,
+         Wheel_Gauge_B,
+         Wheel_Tread_A,
+         Wheel_Tread_B,
+         Truck_screw_Loose_A,
+         Truck_screw_Tight_B,
+         car_sits_level,
+         car_doesnt_rock,
+         All_wheels_touch)
+        VALUES (#{carId},
+                #{inspectionDate},
+                #{carWeight},
+                #{carLength},
+                #{inspectionTime},
+                #{overallPassed},
+                #{weightPassed},
+                #{couplerHeightA},
+                #{couplerHeightB},
+                #{couplerActionA},
+                #{couplerActionB},
+                #{metalWheelsA},
+                #{metalWheelsB},
+                #{resistWheelsA},
+                #{resistWheelsB},
+                #{wheelGaugeA},
+                #{wheelGaugeB},
+                #{wheelTreadA},
+                #{wheelTreadB},
+                #{truckScrewLooseA},
+                #{truckScrewTightB},
+                #{carSitsLevel},
+                #{carDoesntRock},
+                #{allWheelsTouch})
     </insert>
     <insert id="addRRCar" parameterType="com.spw.rr.model.RRCar" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO Car
@@ -209,4 +239,62 @@
                 #{entryDate},
                 #{problemDescription})
     </insert>
+    <select id="getBadOrders" parameterType="int" resultType="com.spw.rr.model.BOViewModel">
+        SELECT mark,
+               car_number,
+               Date_entered,
+               COALESCE(a.type, 'None') AS carArea,
+               bo.description as problemDescription,
+               bo.id as problemNumber
+        FROM car c
+                 INNER JOIN
+             rpt_mark rm
+             ON
+                 rm.id = c.rpt_mark
+                 INNER JOIN
+             bad_order bo
+             ON
+                 bo.car_id = c.id
+                 LEFT OUTER JOIN
+             car_area a
+             ON
+                 bo.area_of_car = a.id
+        WHERE c.id = #{carId}
+    </select>
+    <insert id="addMaintenanceItem" parameterType="com.spw.rr.model.MaintenanceItem" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            Maintenance
+        (
+            maint_date,
+            car_id,
+            area_of_car,
+            closed_bad_orders,
+            problem_desc,
+            work_performed
+        )
+        VALUES
+        (
+            #{datePerformed},
+            #{carId},
+            #{carArea},
+            #{badOrdersClosed},
+            #{problemDescription},
+            #{workPerformed}
+        )
+    </insert>
+    <update id="updateBadOrders" parameterType="com.spw.rr.parameter.BadOrderUpdateParameter">
+        UPDATE
+            Bad_order
+        SET
+            in_effect = '0',
+            out_of_service = '0',
+            closed_by = #{maintenanceId},
+            date_closed = #{closeDate},
+            last_updated = CURRENT TIMESTAMP
+        WHERE
+            id IN
+            <foreach collection="boList" item="item" open="(" separator="," close=")">
+             #{item}
+            </foreach>
+    </update>
 </mapper>

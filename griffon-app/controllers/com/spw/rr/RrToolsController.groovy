@@ -1,5 +1,6 @@
 package com.spw.rr
 
+import com.spw.rr.model.ReportingMark
 import com.spw.rr.model.ViewCar
 import griffon.core.GriffonApplication
 import griffon.core.artifact.GriffonController
@@ -52,6 +53,12 @@ class RrToolsController {
     MVCGroup maintain = null
     MVCGroup badOrder = null
 
+    private static final int VIEW_ALL = 0
+    private static final int VIEW_COUPLER = 1
+    private static final int VIEW_INSPECTION = 2
+    private static final int VIEW_MAINTENANCE = 3
+    private static final int VIEW_MARK = 4
+
     private static final int MAINT_CAR_TYPE = 0
     private static final int MAINT_AAR_TYPE = 1
     private static final int MAINT_KIT_TYPE = 2
@@ -89,6 +96,7 @@ class RrToolsController {
         log.debug("initializing the MVC Group")
         if (!initialized) {
             initialized = true
+            model.currentView = VIEW_ALL
             String savedComPort = propertyService.getSavedComPort();
             if (savedComPort != null && !savedComPort.equals("<None>")) {
                 getLog().debug("setting comm port to {} ", savedComPort);
@@ -108,7 +116,7 @@ class RrToolsController {
 
     private void buildCarList() {
         log.debug("rebuilding car list")
-        List viewList = dbService.getViewList()
+        List<ViewCar> viewList = dbService.listViewCars(model.currentView)
         runInsideUIAsync  {
             model.tableContents.removeAll()
             model.tableContents.setAll(viewList)
@@ -119,6 +127,10 @@ class RrToolsController {
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewAllCarsAction() {
         log.debug("opening view to all cars")
+        if (model.currentView != VIEW_ALL) {
+            model.currentView = VIEW_ALL
+            buildCarList()
+        }
     }
 
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
@@ -128,6 +140,10 @@ class RrToolsController {
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewCarsMaintenanceAction() {
         log.debug("restricting view to cars needing maintenance (with a Bad Order)")
+        if (model.currentView != VIEW_MAINTENANCE) {
+            model.currentView = VIEW_MAINTENANCE
+            buildCarList()
+        }
     }
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewCarsNoTagAction() {
@@ -305,8 +321,10 @@ class RrToolsController {
     void maintainCarAction() {
         log.debug("performing maintenance on selected car")
         maintain = getGroup(maintain, "Maintenance")
-        Integer id = view.carList.getSelectionModel().getSelectedItem().id
-        maintain.model.carId = id
+        ViewCar car = view.carList.getSelectionModel().getSelectedItem()
+        maintain.model.carId = car.id
+        maintain.model.reportingMark.set(car.reportingMark)
+        maintain.model.carNumber.set(car.carNumber)
         application.windowManager.show("MaintenanceWindow")
 
     }

@@ -176,40 +176,38 @@ CREATE TABLE
         CONSTRAINT inspect_parent_key FOREIGN KEY ( car_id ) REFERENCES car ( id )
     );
 DROP TABLE
+    IF EXISTS maintenance;
+CREATE TABLE
+    maintenance
+    (
+        id identity PRIMARY KEY,
+        maint_date        DATE,
+        car_id            INT NOT NULL,
+        area_of_car       INT,
+        closed_bad_orders CHAR(1) NOT NULL DEFAULT '0',
+        problem_desc      CHAR(1000),
+        work_performed    CHAR(1000),
+        last_updated      TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        CONSTRAINT maint_parent_key FOREIGN KEY (car_id) REFERENCES car ( id ),
+                CONSTRAINT car_area_key FOREIGN KEY (area_of_car) REFERENCES car_area ( id )
+
+    );
+DROP TABLE
     IF EXISTS Bad_Order;
 CREATE TABLE
     Bad_Order
     (
         ID IDENTITY PRIMARY KEY,
-        Car_ID       INT NOT NULL,
-        in_effect    CHAR(1) NOT NULL DEFAULT '1',
-        out_of_service char(1) not Null default '1',
-        area_of_car  int not null,
-        date_entered date not null,
-        description  VARCHAR(2000),
-        last_updated TIMESTAMP DEFAULT CURRENT TIMESTAMP NOT NULL,
+        Car_ID         INT NOT NULL,
+        area_of_car    INT NOT NULL,
+        closed_by      INT,
+        in_effect      CHAR(1) NOT NULL DEFAULT '1',
+        out_of_service CHAR(1) NOT NULL DEFAULT '1',
+        date_entered   DATE NOT NULL,
+        date_closed    DATE,
+        description    VARCHAR(2000),
+        last_updated   TIMESTAMP DEFAULT CURRENT TIMESTAMP NOT NULL,
         CONSTRAINT Bad_order_parent_key FOREIGN KEY (car_Id) REFERENCES car ( id ),
-        CONSTRAINT Bad_order_area       FOREIGN KEY (area_of_car) REFERENCES car_area ( id )
+        CONSTRAINT Bad_order_area FOREIGN KEY (area_of_car) REFERENCES car_area ( id ),
+        CONSTRAINT Closed_by_key FOREIGN KEY (closed_by) REFERENCES maintenance ( id )
     );
-    
-CREATE TABLE
-    maintenance
-    (
-        id identity PRIMARY KEY,
-        maint_date       DATE,
-        car_id           INT NOT NULL,
-        complete         CHAR(1) NOT NULL DEFAULT '0',
-        maintenance_desc CHAR(1000),
-        last_updated     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        CONSTRAINT maint_parent_key FOREIGN KEY (car_id) REFERENCES car ( id )
-    );
-CREATE TABLE
-    bad_order
-    (
-        id identity PRIMARY KEY,
-        car_id       INT NOT NULL,
-        in_effect    BOOLEAN DEFAULT true NOT NULL,
-        description  VARCHAR(2000),
-        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        CONSTRAINT bo_parent_key FOREIGN KEY (car_id) REFERENCES car ( id )
-    );       
