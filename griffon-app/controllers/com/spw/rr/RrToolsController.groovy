@@ -2,6 +2,7 @@ package com.spw.rr
 
 import com.spw.rr.model.ReportingMark
 import com.spw.rr.model.ViewCar
+import com.spw.rr.parameter.ViewParameter
 import griffon.core.GriffonApplication
 import griffon.core.artifact.GriffonController
 import griffon.core.controller.ControllerAction
@@ -28,7 +29,6 @@ class RrToolsController {
     @MVCMember
     @Nonnull
     RrToolsView view
-
 
 
     @Inject
@@ -58,6 +58,7 @@ class RrToolsController {
     private static final int VIEW_INSPECTION = 2
     private static final int VIEW_MAINTENANCE = 3
     private static final int VIEW_MARK = 4
+    private static final int VIEW_NO_TAG = 5
 
     private static final int MAINT_CAR_TYPE = 0
     private static final int MAINT_AAR_TYPE = 1
@@ -65,12 +66,13 @@ class RrToolsController {
     private static final int MAINT_COUPLER_TYPE = 3
     private static final int MAINT_PRR_TYPE = 4
     private static final String[] MAINT_TITLES = ["Maintain Car Types",
-        "Maintian AAR Types",
-        "Maintain Kit Types",
-        "Maintain Coupler Types",
-        "Maintain PRR Types"]
+                                                  "Maintian AAR Types",
+                                                  "Maintain Kit Types",
+                                                  "Maintain Coupler Types",
+                                                  "Maintain PRR Types"]
     private static String[] TABLE_NAME = ["CAR_TYPE", "AAR_TYPE", "KIT_TYPE", "COUPLER_TYPE", "PRR_TYPE"]
     private static String[] COLUMN_NAME = ["Car Type", "AAR Type", "Kit Type", "Coupler Type", "PRR Type"]
+    private ViewParameter currentView = new ViewParameter()
 
 
     MVCGroup getGroup(MVCGroup group, String groupName) {
@@ -113,11 +115,13 @@ class RrToolsController {
         buildCarList()
     }
 
-
+/**
+ * Uses view from currentView (defined above)
+ */
     private void buildCarList() {
         log.debug("rebuilding car list")
-        List<ViewCar> viewList = dbService.listViewCars(model.currentView)
-        runInsideUIAsync  {
+        List<ViewCar> viewList = dbService.listViewCars(currentView)
+        runInsideUIAsync {
             model.tableContents.removeAll()
             model.tableContents.setAll(viewList)
         }
@@ -127,40 +131,53 @@ class RrToolsController {
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewAllCarsAction() {
         log.debug("opening view to all cars")
-        if (model.currentView != VIEW_ALL) {
-            model.currentView = VIEW_ALL
-            buildCarList()
-        }
+        currentView.viewSelection = VIEW_ALL
+        model.currentView = VIEW_ALL
+        buildCarList()
     }
 
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewCarsInspectionAction() {
         log.debug("restricting view to cars needing inspection")
+        ViewParameter view = new ViewParameter()
+        view.viewSelection = VIEW_INSPECTION
+        currentView.viewSelection = VIEW_INSPECTION
+        buildCarList()
     }
+
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewCarsMaintenanceAction() {
         log.debug("restricting view to cars needing maintenance (with a Bad Order)")
         if (model.currentView != VIEW_MAINTENANCE) {
+            currentView.viewSelection = VIEW_MAINTENANCE
             model.currentView = VIEW_MAINTENANCE
             buildCarList()
         }
     }
+
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewCarsNoTagAction() {
         log.debug("restricting view to cars needing an RFID Tag")
+        currentView.viewSelection = VIEW_NO_TAG
+        buildCarList()
     }
+
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewCarsWithCplrAction() {
         log.debug("restricting view to cars with a specific Coupler Type")
+        currentView.viewSelection = VIEW_COUPLER
+        buildCarList()
     }
+
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void viewCarsWithRptAction() {
         log.debug("restricting view to cars with a specific Reporting Mark")
+        //TODO add code to pull reporting mark and pass in view parameter
     }
 
     public void onStatus_Update(String newStatus) {
         log.debug("got a status update with {}", newStatus)
-        runInsideUISync({ -> model.setStatusLine(newStatus)})
+        runInsideUISync({ -> model.setStatusLine(newStatus) })
     }
 
     void onWindowShown(String name, Stage window) {
@@ -175,12 +192,13 @@ class RrToolsController {
             model.setStatusLine(dataService.getCommPortStatus());
         }
         if (name.equals("mainWindow")) {
+            log.debug("in the MainWindow code")
             view.carList.setItems(model.tableContents)
             view.rptMark.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("reportingMark"))
             view.carNumber.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("carNumber"))
             view.carType.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("carType"))
             view.aarType.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("aarType"))
-            buildCarList()
+            viewAllCarsAction()
         } else {
             windowActive = false
         }
@@ -192,7 +210,7 @@ class RrToolsController {
         log.debug("Main window got a tag of {} ", newTag)
         if (windowActive) {
             boolean foundIt = false
-            for (int i = 0; i < model.tableContents.size() ; i++) {
+            for (int i = 0; i < model.tableContents.size(); i++) {
                 if (model.tableContents.get(i).rfidTag?.equals(newTag)) {
                     view.carList.getSelectionModel().select(i)
                     foundIt = true
@@ -205,7 +223,7 @@ class RrToolsController {
         }
     }
 
-        void onWindowHidden(String name, Stage window) {
+    void onWindowHidden(String name, Stage window) {
         log.debug("window hidden - window is {}", name)
         windowActive = true
     }

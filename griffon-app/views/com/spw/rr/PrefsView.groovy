@@ -33,7 +33,10 @@ class PrefsView extends AbstractJavaFXGriffonView {
 
     @FXML private TextField scaleRatio
 
-    @FXML private ChoiceBox scaleName
+    @FXML ChoiceBox scaleName
+    @FXML ChoiceBox inspectionFrequency
+    @FXML ChoiceBox inspectionUnits
+
 
     void initUI() {
         Stage stage = (Stage) getApplication()
@@ -45,6 +48,9 @@ class PrefsView extends AbstractJavaFXGriffonView {
         stage.setScene(init());
         unitSystemList.getItems().addAll("English", "Metric")
         scaleName.getItems().addAll("Z", "N", "TT", "HO", "OO", "S", "O", "F", "G", "1/4 In", "1 In", "Other")
+        inspectionFrequency.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+        inspectionUnits.getItems().addAll("Month", "Year")
+
         getApplication().getWindowManager().attach("prefsWindow", stage);
     }
 

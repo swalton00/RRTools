@@ -89,6 +89,9 @@ class CarEditView extends AbstractJavaFXGriffonView {
     TextArea carDescription
     @FXML Button saveChangesActionTarget
     @FXML Label messageText
+    @FXML ComboBox<String> vendor
+    @FXML TextField purchasePrice
+    @FXML ComboBox<String> manufacturer
 
     void initUI() {
         Stage stage = (Stage) getApplication()
@@ -114,6 +117,7 @@ class CarEditView extends AbstractJavaFXGriffonView {
         model.carNumber.bindBidirectional(carNumber.textProperty())
         model.carLength.bindBidirectional(carLength.textProperty())
         model.carWeight.bindBidirectional(carWeight.textProperty())
+        model.purchasePrice.bindBidirectional(purchasePrice.textProperty())
         saveChangesActionTarget.disableProperty().bind(carReportingMark.getSelectionModel().selectedItemProperty().isNull().and(
                 model.carNumber.isEmpty()
         ))
@@ -131,6 +135,30 @@ class CarEditView extends AbstractJavaFXGriffonView {
             }
         })
         carReportingMark.setCellFactory(ViewHelpers.cellHelper(carReportingMark))
+        vendor.setConverter(new StringConverter<ObsReference>() {
+            @Override
+            String toString(ObsReference object) {
+                return object
+            }
+
+            @Override
+            ObsReference fromString(String string) {
+                return new ObsReference(string)
+            }
+        })
+        vendor.setCellFactory(ViewHelpers.cellHelper(vendor))
+        manufacturer.setConverter(new StringConverter<ObsReference>() {
+            @Override
+            String toString(ObsReference object) {
+                return object
+            }
+
+            @Override
+            ObsReference fromString(String string) {
+                return new ObsReference(string)
+            }
+        })
+        manufacturer.setCellFactory(ViewHelpers.cellHelper(manufacturer))
         getApplication().getWindowManager().attach("carEditWindow", stage)
         messageText.textProperty().bind(model.messageText)
     }

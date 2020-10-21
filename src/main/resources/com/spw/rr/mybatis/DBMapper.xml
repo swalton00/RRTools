@@ -41,8 +41,40 @@
         VALUES (#{mark},
                 #{description})
     </insert>
+    <select id="listVendors" resultType="com.spw.rr.model.Vendor">
+        SELECT ID,
+               source_name as vendor,
+               description,
+               last_updated
+        FROM VENDOR
+        ORDER BY vendor
+    </select>
+    <insert id="addVendor" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.spw.rr.model.Vendor">
+        INSERT INTO VENDOR
+        (source_name,
+         description)
+        VALUES (#{vendor},
+                #{description})
+    </insert>
+    <select id="listManufacturers" resultType="com.spw.rr.model.Manufacturer">
+        SELECT ID,
+               manf_name as manufacturer,
+               description,
+               last_updated
+        FROM MANUFACTURER
+        ORDER BY manufacturer
+    </select>
+    <insert id="addManufacturer" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.spw.rr.model.Manufacturer">
+        INSERT INTO MANUFACTURER
+        (manf_name,
+         description)
+        VALUES (#{manufacturer},
+                #{description})
+    </insert>
     <select id="listViewCars" resultType="com.spw.rr.model.ViewCar"
-            parameterType="int">
+            parameterType="com.spw.rr.parameter.ViewParameter">
         SELECT c.id,
         car_number as carNumber,
         rpt.mark AS ReportingMark,
@@ -65,7 +97,7 @@
         c.car_type = ty.id
         <where>
             <choose>
-                <when test="parameter == 3">
+                <when test="viewSelection == 3">
                     EXISTS
                     ( SELECT
                     *
@@ -75,13 +107,13 @@
                     c.id = b.car_id
                     AND in_effect = '1')
                 </when>
-                <when test="parameter == 1">
-                    c.cplr_type = #{id}
+                <when test="viewSelection == 1">
+                    c.cplr_type = #{couplerId}
                 </when>
-                <when test="parameter == 4">
-                    rpt.mark = #{mark}
+                <when test="viewSelection == 4">
+                    rpt.mark = #{reportingMark}
                 </when>
-                <when test="parameter == 2">
+                <when test="viewSelection == 2">
                     NOT EXISTS
                     ( SELECT
                     1
@@ -89,7 +121,7 @@
                     inspection
                     WHERE
                     car_id = c.id
-                    AND inspect_date > #{last_updated})
+                    AND inspect_date > #{inspectionDate})
                 </when>
             </choose>
         </where>
@@ -156,6 +188,9 @@
          car_type,
          prr_type,
          purchased,
+         purchase_price,
+         source,
+         manufacturer,
          in_service,
          length,
          weight,
@@ -172,6 +207,9 @@
                 #{carTypeID},
                 #{prrTypeID},
                 #{datePurchased},
+                #{purchasePrice},
+                #{vendor},
+                #{manufacturer},
                 #{dateInService},
                 #{carLength},
                 #{carWeight},
@@ -184,44 +222,50 @@
     </insert>
     <select id="getRRCar" resultType="com.spw.rr.model.RRCar">
         SELECT ID,
-               car_number   as carNumber,
+               car_number     as carNumber,
                description,
-               rpt_mark     as reportingMarkID,
-               cplr_Type    as couplerTypeID,
-               prr_type     as prrTypeID,
-               car_type     as carTypeID,
-               kit_type     as kitTypeID,
-               aar_type     as aarTypeID,
-               purchased    as datePurchased,
-               kit_built    as dateKitBuilt,
-               in_service   as dateInService,
-               length       as carLength,
-               weight       as carWeight,
-               wheels       as carWheels,
-               rfid_tag     as RFIDtag,
-               blt_date     as bltDate,
-               car_color    as carColor,
-               last_updated as lastUpdat
+               rpt_mark       as reportingMarkID,
+               cplr_Type      as couplerTypeID,
+               prr_type       as prrTypeID,
+               car_type       as carTypeID,
+               kit_type       as kitTypeID,
+               aar_type       as aarTypeID,
+               purchased      as datePurchased,
+               purchase_price as purchasePrice,
+               source         as vendor,
+               manufacturer   as manufacturer,
+               kit_built      as dateKitBuilt,
+               in_service     as dateInService,
+               length         as carLength,
+               weight         as carWeight,
+               wheels         as carWheels,
+               rfid_tag       as RFIDtag,
+               blt_date       as bltDate,
+               car_color      as carColor,
+               last_updated   as lastUpdat
         FROM CAR
         WHERE ID = #{id}
     </select>
     <update id="updateCar" parameterType="com.spw.rr.model.RRCar">
         UPDATE car
-        SET description  = #{description},
-            cplr_type    = #{couplerTypeID},
-            car_number   = #{carNumber},
-            prr_type     = #{prrTypeID},
-            car_type     = #{carTypeID},
-            kit_type     = #{kitTypeID},
-            aar_type     = #{aarTypeID},
-            purchased    = #{datePurchased},
-            kit_built    = #{dateKitBuilt},
-            in_service   = #{dateInService},
-            length       = #{carLength},
-            weight       = #{carWeight},
-            wheels       = #{carWheels},
-            rfid_tag     = #{RFIDtag},
-            last_updated = CURRENT TIMESTAMP
+        SET description    = #{description},
+            cplr_type      = #{couplerTypeID},
+            car_number     = #{carNumber},
+            prr_type       = #{prrTypeID},
+            car_type       = #{carTypeID},
+            kit_type       = #{kitTypeID},
+            aar_type       = #{aarTypeID},
+            purchased      = #{datePurchased},
+            purchase_price = #{purchasePrice},
+            source         = #{vendor},
+            manufacturer   = #{manufacturer},
+            kit_built      = #{dateKitBuilt},
+            in_service     = #{dateInService},
+            length         = #{carLength},
+            weight         = #{carWeight},
+            wheels         = #{carWheels},
+            rfid_tag       = #{RFIDtag},
+            last_updated   = CURRENT TIMESTAMP
         WHERE ID = #{id}
     </update>
     <insert id="addBadOrder" parameterType="com.spw.rr.model.BadOrder" keyProperty="id" useGeneratedKeys="true">
@@ -244,8 +288,8 @@
                car_number,
                Date_entered,
                COALESCE(a.type, 'None') AS carArea,
-               bo.description as problemDescription,
-               bo.id as problemNumber
+               bo.description           as problemDescription,
+               bo.id                    as problemNumber
         FROM car c
                  INNER JOIN
              rpt_mark rm
@@ -261,40 +305,35 @@
                  bo.area_of_car = a.id
         WHERE c.id = #{carId}
     </select>
-    <insert id="addMaintenanceItem" parameterType="com.spw.rr.model.MaintenanceItem" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO
-            Maintenance
-        (
-            maint_date,
-            car_id,
-            area_of_car,
-            closed_bad_orders,
-            problem_desc,
-            work_performed
-        )
-        VALUES
-        (
-            #{datePerformed},
-            #{carId},
-            #{carArea},
-            #{badOrdersClosed},
-            #{problemDescription},
-            #{workPerformed}
-        )
+    <insert id="addMaintenanceItem" parameterType="com.spw.rr.model.MaintenanceItem" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO Maintenance
+        (maint_date,
+         car_id,
+         area_of_car,
+         closed_bad_orders,
+         problem_desc,
+         work_performed)
+        VALUES (#{datePerformed},
+                #{carId},
+                #{carArea},
+                #{badOrdersClosed},
+                #{problemDescription},
+                #{workPerformed})
     </insert>
     <update id="updateBadOrders" parameterType="com.spw.rr.parameter.BadOrderUpdateParameter">
         UPDATE
-            Bad_order
+        Bad_order
         SET
-            in_effect = '0',
-            out_of_service = '0',
-            closed_by = #{maintenanceId},
-            date_closed = #{closeDate},
-            last_updated = CURRENT TIMESTAMP
+        in_effect = '0',
+        out_of_service = '0',
+        closed_by = #{maintenanceId},
+        date_closed = #{closeDate},
+        last_updated = CURRENT TIMESTAMP
         WHERE
-            id IN
-            <foreach collection="boList" item="item" open="(" separator="," close=")">
-             #{item}
-            </foreach>
+        id IN
+        <foreach collection="boList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </update>
 </mapper>

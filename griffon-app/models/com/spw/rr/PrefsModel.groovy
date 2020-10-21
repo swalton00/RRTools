@@ -12,5 +12,9 @@ class PrefsModel {
 
     SimpleStringProperty scaleRatio = new SimpleStringProperty("87")
 
+    SimpleStringProperty inspectionUnits = new SimpleStringProperty("")
+
+    SimpleStringProperty inspectionEvery = new SimpleStringProperty("")
+
 
 }

@@ -3,11 +3,14 @@ package com.spw.rr
 import com.spw.rr.model.BadOrder
 import com.spw.rr.model.Inspection
 import com.spw.rr.model.MaintenanceItem
+import com.spw.rr.model.Manufacturer
 import com.spw.rr.model.RRCar
 import com.spw.rr.model.ReferenceItem
 import com.spw.rr.model.ReportingMark
+import com.spw.rr.model.Vendor
 import com.spw.rr.model.ViewCar
 import com.spw.rr.parameter.BadOrderUpdateParameter
+import com.spw.rr.parameter.ViewParameter
 import griffon.core.artifact.GriffonService
 import griffon.metadata.ArtifactProviderFor
 import javax.inject.Inject
@@ -43,13 +46,13 @@ class DBService {
 
     }
 
-    List<ViewCar> listViewCars(int viewSelection) {
-        log.debug("returning a list of cars")
+    List<ViewCar> listViewCars(ViewParameter view) {
+        log.debug("returning a list of cars with parameter {}", view)
         List<ViewCar> retList
         mybatisHandler.withSqlSession {
             String sessionFactoryName, SqlSession session ->
                 DBMapper mapper = session.getMapper(DBMapper.class)
-                retList = mapper.listViewCars(viewSelection)
+                retList = mapper.listViewCars(view)
         }
         log.debug("returning a list with {}", retList.size())
         log.debug("list has {}", retList)
@@ -93,6 +96,44 @@ class DBService {
                 DBMapper mapper = session.getMapper(DBMapper.class)
                 return mapper.listReferences(tableName)
         }
+    }
+
+    List<Vendor> getVendors() {
+        log.debug("returning a list of vendors")
+        mybatisHandler.withSqlSession { String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            return mapper.listVendors()
+        }
+    }
+
+    int addVendor(Vendor newVendor) {
+        log.debug("adding the new vendor {}", newVendor)
+        mybatisHandler.withSqlSession {
+            String sessionFactoryName, SqlSession session ->
+                DBMapper mapper = session.getMapper(DBMapper.class)
+                mapper.addVendor(newVendor)
+        }
+        log.debug("Vendor idis {}", newVendor.id)
+        return newVendor.id
+    }
+
+    List<Manufacturer> getManufacturers() {
+        log.debug("returning a list of manufacturers")
+        mybatisHandler.withSqlSession { String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            return mapper.listManufacturers()
+        }
+    }
+
+    int addManufacturer(Manufacturer newManf) {
+        log.debug("adding the new Manufacturer {}", newManf)
+        mybatisHandler.withSqlSession {
+            String sessionFactoryName, SqlSession session ->
+                DBMapper mapper = session.getMapper(DBMapper.class)
+                mapper.addManufacturer(newManf)
+        }
+        log.debug("Returned id is {}", newManf.id)
+        return newManf.id
     }
 
     int addReportingMark(ReportingMark newMark) {

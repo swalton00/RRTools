@@ -1,8 +1,10 @@
 package com.spw.rr
 
+import com.spw.rr.model.Manufacturer
 import com.spw.rr.model.ObsReference
 import com.spw.rr.model.RRCar
 import com.spw.rr.model.ReportingMark
+import com.spw.rr.model.Vendor
 import griffon.core.artifact.GriffonController
 import griffon.core.controller.ControllerAction
 import griffon.inject.MVCMember
@@ -45,6 +47,29 @@ class CarEditController {
             model.reportingMark.add(newOne)
         }
         view.carReportingMark.setItems(model.reportingMark)
+    }
+
+    void doVendor() {
+        List vendors = dbService.getVendors()
+        model.source = FXCollections.observableArrayList()
+        vendors.each {
+            ObsReference newVendor = new ObsReference()
+            newVendor.id = it.id
+            newVendor.typeVal = it.vendor
+            model.source.add(newVendor)
+        }
+        view.vendor.setItems(model.source)
+    }
+
+    void doManufacturer() {
+        List manf = dbService.getManufacturers()
+        model.manufacturer = FXCollections.observableArrayList()
+        manf.each {
+            ObsReference newOne = new ObsReference()
+            newOne.id = it.id
+            newOne.typeVal = it.manufacturer
+            model.manufacturer.add(newOne)
+        }
     }
 
     private void performInitialization() {
@@ -108,6 +133,19 @@ class CarEditController {
                 model.carLength.set(model.carLengthDecoded.toString())
             }
         } as javafx.beans.value.ChangeListener)
+        model.purchasePrice.addListener({ ObservableValue value, oldValue, newValue ->
+            BigDecimal resVal
+            try {
+                resVal = new BigDecimal(newValue)
+                model.messageText.set("")
+                model.purchasePriceDecoded = resVal
+            } catch (NumberFormatException ex) {
+                newValue = "0.00"
+                model.messageText.set("Purchase Price must be numeric, to two decimal places")
+                return
+            }
+        } as javafx.beans.value.ChangeListener)
+
     }
 
     void onWindowShown(String name, Stage window) {
@@ -125,6 +163,8 @@ class CarEditController {
             doChoice(view.carCouplerType, "COUPLER_TYPE", model.couplerType)
             doChoice(view.carPRRType, "PRR_TYPE", model.prrType)
             doReporting()
+            doVendor()
+            doManufacturer()
         }
         if (model.newCar) {
             initNewCar()
@@ -166,6 +206,7 @@ class CarEditController {
     void initNewCar() {
         log.debug("initializing all fields for a new car")
         view.carReportingMark.getSelectionModel().clearSelection()
+        view.carId.setText("")
         model.car = null
         model.newCar = true
         model.carId = null
@@ -223,6 +264,7 @@ class CarEditController {
     void initExistingCar(int id) {
         log.debug("initializing for an existing car - id = {}", id)
         RRCar car = dbService.getRRCar(id)
+        view.carId.setText(car.id.toString())
         model.car = car
         model.newCar = false
         model.carId = id
@@ -257,6 +299,13 @@ class CarEditController {
                 model.carWeight.set(model.carWeightDecoded.toString())
             }
         }
+        if (car.purchasePrice == null) {
+            model.purchasePriceDecoded = new BigDecimal(0.00)
+            model.purchasePrice.set("")
+        } else {
+            model.purchasePriceDecoded = car.purchasePrice
+            model.purchasePrice.set(model.purchasePriceDecoded.toString())
+        }
         doText(car.carWheels, model.carWheels)
         doText(car.carColor, model.carColor)
         doText(car.carNumber, model.carNumber)
@@ -276,6 +325,24 @@ class CarEditController {
             if (theList.get(index).id == car.reportingMarkID) {
                 view.carReportingMark.getSelectionModel().select(index)
                 break
+            }
+        }
+        view.manufacturer.getSelectionModel().clearSelection()
+        if (car.manufacturer != null) {
+            theList = view.manufacturer.getItems()
+            for (index = 0; index < theList.size(); index++) {
+                if (theList.get(index).id == car.manufacturer) {
+                    view.manufacturer.getSelectionModel().select(index)
+                }
+            }
+        }
+        view.vendor.getSelectionModel().clearSelection()
+        if (car.vendor != null) {
+            theList = view.vendor.getItems()
+            for (index = 0; index < theList.size(); index++) {
+                if (theList.get(index).id == car.vendor) {
+                    view.vendor.getSelectionModel().select(index)
+                }
             }
         }
     }
@@ -309,19 +376,31 @@ class CarEditController {
         car.carNumber = decodeText(model.carNumber)
         car.bltDate = decodeText(model.bltDate)
         car.carWheels = decodeText(model.carWheels)
-        if (model.obsLengthUnits.get() == 0) {
-            // have English, leave alone
-            car.carLength = model.carLengthDecoded.setScale(0, RoundingMode.HALF_UP).toInteger()
+        car.carColor = decodeText(model.carColor)
+        if (!model.carLength.get().equals("")) {
+            if (model.obsLengthUnits.get() == 0) {
+                // have English, leave alone
+                car.carLength = model.carLengthDecoded.setScale(0, RoundingMode.HALF_UP).toInteger()
+            } else {
+                // convert Feet to meters
+                car.carLength = model.carLengthDecoded.multiply(new BigDecimal(0.3048)).setScale(0, RoundingMode.HALF_UP).toInteger()
+            }
         } else {
-            // convert Feet to meters
-            car.carLength = model.carLengthDecoded.multiply(new BigDecimal(0.3048)).setScale(0, RoundingMode.HALF_UP).toInteger()
+            car.carLength = null
         }
-        if (model.obsWeightUnits.get() == 0) {
-            // have grams, convert to ounces
-            car.carWeight = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(0, RoundingMode.HALF_UP).toInteger()
+        if (!model.carWeight.get().equals("")) {
+            if (model.obsWeightUnits.get() == 0) {
+                // have grams, convert to ounces
+                car.carWeight = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(0, RoundingMode.HALF_UP).toInteger()
+            } else {
+                // leave only (stored in grams)
+                car.carWeight = model.carWeightDecoded.toInteger()
+            }
         } else {
-            // leave only (stored in grams)
-            car.carWeight = model.carWeightDecoded.toInteger()
+            car.carWeight = null
+        }
+        if (!model.purchasePrice.get().equals("")) {
+            car.purchasePrice = model.purchasePriceDecoded.setScale(2, RoundingMode.HALF_UP)
         }
         car.couplerTypeID = decodeChoice(view.carCouplerType)
         car.carTypeID = decodeChoice(view.carType)
@@ -331,6 +410,23 @@ class CarEditController {
         car.datePurchased = decodeDate(view.datePuchased)
         car.dateInService = decodeDate(view.inServiceDate)
         car.dateKitBuilt = decodeDate(view.kitBuiltDate)
+        Integer selectedItemIndex = view.manufacturer.getSelectionModel().getSelectedIndex()
+        if (view.manufacturer.getValue() == null | view.manufacturer.getValue().equals("")) {
+            car.manufacturer = null
+        } else if (selectedItemIndex == -1) {
+            log.debug("adding a Manufacturer")
+            car.manufacturer = doNewManufacturer(view.manufacturer.getValue().getTypeVal())
+        }  else {
+            car.manufacturer = view.manufacturer.getItems().get(selectedItemIndex).id
+        }
+        selectedItemIndex = view.vendor.getSelectionModel().getSelectedIndex()
+        if (view.vendor.getValue() == null | view.vendor.getValue().equals("")) {
+            car.vendor = null
+        } else if (selectedItemIndex == -1) {
+            car.vendor = doNewVendor(view.vendor.getValue().getTypeVal())
+        } else {
+            car.vendor = view.vendor.getItems().get(selectedItemIndex).id
+        }
     }
 
     void doNewSave(Integer markId) {
@@ -359,7 +455,22 @@ class CarEditController {
         return newId
     }
 
-    private void doUpdate(int carId, Integer markid) {
+    private int doNewManufacturer(String newManf) {
+        Manufacturer manf = new Manufacturer()
+        manf.manufacturer = newManf
+        manf.description = null
+        int newManfId = dbService.addManufacturer(manf)
+        return newManfId
+    }
+
+    private int doNewVendor(String newVendor) {
+       Vendor vendor = new Vendor()
+        vendor.vendor = newVendor
+        vendor.description = null
+        int newVendorId = dbService.addVendor(vendor)
+    }
+
+    private void doUpdate(int carId) {
         log.debug("update car {}", model.car)
         refreshModel(model.car)
         dbService.updateCar(model.car)
@@ -388,10 +499,11 @@ class CarEditController {
             log.debug("setting reporting mark to {}", cur)
             markid = cur.id
         }
+
         if (model.newCar) {
             doNewSave(markid)
         } else {
-            doUpdate(model.car.id, markid)
+            doUpdate(model.car.id)
         }
         application.eventRouter.publishEvent('RebuildCarList', [])
         closeWindow()

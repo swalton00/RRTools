@@ -10,6 +10,10 @@ DROP TABLE
 DROP TABLE
     IF EXISTS kit_type;
 DROP TABLE
+    IF EXISTS manufacturer;
+DROP TABLE
+    IF EXISTS vendor;
+DROP TABLE
     IF EXISTS prr_type;
 DROP TABLE
     IF EXISTS rpt_mark;
@@ -75,6 +79,22 @@ CREATE TABLE
         last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
 CREATE TABLE
+    manufacturer
+    (
+        id identity PRIMARY KEY,
+        Manf_name    VARCHAR(64) NOT NULL,
+        description  VARCHAR(255),
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+CREATE TABLE
+    vendor
+    (
+        id identity PRIMARY KEY,
+        Source_Name  VARCHAR(64) NOT NULL,
+        description  VARCHAR(255),
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
+CREATE TABLE
     car_type
     (
         id identity PRIMARY KEY,
@@ -100,7 +120,7 @@ ON
 CREATE TABLE
     Car_area
     (
-        ID IDENTITY PRIMARY KEY, 
+        ID IDENTITY PRIMARY KEY,
         TYPE         VARCHAR(64) NOT NULL,
         Description  VARCHAR(255),
         LAST_Updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -109,27 +129,32 @@ CREATE TABLE
     car
     (
         id identity PRIMARY KEY,
-        prr_type     INT,
-        cplr_type    INT,
-        kit_type     INT,
-        car_type     INT,
-        car_number   VARCHAR(64) NOT NULL,
-        purchased    DATE,
-        kit_built    DATE,
-        in_service   DATE,
-        LENGTH       DECIMAL(9,0),
-        weight       DECIMAL(9,0),
-        rpt_mark     INT NOT NULL,
-        aar_type     INT,
-        BLT_Date     CHAR(5),
-        car_Color    VARCHAR(48),
-        description  VARCHAR(2000),
-        rfid_tag     VARCHAR(18),
-        wheels       CHAR(64),
-        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        prr_type       INT,
+        cplr_type      INT,
+        kit_type       INT,
+        car_type       INT,
+        source         INT,
+        manufacturer   INT,
+        car_number     VARCHAR(64) NOT NULL,
+        purchased      DATE,
+        kit_built      DATE,
+        in_service     DATE,
+        purchase_price DECIMAL(7,2),
+        LENGTH         DECIMAL(9,0),
+        weight         DECIMAL(9,0),
+        rpt_mark       INT NOT NULL,
+        aar_type       INT,
+        BLT_Date       CHAR(5),
+        car_Color      VARCHAR(48),
+        description    VARCHAR(2000),
+        rfid_tag       VARCHAR(18),
+        wheels         CHAR(64),
+        last_updated   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         CONSTRAINT con_prr_type FOREIGN KEY ( prr_type ) REFERENCES prr_type ( id ),
         CONSTRAINT con_cplr_type FOREIGN KEY (cplr_type ) REFERENCES coupler_type ( id ),
         CONSTRAINT con_kit_type FOREIGN KEY ( kit_type ) REFERENCES kit_type ( id ),
+        CONSTRAINT con_vendor FOREIGN KEY (source ) REFERENCES vendor ( id ),
+        CONSTRAINT con_manf FOREIGN KEY ( manufacturer ) REFERENCES manufacturer ( id ),
         CONSTRAINT number_unique UNIQUE (rpt_mark, car_number),
         CONSTRAINT rpt_mark_key FOREIGN KEY ( rpt_mark ) REFERENCES rpt_mark ( id ),
         CONSTRAINT aar_type_key FOREIGN KEY (aar_type ) REFERENCES aar_type (id),
@@ -189,8 +214,7 @@ CREATE TABLE
         work_performed    CHAR(1000),
         last_updated      TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         CONSTRAINT maint_parent_key FOREIGN KEY (car_id) REFERENCES car ( id ),
-                CONSTRAINT car_area_key FOREIGN KEY (area_of_car) REFERENCES car_area ( id )
-
+        CONSTRAINT car_area_key FOREIGN KEY (area_of_car) REFERENCES car_area ( id )
     );
 DROP TABLE
     IF EXISTS Bad_Order;

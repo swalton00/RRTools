@@ -1,0 +1,11 @@
+.LOG
+
+8:43 AM 10/2/2020
+1. minor issue about what key forces commit when editing an entry in table maintenance
+2. add check for uniqueness when added or editing a type value in reference tabel maint.
+3. Bad order screen
+4. Maintenance screen
+5. add check mark to view all
+6. view selections
+7. subset views based on car reporting mark
+8. Add Source, Purchase Price, Manufacturer to Car DB elemtns

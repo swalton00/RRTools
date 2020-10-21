@@ -2,9 +2,9 @@ package com.spw.rr.model
 
 import java.sql.Timestamp
 
-class ReportingMark {
+class Vendor {
     Integer id
-    String mark
+    String vendor
     String description
     Timestamp last_updated
 }

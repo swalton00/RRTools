@@ -26,6 +26,7 @@ class CarEditModel {
     SimpleIntegerProperty obsLengthUnits = new SimpleIntegerProperty(0)
     BigDecimal carWeightDecoded = new BigDecimal(0.0)
     BigDecimal carLengthDecoded = new BigDecimal(0.0)
+    BigDecimal purchasePriceDecoded = new BigDecimal(0.00)
     int currentUnitsWeight = 0
     int currentUnitsLength = 0
     SimpleStringProperty carTag = new SimpleStringProperty("")
@@ -35,6 +36,8 @@ class CarEditModel {
     ObservableList<ObsReference> prrType
     ObservableList<ObsReference> couplerType
     ObservableList<ObsReference> kitType
+    ObservableList<ObsReference> manufacturer
+    ObservableList<ObsReference> source
     SimpleStringProperty bltDate = new SimpleStringProperty("")
     SimpleStringProperty carLength = new SimpleStringProperty("")
     SimpleStringProperty carWeight = new SimpleStringProperty("")
@@ -43,4 +46,5 @@ class CarEditModel {
     SimpleStringProperty carNumber = new SimpleStringProperty("")
     SimpleStringProperty carDescription = new SimpleStringProperty("")
     SimpleStringProperty messageText = new SimpleStringProperty("")
+    SimpleStringProperty purchasePrice = new SimpleStringProperty("")
 }

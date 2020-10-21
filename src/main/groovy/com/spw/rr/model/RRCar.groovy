@@ -16,6 +16,9 @@ class RRCar {
     Integer    kitTypeID
     Integer    aarTypeID
     Date   datePurchased
+    BigDecimal purchasePrice
+    Integer vendor
+    Integer manufacturer
     Date   dateKitBuilt
     Date   dateInService
     String bltDate

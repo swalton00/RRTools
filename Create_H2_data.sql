@@ -242,4 +242,86 @@ INSERT INTO
         'other than a standard area'
     );
 
+INSERT INTO
+    vendor
+    (
+        source_name,
+        description
+    )
+    VALUES
+    (
+        'Other',
+        'Other than a vendor listed here'
+    );
 
+INSERT INTO
+    manufacturer
+    (
+        manf_name,
+        description
+    )
+    VALUES
+    (
+        'Other',
+        'Other than a manufacturer listed here'
+    );
+
+INSERT INTO
+    manufacturer
+    (
+        manf_name,
+        description
+    )
+    VALUES
+    (
+        'Kadee',
+        'Kadee'
+    );
+
+INSERT INTO
+    manufacturer
+    (
+        manf_name,
+        description
+    )
+    VALUES
+    (
+        'Quality Craft',
+        'Quality Craft'
+    );    
+
+INSERT INTO
+    manufacturer
+    (
+        manf_name,
+        description
+    )
+    VALUES
+    (
+        'Ambroid',
+        'One of 5000 Kit'
+    );    
+
+INSERT INTO
+    manufacturer
+    (
+        manf_name,
+        description
+    )
+    VALUES
+    (
+        'Westerfield',
+        'Manufacturer of resin car kits'
+    );    
+
+INSERT INTO
+    manufacturer
+    (
+        manf_name,
+        description
+    )
+    VALUES
+    (
+        'Funero & Cumerlingo',
+        'Manufacturer of resin car kits'
+    );    
