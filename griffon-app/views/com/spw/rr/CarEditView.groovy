@@ -7,6 +7,8 @@ import griffon.metadata.ArtifactProviderFor
 import javafx.beans.property.Property
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
+import javafx.collections.ObservableList
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.Scene
@@ -29,8 +31,7 @@ import javafx.util.StringConverter
 import org.codehaus.griffon.runtime.javafx.artifact.AbstractJavaFXGriffonView
 import javax.annotation.Nonnull
 import javax.inject.Inject
-import javax.swing.event.ChangeListener
-import javax.swing.text.html.ListView
+import impl.org.controlsfx.tools.PrefixSelectionCustomizer
 
 @ArtifactProviderFor(GriffonView)
 class CarEditView extends AbstractJavaFXGriffonView {
@@ -135,6 +136,30 @@ class CarEditView extends AbstractJavaFXGriffonView {
             }
         })
         carReportingMark.setCellFactory(ViewHelpers.cellHelper(carReportingMark))
+        carReportingMark.setOnAction({ event ->
+            if (carReportingMark.getValue() != null && !carReportingMark.getValue().typeVal.trim().isEmpty()) {
+                String value = carReportingMark.getValue().typeVal.trim()
+                ObservableList<ObsReference> items = carReportingMark.getItems()
+                boolean contained = false
+                int currentIndex = -1
+                for (i in 0..<items.size()) {
+                    if (items.getAt(i).typeVal.equals(value)) {
+                        contained = true
+                        currentIndex = i
+                    }
+                }
+                if (!contained) {
+                    log.debug("adding {} to list of values in carReportingMark", value)
+                    ObsReference obs = new ObsReference()
+                    obs.typeVal = value
+                    carReportingMark.getItems().add(obs)
+                } else {
+                    log.debug("not adding item {} as it is already in the list", value)
+                    carReportingMark.getSelectionModel().select(currentIndex)
+                }
+            }
+
+        })
         vendor.setConverter(new StringConverter<ObsReference>() {
             @Override
             String toString(ObsReference object) {
@@ -147,6 +172,30 @@ class CarEditView extends AbstractJavaFXGriffonView {
             }
         })
         vendor.setCellFactory(ViewHelpers.cellHelper(vendor))
+        vendor.setOnAction({ event ->
+            if (vendor.getValue() != null && !vendor.getValue().typeVal.trim().isEmpty()) {
+                String value = vendor.getValue().typeVal.trim()
+                ObservableList<ObsReference> items = vendor.getItems()
+                boolean contained = false
+                int currentIndex = -1
+                for (i in 0..<items.size()) {
+                    if (items.getAt(i).typeVal.toUpperCase().equals(value.toUpperCase())) {
+                        contained = true
+                        currentIndex = i
+                    }
+                }
+                if (!contained) {
+                    log.debug("adding {} to list of values in vendor", value)
+                    ObsReference obs = new ObsReference()
+                    obs.typeVal = value
+                    vendor.getItems().add(obs)
+                } else {
+                    log.debug("not adding item {} as it is already in the list", value)
+                    vendor.getSelectionModel().select(currentIndex)
+                }
+            }
+
+        })
         manufacturer.setConverter(new StringConverter<ObsReference>() {
             @Override
             String toString(ObsReference object) {
@@ -159,8 +208,39 @@ class CarEditView extends AbstractJavaFXGriffonView {
             }
         })
         manufacturer.setCellFactory(ViewHelpers.cellHelper(manufacturer))
-        getApplication().getWindowManager().attach("carEditWindow", stage)
+        manufacturer.setOnAction({ event ->
+            if (manufacturer.getValue() != null && !manufacturer.getValue().typeVal.trim().isEmpty()) {
+                String value = manufacturer.getValue().typeVal.trim()
+                ObservableList<ObsReference> items = manufacturer.getItems()
+                boolean contained = false
+                int currentIndex = -1
+                for (i in 0..<items.size()) {
+                    if (items.getAt(i).typeVal.toUpperCase().equals(value.toUpperCase())) {
+                        contained = true
+                        currentIndex = i
+                    }
+                }
+                if (!contained) {
+                    log.debug("adding {} to list of values in manufacturer", value)
+                    ObsReference obs = new ObsReference()
+                    obs.typeVal = value
+                    manufacturer.getItems().add(obs)
+                } else {
+                    log.debug("not adding item {} as it is already in the list", value)
+                    manufacturer.getSelectionModel().select(currentIndex)
+                }
+            }
+
+        })
+        PrefixSelectionCustomizer.customize(carType)
+        PrefixSelectionCustomizer.customize(carAARType)
+        PrefixSelectionCustomizer.customize(carPRRType)
+        PrefixSelectionCustomizer.customize(carCouplerType)
+        PrefixSelectionCustomizer.customize(carKitType)
+        PrefixSelectionCustomizer.customize(carLengthUnits)
+        PrefixSelectionCustomizer.customize(carWeightUnits)
         messageText.textProperty().bind(model.messageText)
+        getApplication().getWindowManager().attach("carEditWindow", stage)
     }
 
 

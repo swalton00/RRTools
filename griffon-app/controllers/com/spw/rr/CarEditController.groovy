@@ -14,6 +14,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ComboBox
 import javafx.scene.control.DatePicker
 import javafx.stage.Stage
 
@@ -70,6 +71,7 @@ class CarEditController {
             newOne.typeVal = it.manufacturer
             model.manufacturer.add(newOne)
         }
+        view.manufacturer.setItems(model.manufacturer)
     }
 
     private void performInitialization() {
@@ -290,12 +292,13 @@ class CarEditController {
             model.carWeight.set("")
         } else {
             if (model.obsWeightUnits.get() == 0) {
-                // have grams, convert to ounces
-                model.carWeightDecoded = new BigDecimal(car.carWeight).divide(new BigDecimal(28.3495), RoundingMode.HALF_UP).setScale(1, RoundingMode.HALF_UP)
-                model.carWeight.set(model.carWeightDecoded.toString())
-            } else {
-                // have grams, leave alone
+                // have ounces, leave alone
                 model.carWeightDecoded = new BigDecimal(car.carWeight)
+                model.carWeight.set(model.carWeightDecoded.toString())
+
+            } else {
+                // have ounces, convert to grams
+                model.carWeightDecoded = new BigDecimal(car.carWeight).multiply(new BigDecimal(28.3495), RoundingMode.HALF_UP).setScale(0, RoundingMode.HALF_UP)
                 model.carWeight.set(model.carWeightDecoded.toString())
             }
         }
@@ -390,12 +393,12 @@ class CarEditController {
         }
         if (!model.carWeight.get().equals("")) {
             if (model.obsWeightUnits.get() == 0) {
-                // have grams, convert to ounces
-                car.carWeight = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(0, RoundingMode.HALF_UP).toInteger()
+                // leave only (stored in ounces)
+                car.carWeight = model.carWeightDecoded.setScale(2, RoundingMode.HALF_UP)
             } else {
-                // leave only (stored in grams)
-                car.carWeight = model.carWeightDecoded.toInteger()
-            }
+                // have grams, convert to ounces
+                car.carWeight = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(2, RoundingMode.HALF_UP).toInteger()
+                }
         } else {
             car.carWeight = null
         }
