@@ -4,29 +4,23 @@ import com.spw.rr.model.ObsReference
 import griffon.core.artifact.GriffonView
 import griffon.inject.MVCMember
 import griffon.metadata.ArtifactProviderFor
-import javafx.beans.property.Property
-import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.scene.Group
 import javafx.scene.Scene
 import javafx.scene.control.Button
+import javafx.scene.control.CheckBox
 import javafx.scene.control.ChoiceBox
 import javafx.scene.control.ComboBox
 import javafx.scene.control.DatePicker
 import javafx.scene.control.Label
-import javafx.scene.control.ListCell
 import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
-import javafx.scene.control.cell.PropertyValueFactory
-import javafx.scene.control.cell.TextFieldListCell
 import javafx.scene.layout.AnchorPane
 import javafx.scene.paint.Color
 import javafx.stage.Modality
 import javafx.stage.Stage
-import javafx.util.Callback
 import javafx.util.StringConverter
 import org.codehaus.griffon.runtime.javafx.artifact.AbstractJavaFXGriffonView
 import javax.annotation.Nonnull
@@ -75,6 +69,10 @@ class CarEditView extends AbstractJavaFXGriffonView {
     @FXML
     ChoiceBox carWeightUnits
     @FXML
+    CheckBox resistWheels
+    @FXML
+    CheckBox weathered
+    @FXML
     TextField carWheels
     @FXML
     TextField carColor
@@ -88,11 +86,16 @@ class CarEditView extends AbstractJavaFXGriffonView {
     TextField carBltDate
     @FXML
     TextArea carDescription
-    @FXML Button saveChangesActionTarget
-    @FXML Label messageText
-    @FXML ComboBox<String> vendor
-    @FXML TextField purchasePrice
-    @FXML ComboBox<String> manufacturer
+    @FXML
+    Button saveChangesActionTarget
+    @FXML
+    Label messageText
+    @FXML
+    ComboBox<String> vendor
+    @FXML
+    TextField purchasePrice
+    @FXML
+    ComboBox<String> manufacturer
 
     void initUI() {
         Stage stage = (Stage) getApplication()
@@ -119,6 +122,8 @@ class CarEditView extends AbstractJavaFXGriffonView {
         model.carLength.bindBidirectional(carLength.textProperty())
         model.carWeight.bindBidirectional(carWeight.textProperty())
         model.purchasePrice.bindBidirectional(purchasePrice.textProperty())
+        model.resistWheels.bindBidirectional(resistWheels.selectedProperty())
+        model.weathered.bindBidirectional(weathered.selectedProperty())
         saveChangesActionTarget.disableProperty().bind(carReportingMark.getSelectionModel().selectedItemProperty().isNull().and(
                 model.carNumber.isEmpty()
         ))

@@ -7,6 +7,7 @@ import com.spw.rr.model.ReferenceItem
 import griffon.core.artifact.GriffonModel
 import griffon.transform.FXObservable
 import griffon.metadata.ArtifactProviderFor
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
@@ -38,6 +39,8 @@ class CarEditModel {
     ObservableList<ObsReference> kitType
     ObservableList<ObsReference> manufacturer
     ObservableList<ObsReference> source
+    SimpleBooleanProperty weathered = new SimpleBooleanProperty(false)
+    SimpleBooleanProperty resistWheels = new SimpleBooleanProperty(false)
     SimpleStringProperty bltDate = new SimpleStringProperty("")
     SimpleStringProperty carLength = new SimpleStringProperty("")
     SimpleStringProperty carWeight = new SimpleStringProperty("")

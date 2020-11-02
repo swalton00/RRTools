@@ -25,12 +25,16 @@
             <menus>
               <Menu mnemonicParsing="false" text="File">
                 <items>
-                  <MenuItem fx:id="createNewActionTarget" mnemonicParsing="false" text="Create New Car" />
+                           <MenuItem fx:id="exportActionTarget" mnemonicParsing="false" text="Export cars" />
+                           <MenuItem fx:id="importActionTarget" mnemonicParsing="false" text="Import cars" />
+                           <MenuItem fx:id="backupActionTarget" mnemonicParsing="false" text="Backup database" />
+                           <MenuItem fx:id="restoreActionTarget" mnemonicParsing="false" text="Restore database" />
                   <MenuItem fx:id="closeActionTarget" mnemonicParsing="false" text="Close" />
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="Edit">
                 <items>
+                  <MenuItem fx:id="createNewActionTarget" mnemonicParsing="false" text="Create New Car" />
                   <MenuItem fx:id="editCarActionTarget" mnemonicParsing="false" text="Edit Car" />
                   <MenuItem fx:id="deleteCarActionTarget" mnemonicParsing="false" text="Delete Selected Car" />
                   <MenuItem fx:id="prefsActionTarget" mnemonicParsing="false" text="Preferences" />
@@ -58,6 +62,14 @@
                   <MenuItem fx:id="maintainKitTypeActionTarget" mnemonicParsing="false" text="Kit Types" />
                   <MenuItem fx:id="maintainCouplerTypeActionTarget" mnemonicParsing="false" text="Coupler Types" />
                            <MenuItem fx:id="maintainPRRTypeActionTarget" mnemonicParsing="false" text="PRR Types" />
+                           <Menu mnemonicParsing="false" text="Import Table Data">
+                             <items>
+                               <MenuItem fx:id="importCarTypesActionTarget" mnemonicParsing="false" text="Car Types" />
+                                 <MenuItem fx:id="importAARtypesActionTarget" mnemonicParsing="false" text="AAR Types" />
+                                 <MenuItem fx:id="importKitTypesActionTarget" mnemonicParsing="false" text="Kit Types" />
+                                 <MenuItem fx:id="importPRRtypesActionsTarget" mnemonicParsing="false" text="PRR Types" />
+                             </items>
+                           </Menu>
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="View">

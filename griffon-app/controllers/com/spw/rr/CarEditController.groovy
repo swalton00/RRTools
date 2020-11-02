@@ -14,7 +14,6 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.scene.control.ChoiceBox
-import javafx.scene.control.ComboBox
 import javafx.scene.control.DatePicker
 import javafx.stage.Stage
 
@@ -95,7 +94,7 @@ class CarEditController {
             if (newValue.length() == 0) {
                 return
             }
-            Integer resVal
+            BigDecimal resVal = new BigDecimal(0.0)
             try {
                 resVal = new BigDecimal(newValue)
                 model.messageText.set("")
@@ -112,11 +111,11 @@ class CarEditController {
             }
             if (newValue == 0) {
                 // switch from grams to ounces
-                model.carWeightDecoded = model.carWeightDecoded.divide(new BigDecimal(28.3495), RoundingMode.HALF_UP).setScale(1, RoundingMode.HALF_UP)
+                model.carWeightDecoded = model.carWeightDecoded.divide(new BigDecimal(28.3495), RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP)
                 model.carWeight.set(model.carWeightDecoded.toString())
             } else {
                 // switch from ounces to grams
-                model.carWeightDecoded = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(1, RoundingMode.HALF_UP)
+                model.carWeightDecoded = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(2, RoundingMode.HALF_UP)
                 model.carWeight.set(model.carWeightDecoded.toString())
 
             }
@@ -321,6 +320,8 @@ class CarEditController {
         selectDate(car.dateKitBuilt, view.kitBuiltDate)
         selectDate(car.dateInService, view.inServiceDate)
         selectChoice(car.couplerTypeID, view.carCouplerType)
+        model.weathered.set(car.weathered)
+        model.resistWheels.set(car.resistanceWheels)
         Integer index
         List<ObsReference> theList = view.carReportingMark.getItems()
         view.carReportingMark.getSelectionModel().clearSelection()
@@ -398,7 +399,7 @@ class CarEditController {
             } else {
                 // have grams, convert to ounces
                 car.carWeight = model.carWeightDecoded.multiply(new BigDecimal(28.3495)).setScale(2, RoundingMode.HALF_UP).toInteger()
-                }
+            }
         } else {
             car.carWeight = null
         }
@@ -413,13 +414,17 @@ class CarEditController {
         car.datePurchased = decodeDate(view.datePuchased)
         car.dateInService = decodeDate(view.inServiceDate)
         car.dateKitBuilt = decodeDate(view.kitBuiltDate)
+        car.weathered = model.weathered.get()
+        car.setWeathered = car.weathered ? "1" : "0"
+        car.resistanceWheels = model.resistWheels.get()
+        car.setResistanceWheels = model.resistWheels ? "1" : "0"
         Integer selectedItemIndex = view.manufacturer.getSelectionModel().getSelectedIndex()
         if (view.manufacturer.getValue() == null | view.manufacturer.getValue().equals("")) {
             car.manufacturer = null
         } else if (selectedItemIndex == -1) {
             log.debug("adding a Manufacturer")
             car.manufacturer = doNewManufacturer(view.manufacturer.getValue().getTypeVal())
-        }  else {
+        } else {
             car.manufacturer = view.manufacturer.getItems().get(selectedItemIndex).id
         }
         selectedItemIndex = view.vendor.getSelectionModel().getSelectedIndex()
@@ -467,7 +472,7 @@ class CarEditController {
     }
 
     private int doNewVendor(String newVendor) {
-       Vendor vendor = new Vendor()
+        Vendor vendor = new Vendor()
         vendor.vendor = newVendor
         vendor.description = null
         int newVendorId = dbService.addVendor(vendor)

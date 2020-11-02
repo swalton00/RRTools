@@ -183,6 +183,7 @@ class RrToolsController {
     void onWindowShown(String name, Stage window) {
         log.debug("in On Window shown with window {}", window)
         if (!initialized) {
+            def app = application
             initialized = true
             String savedComPort = propertyService.getSavedComPort();
             if (savedComPort != null && !savedComPort.equals("<None>")) {
@@ -247,6 +248,30 @@ class RrToolsController {
         carEdit.model.newTag = newTag
         carEdit.model.carId = carId
         application.windowManager.show("carEditWindow")
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void exportAction() {
+        log.debug("export requested")
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void importAction() {
+        log.debug("import requested")
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void backupAction() {
+        log.debug("backup requested")
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void restoreAction() {
+        log.debug("restore requested")
     }
 
     @ControllerAction
@@ -345,5 +370,29 @@ class RrToolsController {
         maintain.model.carNumber.set(car.carNumber)
         application.windowManager.show("MaintenanceWindow")
 
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void importCarTypesAction() {
+        log.debug("import car types requested")
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void importAARtypesAction() {
+        log.debug("import aar types requested")
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void importKitTypesAction() {
+        log.debug("import kit types requested")
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
+    void importPRRtypesActions() {
+        log.debug("import prr types requested")
     }
 }
