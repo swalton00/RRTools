@@ -45,9 +45,11 @@ class RrToolsView extends AbstractJavaFXGriffonView {
     @FXML MenuItem badOrderCarActionTarget
     @FXML MenuItem inspectCarActionTarget
 
+    public Stage stage
+
     @Override
     public void initUI() {
-        Stage stage = (Stage) getApplication()
+        stage = (Stage) getApplication()
                 .createApplicationContainer(Collections.emptyMap());
         stage.setTitle(getApplication().getConfiguration().getAsString("application.title"));
         //stage.setWidth(400);

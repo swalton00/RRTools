@@ -177,7 +177,6 @@ class CarEditController {
         }
     }
 
-
     public void onTag_Read(String newTag) {
         log.debug("got a tag of {} ", newTag)
         runInsideUIAsync {
@@ -185,7 +184,6 @@ class CarEditController {
         }
 
     }
-
 
     private void closeWindow() {
         log.debug("closing the carEdit window")

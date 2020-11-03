@@ -372,27 +372,36 @@ class RrToolsController {
 
     }
 
+    private void importWork(String table) {
+        log.debug("importing {}", table)
+        TableDataImport.instance.performImport(table, view.stage, dbService, this)
+    }
+
     @ControllerAction
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void importCarTypesAction() {
         log.debug("import car types requested")
+        importWork(TABLE_NAME[MAINT_CAR_TYPE])
     }
 
     @ControllerAction
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void importAARtypesAction() {
         log.debug("import aar types requested")
+        importWork(TABLE_NAME[MAINT_AAR_TYPE])
     }
 
     @ControllerAction
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void importKitTypesAction() {
         log.debug("import kit types requested")
+        importWork(TABLE_NAME[MAINT_KIT_TYPE])
     }
 
     @ControllerAction
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void importPRRtypesActions() {
         log.debug("import prr types requested")
+        importWork(TABLE_NAME[MAINT_PRR_TYPE])
     }
 }

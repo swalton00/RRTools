@@ -86,6 +86,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.h2database/h2
     runtime group: 'com.h2database', name: 'h2', version: '1.4.199'
 
+    compile group: 'org.jumpmind.symmetric', name: 'symmetric-csv', version: '3.5.19'
 
     testCompile "org.codehaus.griffon:griffon-javafx-test:${griffon.version}"
     testCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
