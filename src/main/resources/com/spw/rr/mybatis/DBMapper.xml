@@ -348,4 +348,28 @@
             #{item}
         </foreach>
     </update>
+    <select id="listCarsForExport" resultType="com.spw.rr.model.ExportCar">
+        SELECT
+            car_number as carNumber,
+            mark as reporting,
+            t.type as carType,
+            LENGTH as carLength,
+            weight as carWeight,
+            car_color as carColor,
+            blt_date as builtDate,
+            rfid_tag as idTag
+        FROM
+            car c
+                INNER JOIN
+            rpt_mark m
+            ON
+                c.rpt_mark = m.id
+                LEFT OUTER JOIN
+            aar_type t
+            ON
+                c.aar_type = t.id
+        ORDER BY
+            mark,
+            car_number
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.spw.rr.mybatis
 
 import com.spw.rr.model.BadOrder
 import com.spw.rr.model.BOViewModel
+import com.spw.rr.model.ExportCar
 import com.spw.rr.model.Inspection
 import com.spw.rr.model.MaintenanceItem
 import com.spw.rr.model.Manufacturer
@@ -37,4 +38,5 @@ interface DBMapper extends MybatisMapper {
     int addBadOrder(BadOrder badOrder)
     int addMaintenanceItem(MaintenanceItem item)
     int updateBadOrders(BadOrderUpdateParameter boList)
+    List<ExportCar> listCarsForExport()
 }

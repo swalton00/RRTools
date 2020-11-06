@@ -254,6 +254,7 @@ class RrToolsController {
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void exportAction() {
         log.debug("export requested")
+        ExportImport.instance.performExport(dbService, view.stage, this)
     }
 
     @ControllerAction

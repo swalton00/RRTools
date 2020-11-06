@@ -1,6 +1,7 @@
 package com.spw.rr
 
 import com.spw.rr.model.BadOrder
+import com.spw.rr.model.ExportCar
 import com.spw.rr.model.Inspection
 import com.spw.rr.model.MaintenanceItem
 import com.spw.rr.model.Manufacturer
@@ -200,6 +201,16 @@ class DBService {
             DBMapper mapper = session.getMapper(DBMapper.class)
             mapper.updateBadOrders(boParm)
         })
+    }
+
+    List<ExportCar> exportCarList() {
+        log.debug("exporting cars")
+        List<ExportCar> retList = null
+        mybatisHandler.withSqlSession({String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            retList =  mapper.listCarsForExport()
+        })
+        return retList
     }
 
 }

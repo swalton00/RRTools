@@ -4,6 +4,8 @@ import com.spw.rr.model.ObsReference
 import griffon.core.artifact.GriffonView
 import griffon.inject.MVCMember
 import griffon.metadata.ArtifactProviderFor
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.fxml.FXML
@@ -239,6 +241,11 @@ class CarEditView extends AbstractJavaFXGriffonView {
         })
         PrefixSelectionCustomizer.customize(carType)
         PrefixSelectionCustomizer.customize(carAARType)
+        carAARType.selectionModel.selectedItemProperty().addListener({ ObservableValue<ObsReference> obs, ObsReference oldValue, ObsReference newValue ->
+            if (newValue != null) {
+                carAARType.setTooltip(newValue.description)
+            }
+        } as ChangeListener)
         PrefixSelectionCustomizer.customize(carPRRType)
         PrefixSelectionCustomizer.customize(carCouplerType)
         PrefixSelectionCustomizer.customize(carKitType)

@@ -47,6 +47,7 @@ class CarEditController {
             model.reportingMark.add(newOne)
         }
         view.carReportingMark.setItems(model.reportingMark)
+        view.carReportingMark.setValue(null)
     }
 
     void doVendor() {
@@ -197,6 +198,7 @@ class CarEditController {
             ObsReference obs = new ObsReference()
             obs.id = item.id
             obs.typeVal = item.typeName
+            obs.description = item.typeDescription
             refList.add(obs)
         })
         box.setItems(refList)
@@ -217,6 +219,10 @@ class CarEditController {
         model.carColor.set("")
         model.carNumber.set("")
         model.carDescription.set("")
+        model.purchasePriceDecoded = new BigDecimal(0.00)
+        model.purchasePrice.set(0.00)
+        model.weathered.set(false)
+        model.resistWheels.set(false)
         view.carPRRType.getSelectionModel().clearSelection()
         view.carAARType.getSelectionModel().clearSelection()
         view.carKitType.getSelectionModel().clearSelection()

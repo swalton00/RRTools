@@ -14,7 +14,6 @@ class TableDataImport {
 
     private static final Logger log = LoggerFactory.getLogger(TableDataImport.class)
 
-
     public void performImport(String table, Window owner, DBService dbService,  RrToolsController controller) {
         log.debug("Importing into {}", table)
         log.info("DBservice is {}", dbService)

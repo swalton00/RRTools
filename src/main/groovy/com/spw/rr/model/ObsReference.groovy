@@ -3,6 +3,7 @@ package com.spw.rr.model
 class ObsReference {
     Integer id
     String typeVal
+    String description
 
     public ObsReference() {
 
