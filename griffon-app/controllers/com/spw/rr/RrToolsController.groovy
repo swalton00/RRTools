@@ -1,6 +1,6 @@
 package com.spw.rr
 
-import com.spw.rr.model.ReportingMark
+
 import com.spw.rr.model.ViewCar
 import com.spw.rr.parameter.ViewParameter
 import griffon.core.GriffonApplication
@@ -231,7 +231,7 @@ class RrToolsController {
 
     public void onShutdownRequested(GriffonApplication application) {
         log.debug("Shutdown has been requested")
-        propertyService.saveProperites()
+        propertyService.saveProperties()
         dataService.doShutdown()
     }
 

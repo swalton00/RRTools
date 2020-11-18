@@ -1,5 +1,6 @@
 package com.spw.rr
 
+import com.spw.rr.model.Preferences
 import griffon.core.artifact.GriffonService
 import griffon.metadata.ArtifactProviderFor
 
@@ -17,9 +18,11 @@ class PropertyService {
     int    savedUnits = 0 // key = savedUnits - 0 = English Units, 1 = Metric Units
     int savedScaleRatio = 87 // key = savedScaleRatio - 1:X
     String savedScaleName = "HO" // key = savedScale
+    String savedInspectFreq = "6" // every 6
+    String savedInspectUnits = "Months" // every 6 months
     /* end of externalized properties */
 
-    public void saveProperites() {
+    public void saveProperties() {
         log.debug("saving the Properties file")
         try {
             FileOutputStream propertyStream = new FileOutputStream(PROPERTY_FILE_NAME)
@@ -28,6 +31,30 @@ class PropertyService {
             log.error("exception saving the Property file", e)
         }
     }
+
+    Preferences getAllProperties() {
+        Preferences preferences = new Preferences()
+        preferences.comPort = getSavedComPort()
+        preferences.scaleName = getSavedScaleName()
+        preferences.scaleRatio = getScaleRatio()
+        int unitsValue = savedUnits
+        if (unitsValue == 0) {
+            preferences.units = "English"
+        } else {
+            preferences.units = "Metric"
+        }
+        preferences.inspectionFrequency = getInspectionFrequency()
+        preferences.inspectionUnits = getInspectionUnits()
+        return preferences
+    }
+
+    String checkProperty(String propName) {
+        if (properties.getProperty(propName) != null)
+            return properties.getProperty(propName)
+        else
+            return defaultProperties.getProperty(propName)
+    }
+
 
     private void initTest() {
         if (inited) {
@@ -40,6 +67,8 @@ class PropertyService {
         defaultProperties.setProperty("savedUnits", Integer.toString(savedUnits))  // 0 = English, 1 = Metric
         defaultProperties.setProperty("savedScaleRatio", Integer.toString(savedScaleRatio))
         defaultProperties.setProperty("savedScaleName", savedScaleName)
+        defaultProperties.setProperty("inspectionFrequency", savedInspectFreq)
+        defaultProperties.setProperty("inspectionUnits", savedInspectUnits)
         File file
         InputStream propertiesInput = null
         try {
@@ -59,61 +88,83 @@ class PropertyService {
             properties = defaultProperties
             /* add all default value saved properties here */
         }
+        savedComPort = checkProperty("savedComPort")
+        savedUnits = new Integer(checkProperty("savedUnits"))
+        savedScaleRatio = new Integer(checkProperty("savedScaleRatio"))
+        savedScaleName = checkProperty("savedScaleName")
+        savedInspectFreq = checkProperty("inspectionFrequency")
+        savedInspectUnits = checkProperty("inspectionUnits")
     }
 
     public int getUnits() {
         initTest()
-        return Integer.parseInt(properties.getProperty("savedUnits"))
+        return savedUnits
     }
 
     /**
      * Save the selected unit system
      * @param units 0 = English, 1 = Metric
      */
-    public void setUnits(int units) {
+    public void setSavedUnits(int units) {
+        log.debug("setting units to {}", units)
         savedUnits = units
         properties.setProperty("savedUnits", Integer.toString(units ))
+        saveProperties()
     }
 
     public int getScaleRatio() {
         initTest()
-        String prop = properties.getProperty("savedUnits")
-        if (prop == null) {
-            log.debug("using default scale ratio property")
-            prop = defaultProperties.getProperty("savedUnits")
-        }
-        return Integer.parseInt(prop)
+        return savedScaleRatio
     }
 
     public void setScaleRatio(int ratio) {
         savedScaleRatio = ratio
         properties.setProperty("savedScaleRatio", Integer.toString(ratio))
+        saveProperties()
     }
 
     public String getScaleName() {
         initTest()
-        String prop = properties.getProperty("savedScaleName")
-        if (prop == null) {
-            log.debug("using default scale ratio property")
-            prop = defaultProperties.getProperty("savedScaleName")
-        }
-        return prop
+        return savedScaleName
     }
 
     public void setScaleName(String name) {
         savedScaleName = name
         properties.setProperty("savedScaleName", name)
+        saveProperties()
     }
 
     public String getSavedComPort() {
         log.debug("returning saved com port value")
         initTest()
-        return properties.getProperty("savedComPort")
+        return savedComPort
     }
 
     public void setSavedComPort(String savedPort) {
         log.debug("saving the comPort value of {} ", savedPort  )
+        initTest()
         savedComPort = savedPort
         properties.setProperty("savedComPort", savedComPort)
+        saveProperties()
+    }
+
+    public void setInspection(String units, String frequency) {
+        log.debug("saving the inspection frequency and units")
+        initTest()
+        savedInspectUnits = units
+        savedInspectFreq = frequency
+        properties.setProperty("inspectionFrequency", frequency)
+        properties.setProperty("inspectionUnits", units)
+        saveProperties()
+    }
+
+    String getInspectionFrequency() {
+        initTest()
+        return savedInspectFreq
+    }
+
+    String getInspectionUnits() {
+        initTest()
+        return savedInspectUnits
     }
 }

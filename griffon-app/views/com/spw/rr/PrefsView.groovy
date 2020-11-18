@@ -27,11 +27,11 @@ class PrefsView extends AbstractJavaFXGriffonView {
     @Nonnull
     PrefsModel model
 
-    @FXML private ChoiceBox comPortList
+    @FXML ChoiceBox comPortList
 
-    @FXML private ChoiceBox unitSystemList
+    @FXML ChoiceBox unitSystemList
 
-    @FXML private TextField scaleRatio
+    @FXML TextField scaleRatio
 
     @FXML ChoiceBox scaleName
     @FXML ChoiceBox inspectionFrequency
@@ -43,14 +43,11 @@ class PrefsView extends AbstractJavaFXGriffonView {
                 .createApplicationContainer(Collections.emptyMap());
         stage.setTitle("Set RRTools Preferences");
         stage.initModality(Modality.APPLICATION_MODAL)
-        //stage.setWidth(400);
-        //stage.setHeight(600);
         stage.setScene(init());
         unitSystemList.getItems().addAll("English", "Metric")
         scaleName.getItems().addAll("Z", "N", "TT", "HO", "OO", "S", "O", "F", "G", "1/4 In", "1 In", "Other")
         inspectionFrequency.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
-        inspectionUnits.getItems().addAll("Month", "Year")
-
+        inspectionUnits.getItems().addAll("Months", "Years")
         getApplication().getWindowManager().attach("prefsWindow", stage);
     }
 

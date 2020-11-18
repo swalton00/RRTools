@@ -76,7 +76,13 @@ class ExportImport {
             outputLine.append(",")            // Track
             outputLine.append(",")             //
             outputLine.append(",")            // Final Destination
-            outputLine.append("-,\n")           //
+            outputLine.append("-,")           //
+            outputLine.append("-,")           // Track
+            if (!it.idTag.trim().empty) {
+                outputLine.append("ID")
+                outputLine.append(it.idTag)
+            }
+            outputLine.append("\n")
             output.print(outputLine.toString())
             outputLine.setLength(0)
             log.debug("Exported car {}", it.reporting + it.carNumber)

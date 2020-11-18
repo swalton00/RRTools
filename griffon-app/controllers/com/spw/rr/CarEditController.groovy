@@ -220,7 +220,7 @@ class CarEditController {
         model.carNumber.set("")
         model.carDescription.set("")
         model.purchasePriceDecoded = new BigDecimal(0.00)
-        model.purchasePrice.set(0.00)
+        model.purchasePrice.set("0.00")
         model.weathered.set(false)
         model.resistWheels.set(false)
         view.carPRRType.getSelectionModel().clearSelection()

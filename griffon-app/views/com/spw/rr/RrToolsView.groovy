@@ -44,6 +44,7 @@ class RrToolsView extends AbstractJavaFXGriffonView {
     @FXML MenuItem maintainCarActionTarget
     @FXML MenuItem badOrderCarActionTarget
     @FXML MenuItem inspectCarActionTarget
+    @FXML MenuItem prefsActionTarget
 
     public Stage stage
 
@@ -60,6 +61,7 @@ class RrToolsView extends AbstractJavaFXGriffonView {
         maintainCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
         inspectCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
         badOrderCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
+        prefsActionTarget.setText("Preferences")
     }
 
     // build the UI

@@ -98,7 +98,7 @@
                 <DatePicker fx:id="datePuchased" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                 <DatePicker fx:id="inServiceDate" GridPane.columnIndex="1" GridPane.rowIndex="17" />
                 <Label text="Purchase Price" GridPane.rowIndex="18" />
-                <Label text="Pruchased from:" GridPane.rowIndex="19" />
+                <Label text="Purchased from:" GridPane.rowIndex="19" />
                 <TextField fx:id="purchasePrice" GridPane.columnIndex="1" GridPane.rowIndex="18" />
                 <ComboBox fx:id="vendor" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="19" />
                 <Label text="Manufacturer of car or kit:" GridPane.rowIndex="15" />
