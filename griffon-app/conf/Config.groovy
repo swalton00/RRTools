@@ -1,11 +1,11 @@
 application {
     title = 'rrtools'
-    startupGroups = ['rrTools']
+    startupGroups = ['RRTools']
     autoShutdown = true
 }
 mvcGroups {
     // MVC Group for "rrTools"
-    'rrTools' {
+    'RRTools' {
         model      = 'com.spw.rr.RrToolsModel'
         view       = 'com.spw.rr.RrToolsView'
         controller = 'com.spw.rr.RrToolsController'
