@@ -10,4 +10,8 @@ class Preferences {
     String units
     Integer scaleRatio
     String scaleName
+    String dbURL
+    String dbUsername
+    String dbClassName
+    String dbPassword
 }

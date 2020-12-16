@@ -74,6 +74,7 @@ class RrToolsController {
     private static String[] COLUMN_NAME = ["Car Type", "AAR Type", "Kit Type", "Coupler Type", "PRR Type"]
     private ViewParameter currentView = new ViewParameter()
 
+    boolean startInPreferences = false
 
     MVCGroup getGroup(MVCGroup group, String groupName) {
         if (group != null) {
@@ -100,6 +101,9 @@ class RrToolsController {
             initialized = true
             model.currentView = VIEW_ALL
             String savedComPort = propertyService.getSavedComPort();
+            if (propertyService.getDbURL().isEmpty()) {
+                startInPreferences = true
+            }
             if (savedComPort != null && !savedComPort.equals("<None>")) {
                 getLog().debug("setting comm port to {} ", savedComPort);
                 dataService.setComPort(savedComPort);
@@ -192,8 +196,14 @@ class RrToolsController {
             }
             model.setStatusLine(dataService.getCommPortStatus());
         }
+        if (propertyService.getDbURL().isEmpty()) {
+            startInPreferences = true
+        }
         if (name.equals("mainWindow")) {
-            log.debug("in the MainWindow code")
+            if (startInPreferences) {
+                log.warn("database URL is empty - switching to preferences")
+                prefsAction()
+            }
             view.carList.setItems(model.tableContents)
             view.rptMark.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("reportingMark"))
             view.carNumber.setCellValueFactory(new PropertyValueFactory<ViewCar, String>("carNumber"))

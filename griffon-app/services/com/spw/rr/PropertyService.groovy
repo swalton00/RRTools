@@ -8,6 +8,23 @@ import griffon.metadata.ArtifactProviderFor
 @ArtifactProviderFor(GriffonService)
 class PropertyService {
 
+    private static PropertyService propertyService = null;
+
+/*
+
+    PropertyService() {
+        log.debug("Int the property service constructor")
+        this.propertyService = this;
+    }
+
+    static PropertyService getInstance() {
+        if (this.propertyService == null) {
+            this.propertyService = new PropertyService();
+        }
+        return propertyService;
+    }
+
+*/
     private boolean inited = false
     private static String PROPERTY_FILE_NAME = "rrtools.properties"
     Properties properties = new Properties()
@@ -20,6 +37,9 @@ class PropertyService {
     String savedScaleName = "HO" // key = savedScale
     String savedInspectFreq = "6" // every 6
     String savedInspectUnits = "Months" // every 6 months
+    String dbURL = ""
+    String dbUsername = ""
+    String dbPassword = ""
     /* end of externalized properties */
 
     public void saveProperties() {
@@ -45,6 +65,9 @@ class PropertyService {
         }
         preferences.inspectionFrequency = getInspectionFrequency()
         preferences.inspectionUnits = getInspectionUnits()
+        preferences.dbURL = getDbURL()
+        preferences.dbUsername = getDbUsername()
+        preferences.dbPassword = getDbPassword()
         return preferences
     }
 
@@ -60,6 +83,7 @@ class PropertyService {
         if (inited) {
             return
         }
+        inited = true
         log.debug("Initializing the Property file")
         defaultProperties = properties
         /* add all default value saved properties here */
@@ -69,6 +93,9 @@ class PropertyService {
         defaultProperties.setProperty("savedScaleName", savedScaleName)
         defaultProperties.setProperty("inspectionFrequency", savedInspectFreq)
         defaultProperties.setProperty("inspectionUnits", savedInspectUnits)
+        defaultProperties.setProperty("dbUsername", dbUsername)
+        defaultProperties.setProperty("dbPassword", dbPassword.getBytes().encodeHex().toString())
+        defaultProperties.setProperty("dbURL", dbURL)
         File file
         InputStream propertiesInput = null
         try {
@@ -94,6 +121,9 @@ class PropertyService {
         savedScaleName = checkProperty("savedScaleName")
         savedInspectFreq = checkProperty("inspectionFrequency")
         savedInspectUnits = checkProperty("inspectionUnits")
+        dbURL = checkProperty("dbURL")
+        dbPassword = new String(checkProperty("dbPassword").decodeHex())
+        dbUsername = checkProperty("dbUsername")
     }
 
     public int getUnits() {
@@ -167,4 +197,59 @@ class PropertyService {
         initTest()
         return savedInspectUnits
     }
+
+    String getDbUrl() {
+        initTest()
+        return dbURL
+    }
+
+       String getDbUsername() {
+        initTest()
+        return dbUsername
+    }
+    String getDbPassword() {
+        initTest()
+        return dbPassword
+    }
+    public void setDbUrl(String url) {
+        log.debug("saving the database URL")
+        initTest()
+        dbURL = url
+        properties.setProperty("dbURL", dbURL)
+    }
+
+      public void setDbUsername(String username) {
+        log.debug("saving the database username")
+        initTest()
+        dbUsername = username
+        properties.setProperty("dbUsername", dbUsername)
+    }
+    public void setDbPassword(String password) {
+        log.debug("saving the database password")
+        initTest()
+        dbPassword = password
+        properties.setProperty("dbPassword", dbPassword.getBytes().encodeHex().toString())
+    }
+
+    public void setDbItems(Map<String, String> inputData) {
+        log.debug("saving the database items")
+        initTest()
+        if (inputData.containsKey("dbUsername")) {
+            dbUsername = inputData.get("dbUsername")
+            properties.setProperty("dbUsername", dbUsername)
+        }
+        if (inputData.containsKey("dbURL")) {
+            dbURL = inputData.get("dbURL")
+            properties.setProperty("dbURL", dbURL)
+        }
+        if (inputData.containsKey("dbPassword")) {
+            dbPassword = inputData.get("dbPassword")
+            properties.setProperty("dbPassword", dbPassword.getBytes().encodeHex().toString())
+        }
+        saveProperties()
+    }
+
+
+
+
 }

@@ -70,7 +70,7 @@ class RrToolsView extends AbstractJavaFXGriffonView {
         scene.setFill(Color.WHITE);
         scene.getStylesheets().add("bootstrapfx.css");
 
-        ScrollPane pane = loadFromFXML();
+        ScrollPane pane = loadFromFXML("com.spw.rr.rrTools.fxml");
         model.statusLineProperty().bindBidirectional(statusLine.textProperty())
         //  model.inputProperty().bindBidirectional(input.textProperty());
         //  model.outputProperty().bindBidirectional(output.textProperty());

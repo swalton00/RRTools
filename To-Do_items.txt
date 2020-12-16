@@ -1,11 +1,19 @@
 .LOG
 
 8:43 AM 10/2/2020
-1. minor issue about what key forces commit when editing an entry in table maintenance
-2. add check for uniqueness when added or editing a type value in reference tabel maint.
-3. Bad order screen
-4. Maintenance screen
+1. partial minor issue about what key forces commit when editing an entry in table maintenance
+2. partial add check for uniqueness when added or editing a type value in reference tabel maint.
+3. COMP ++Bad order screen
+4. COMP ++Maintenance screen
 5. add check mark to view all
 6. view selections
 7. subset views based on car reporting mark
-8. Add Source, Purchase Price, Manufacturer to Car DB elemtns
+8. COMP ++Add Source, Purchase Price, Manufacturer to Car DB elemtns
+
+
+9:41 AM 12/10/2020
+10. Mutable DataSource configuration
+    Set from Preferences, URL,user, password
+11. Populate tables in empty database
+12. Documentation (PDF) (asciidoctor)
+13. Help files (shared with documentation?)
