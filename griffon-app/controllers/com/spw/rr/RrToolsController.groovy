@@ -192,6 +192,14 @@ class RrToolsController {
         application.windowManager.show("helpWindow")
     }
 
+    void onWindowHidden(String name, Stage window) {
+        if (name.equals("mainWindow")) {
+            log.debug("shutting down as main window is hidden")
+            application.shutdown()
+        }
+        windowActive = true
+    }
+
     void onWindowShown(String name, Stage window) {
         log.debug("in On Window shown with window {}", window)
         if (!initialized) {
@@ -242,12 +250,7 @@ class RrToolsController {
         }
     }
 
-    void onWindowHidden(String name, Stage window) {
-        log.debug("window hidden - window is {}", name)
-        windowActive = true
-    }
-
-    public void onShutdownRequested(GriffonApplication application) {
+  public void onShutdownRequested(GriffonApplication application) {
         log.debug("Shutdown has been requested")
         propertyService.saveProperties()
         dataService.doShutdown()
