@@ -10,6 +10,7 @@ import javafx.scene.Scene
 import javafx.scene.control.MenuItem
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import javafx.scene.input.KeyCombination
 import javafx.stage.Stage
 import javafx.scene.paint.Color
 import org.codehaus.griffon.runtime.javafx.artifact.AbstractJavaFXGriffonView
@@ -45,6 +46,7 @@ class RrToolsView extends AbstractJavaFXGriffonView {
     @FXML MenuItem badOrderCarActionTarget
     @FXML MenuItem inspectCarActionTarget
     @FXML MenuItem prefsActionTarget
+    @FXML MenuItem helpActionTarget
 
     public Stage stage
 
@@ -61,6 +63,7 @@ class RrToolsView extends AbstractJavaFXGriffonView {
         maintainCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
         inspectCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
         badOrderCarActionTarget.disableProperty().bind(carList.getSelectionModel().selectedItemProperty().isNull())
+        helpActionTarget.setAccelerator(KeyCombination.keyCombination("F1"))
         prefsActionTarget.setText("Preferences")
     }
 
@@ -76,7 +79,6 @@ class RrToolsView extends AbstractJavaFXGriffonView {
         //  model.outputProperty().bindBidirectional(output.textProperty());
         ((Group) scene.getRoot()).getChildren().addAll(pane);
         connectActions(pane, controller);
-
         return scene;
     }
 

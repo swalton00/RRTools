@@ -1,6 +1,6 @@
 application {
     title = 'rrtools'
-    startupGroups = ['RRTools']
+    startupGroups = ['RRTools', 'Help']
     autoShutdown = true
 }
 mvcGroups {
@@ -44,6 +44,12 @@ mvcGroups {
         model = 'com.spw.rr.MaintenanceModel'
         view = 'com.spw.rr.MaintenanceView'
         controller = 'com.spw.rr.MaintenanceController'
+    }
+
+    'Help' {
+        model = 'com.spw.rr.HelpSystemModel'
+        view = 'com.spw.rr.HelpSystemView'
+        controller = 'com.spw.rr.HelpSystemController'
     }
 
 }

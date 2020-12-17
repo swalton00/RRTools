@@ -52,6 +52,7 @@ class RrToolsController {
     MVCGroup inspect = null
     MVCGroup maintain = null
     MVCGroup badOrder = null
+    MVCGroup helpSystem = null
 
     private static final int VIEW_ALL = 0
     private static final int VIEW_COUPLER = 1
@@ -106,7 +107,7 @@ class RrToolsController {
             }
             if (savedComPort != null && !savedComPort.equals("<None>")) {
                 getLog().debug("setting comm port to {} ", savedComPort);
-                dataService.setComPort(savedComPort);
+                dataService.setCommPort(savedComPort);
             }
         }
         model.setStatusLine(dataService.getCommPortStatus());
@@ -182,6 +183,13 @@ class RrToolsController {
     public void onStatus_Update(String newStatus) {
         log.debug("got a status update with {}", newStatus)
         runInsideUISync({ -> model.setStatusLine(newStatus) })
+    }
+
+    @ControllerAction
+    @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
+    void helpAction() {
+        helpSystem = getGroup(helpSystem, "Help")
+        application.windowManager.show("helpWindow")
     }
 
     void onWindowShown(String name, Stage window) {

@@ -88,6 +88,11 @@
               </Menu>
               <Menu mnemonicParsing="false" text="Help">
                 <items>
+                           <MenuItem fx:id="helpActionTarget" mnemonicParsing="false" text="Help">
+                              <accelerator>
+                                 <KeyCodeCombination alt="UP" code="H" control="UP" meta="UP" shift="UP" shortcut="ANY" />
+                              </accelerator>
+                           </MenuItem>
                   <MenuItem mnemonicParsing="false" text="About" />
                 </items>
               </Menu>
