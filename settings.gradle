@@ -1,2 +1,3 @@
 rootProject.name = 'rrtools'
 include 'rrtools'
+include 'docs'

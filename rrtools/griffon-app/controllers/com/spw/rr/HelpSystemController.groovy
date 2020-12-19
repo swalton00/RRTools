@@ -28,7 +28,7 @@ class HelpSystemController {
     void onWindowShown(String windowName, Stage w) {
         if (windowName.equals("helpWindow")) {
             log.debug("setting up the help window")
-            InputStream htmlStream = application.resourceHandler.getResourceAsStream('helpSystem/HelpIndex.html')
+            InputStream htmlStream = application.resourceHandler.getResourceAsStream('index.html')
             String htmlText = readString(htmlStream)
             model.engine.loadContent(htmlText)
         }

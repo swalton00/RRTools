@@ -119,6 +119,14 @@ tasks.withType(GroovyCompile) {
 import com.github.jengelman.gradle.plugins.shadow.transformers.*
 import java.text.SimpleDateFormat
 
+sourceSets {
+    main { 
+	resources {
+            srcDirs += ['../docs/build/docs/asciidoc/html5']
+	}
+    }
+}
+
 shadowJar {
     transform(ServiceFileTransformer)
     transform(ServiceFileTransformer) {

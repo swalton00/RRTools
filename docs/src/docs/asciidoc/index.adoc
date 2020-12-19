@@ -1,0 +1,36 @@
+= RR Tools
+A Tool for tracking your Model Railroad Cars
+J. Scott Walton jscottwalton@gmail.com
+v1.0.2 First documentation version
+
+== Starting RrTools
+
+=== The First Time
+
+=== After the first time
+
+== The RR Tools Page
+=== About this Page
+Across the top are the usual Menu items.
+The far right of the menu contains elements that allow you to select
+a subset of the cars, based on individual characteristics.
+The body of a the page contains a table of your railroad cars,
+with a heading describing the columns.
+If you have not yet entered any cars, the body will show "No Content in Table."
+
+There is a status line at the bottom of the page.
+
+=== Column Headings
+==== About the Columns
+The columns are quite flexible.
+Click on the Column Heading to sort by that column.
+A second click will sort in Descending Order (an arrow by the column name
+will show the direction of the sort).
+An additional click will undo the sort.
+Drag the divider left or right to make the column larger or smaller.
+Drag the entire column to a new position.
+
+When you change the column characteristics, the columns will revert to
+the standard position and size the next time you start the program.
+
+==== Reporting Mark
