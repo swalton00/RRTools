@@ -426,4 +426,36 @@ class RrToolsController {
         log.debug("import prr types requested")
         importWork(TABLE_NAME[MAINT_PRR_TYPE])
     }
+
+
+    private void exports(String tableName, String exportTitle) {
+
+    }
+
+    @ControllerAction
+    void exportCarTypeAction() {
+        log.debug("exporting car types")
+        exports(TABLE_NAME[MAINT_CAR_TYPE], "Export Car Types")
+    }
+
+    @ControllerAction
+    void exportAARTypeAction() {
+        log.debug("exporting AAR Types")
+        exports(TABLE_NAME[MAINT_AAR_TYPE], "Export AAR Types")
+    }
+
+    @ControllerAction
+    void exportCouplerTypeAction() {
+        log.debug("exporting Coupler Types")
+        exports(TABLE_NAME[MAINT_COUPLER_TYPE], "Export Coupler Types")
+    }
+
+    @ControllerAction
+    void exportPRRTypeAction() {
+        log.debug("exporting PRR Types")
+        exports(TABLE_NAME[MAINT_KIT_TYPE], "Export Kit Types")
+    }
+
+
+
 }

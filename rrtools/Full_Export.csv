@@ -1,0 +1,9 @@
+Number,Road,Type,Length,Weight,Color,Owner,Built,Location,-,Track,Load,Kernel,Moves,Value,Comment,Miscellaneous,Extensions,Wait,Pick up,Last,RWE Location,-,Track,RWE Load,Train,Destination,-,Track,Final Destination,-,Track
+120683,CB&Q,XM,42,3.90,Tuscan,,11-18,,-,,E,,,,,,,,,,,-,,,,-,,,,-,-,ID030002FFCD
+39256,FGEX,RS,42,4.20,tan,,1-49,,-,,E,,,,,,,,,,,-,,,,-,,,,-,-,ID0103DB5AF7
+12747,LNE,LO,35,2.30,grey,,8-38,,-,,E,,,,,,,,,,,-,,,,-,,,,-,-,ID00000000EB
+12237,NP,XM,42,3.75,Tuscan,,7-35,,-,,E,,,,,,,,,,,-,,,,-,,,,-,-,
+12275,NP,XM,42,3.75,Tuscan,,7-35,,-,,E,,,,,,,,,,,-,,,,-,,,,-,-,ID0300029F2F
+12361,NP,XM,42,3.75,Tuscan,,7-35,,-,,E,,,,,,,,,,,-,,,,-,,,,-,-,ID0300029B94
+48511,Pennsylvania,XA,51,3.00,Tuscan,,8-37,,-,,E,,,,,,,,,,,-,,,,-,,,,-,-,ID0103DBA750
+58900,Pennsylvania,XA,51,3.41,Tuscan,,11-36,,-,,E,,,,,,,,,,,-,,,,-,,,,-,-,ID0103DB5DB3

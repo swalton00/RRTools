@@ -1,0 +1,2 @@
+Number,Road,Type,Length,Weight,Color,Owner,Built,Location,-,Track,Load,Kernel,Moves,Value,Comment,Miscellaneous,Extensions,Wait,Pick up,Last,RWE Location,-,Track,RWE Load,Train,Destination,-,Track,Final Destination,-,Track
+48511,Pennsylvania,Boxcar,51,3.4,Tuscan,jsw,6-37,,-,,E,,0,,,,,0,,10/28/2020 14:55:20,,-,,E,,,-,,,-,

@@ -1,17 +1,60 @@
 = RR Tools
 :toc: left
 A Tool for tracking your Model Railroad Cars
-J. Scott Walton jscottwalton@gmail.com
-v1.0.2 First documentation version
+:imagesdir: src/docs/asciidoc/images
+
+
+== About RrTools
+
+RrTools is a program to keep track of you model railroad cars.
+It focuses on cars (though locomotives are not excluded).
+If can exchange information with JMRI Operations -- cars be exported from
+JMRI and inported into RrTools (and
+_vice versa_).
+If you have equipped your cars with RFID chips and have an RFID reader,
+RrTools can make it easier to select existing cars and enter new cars.
+Keep track of cars needing maintenance and perform regular inspections using RrTools.
 
 == Starting RrTools
 
+=== Starting
+[WARNING]
+You must use Java 1.8 to run RRTools. The program uses JavaFX and this is not
+included in the current Java.
+It is possible to run with Java 11, but the JavaFX module must be
+separately downloaded and correctly linked.
+
+Use "Java -version" to make sure you are running the correct version of Java.
+Run the program entering:
+
+ java -jar rrtools-1.0.2.jar
+
+If this is the first time you have run the program, it will take you to
+a "Preferences" page.
+
 === The First Time
+
+The first time you run the program, you must enter some required information
+(primarily the name and location for the database).
+If the database information is not present, the Preferences page will be
+opened.
+After you enter the requested information and click on "Done", the program will end.
+When the program next starts, you will be viewing the main page.
 
 === After the first time
 
 == The RR Tools Page
+
 === About this Page
+
+==== The Page Elements
+
+image::basic_screen.png[]
+
+1. The list of cars
+2. Drop down list for view selection
+3. Message area (Status line)
+
 Across the top are the usual Menu items.
 The far right of the menu contains elements that allow you to select
 a subset of the cars, based on individual characteristics.
@@ -22,6 +65,7 @@ If you have not yet entered any cars, the body will show "No Content in Table."
 There is a status line at the bottom of the page.
 
 === Column Headings
+
 ==== About the Columns
 The columns are quite flexible.
 Click on the Column Heading to sort by that column.
@@ -34,4 +78,151 @@ Drag the entire column to a new position.
 When you change the column characteristics, the columns will revert to
 the standard position and size the next time you start the program.
 
-==== Reporting Mark
+==== Column Contents
+
+The body of the list shows the Reporting Mark, Car Number, Car Type and AAR Type of each car. \
+Reporting Mark and Car Number are required for every car.
+Car Type is optional (but highly recomended).
+AAR Type is also optional
+
+=== Entering New Cars
+
+If you have an RFID Reader attached, it is simply a matter of bringing the car's RFID tag
+within range of the reader.
+When a new tag is detected (a tag number that does not exist in the database),
+the New Car page is shown.
+If the tag has been before, the car with that tag is selected (if the car is
+shown in the current view, otherwise the status line will show the tag).
+If you want to enter a new car without a tag, select "Edit/Create New" from the menu.
+
+== The New Car/Edit Car Page
+
+image::new_Car_window.png[]
+
+* Car ID database number of the current car.
+It will be empty if this is a new car. (It is not editable).
+* Reporting Mark is required (The "Save Changes" button will not
+be enabled until a  Reporting Mark and Car Number are entered).
+Click on the Drop-Down arrow to see the contents of the current list.
+If the Reporting Mark you need is not shown in the list,
+type the new reporting mark in the entry area.
+* Tag Number is the RFID tag number that was read.
+It will be empty if no tag was read.
+It is not editable.
+(The only ways to add a tag to a car are either to read from an RFID Reader,
+or import a car with an RFID tag).
+* Car Number is the second required field.
+Though it shows as car "number", it is a text field and allows you to enter any text you
+desire (though it probably should be a number).
+* Car Type is a drop down list.
+Select the matching car type from the list.
+If the car type is not shown, you will need to use "Maintain/Maintain Car Type" to
+add a new car Type (or use "Maintain/Import Table Data/Import Car Types" to import
+a CSV file with new car types).
+* AAR Type is another drop-down list.
+Again use either Maintain/Maintain AAR Type or Maintain/Import Table Data/Import AAR Types
+to add additional types.
+* PRR Type -- again a drop down list. The Pennsylvania Railroad had its own version of
+car type which denoted both the design series and the the type.
+If you don't want to use this field, feel free to ignore it.
+* Type of Coupler. If you use Sargent couplers, there is a drop-down for those
+(as well as Kadee).
+If you don't use Sargent couplers, use the Maintain menu to update the list of coupler types.
+* Type of Kit. A drop-down list let you track whether this is a Ready-to-Run,
+"Shake-the-box", Craftsman, or scratchbuilt.
+* Length of Car (in scale feet).
+Update preferences, or select "Meters" if you want to use the Metric units. The length is
+needed to calculate the correct NMRA car weight.
+The length will also be used if you choose to export cars to JMRI Operations.
+* Weight of car, in either ounces, or, by selecting grams from the next drop-down (or electing
+Metric Units on the Preferences page).
+* Color of car. The car color will help in identifying the car, and is also exported to
+JMRI Operations.
+* Resistance wheels - check this box if the car is equipped with resistors for detection
+purposes.
+* Weathered? - check this box if the car has been weathered.
+* Manufacturer - the manufacturer of the car, or kit.
+Add the manufacturer here if you don't find it in the drop-down.
+* Date Purchased - enter, or choose the date the car or kit was purchased.
+* Date Placed in Service - enter or choose the date the car began service on your railroad.
+* Purchase Price - enter the price of the car or kit if you want to track that information.
+* Purchased From - choose, or enter a new vendor from whom you purchased this car or kit.
+* Date Kit Built - enter or pick the date that construction of the kit was completed.
+Ignore this field if this a Ready to run car.
+* Built Date - enter the month and year stenciled on the car. This field is useful for
+tracking the era to which the car belongs.
+* Description - enter a basic description of the car.
+
+When you have completed entering all the desired information, click on the "Save Changes" button.
+This button will be enabled after you have entered both the Reporting Mark and the
+car Number.
+If you change your mind and want to revert without saving any data, click on the
+"Cancel Changes" button.
+
+
+== The Preferences Page
+
+image::Preferences_page.png[]
+
+This page will be shown when you first run the program, or whenever the database information
+is invalid. There are defaults for many field, except for the database information.
+The program will *not* run if the database information is not present (and valid).
+When you enter, or change, the database information and click on "Prefs Done", the program will
+exit. The new information will be used when you restart the program.
+
+=== The Fields
+
+* Com Port - a drop-down list of available com ports on your system. If you have an RFID reader
+attached, select the COM port to which the reader is attached.
+This list is built when the program starts and will not change if you attach and/or detach
+a reader.
+The format of the name of the port is operating system dependent.
+If you don't have or don't want to use an RFID reader, you may ignore this field.
+The status line will show that you don't have a reader connected.
+* Unit System - select whether you want to use English units (feet and ounces), or Metric units
+(Meters and Grams).
+* Scale ratio - select your scale.
+* Inspection Every - How frequently do you want to inspect your cars.
+Enter the number of months or years between inspections (use 99 years if you don't want to
+reinspect cars).
+
+=== Database Information
+Changing the following information will force the program to exit after completion.
+
+The Database may be an internal database (built by the program, will software contained
+within the program), or it may be an external database. Currently only DB2 is supported as
+an external database.
+If you use an external database, enter the URL for the database and choose the URL button.
+Otherwise, choose the location and name of the database and the URL will be created.
+
+* Database Username - enter the username associated with this database. If this is a
+new database, the user information will be created based on what you enter.
+* Database Password - the password is obscured but not encrypted. It will be saved with
+the preferences information.
+* Preferences Location - The directory containing the database.
+This *MUST* be a fully qualified location - a relative location is not supported.
+The name from the "Database Name" field will be appended, along with other information,
+to form the complete URL.
+
+Click on "Prefs Done" to save the information. If the database information was changed,
+the program will exit. Restart the program to use the new infomation.
+
+== Import/Export Cars
+
+This choice allows you to import and export the Cars to and from JMRI Operations.
+For Export, choose the name and location for the file to be created.
+A CSV file will be created in the format required for JMRI Operations Import.
+Similarly, once a file has been created by JMRI Operations Export, do a "File/Import"
+and choose that file.
+
+== Maintain - edit drop-down list contents
+
+== Maintain - Import/Export drop-down contents
+
+== About RFID
+
+== Using RFID with RrTools
+
+
+
+

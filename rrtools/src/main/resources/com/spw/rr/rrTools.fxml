@@ -62,6 +62,14 @@
                   <MenuItem fx:id="maintainKitTypeActionTarget" mnemonicParsing="false" text="Kit Types" />
                   <MenuItem fx:id="maintainCouplerTypeActionTarget" mnemonicParsing="false" text="Coupler Types" />
                            <MenuItem fx:id="maintainPRRTypeActionTarget" mnemonicParsing="false" text="PRR Types" />
+                           <Menu mnemonicParsing="false" text="Export Table Data">
+                             <items>
+                               <MenuItem fx:id="ExportCarTypeActionTarget" mnemonicParsing="false" text="Export Car Types" />
+                                 <MenuItem fx:id="ExportAARTypeActionTarget" mnemonicParsing="false" text="Export AAR Types" />
+                                 <MenuItem fx:id="ExportCouplerTypeActionTarget" mnemonicParsing="false" text="Export Coupler Types" />
+                                 <MenuItem fx:id="ExportPRRTypeActionTarget" mnemonicParsing="false" text="Export PRR Types" />
+                             </items>
+                           </Menu>
                            <Menu mnemonicParsing="false" text="Import Table Data">
                              <items>
                                <MenuItem fx:id="importCarTypesActionTarget" mnemonicParsing="false" text="Car Types" />

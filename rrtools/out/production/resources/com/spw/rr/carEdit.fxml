@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="629.0" prefWidth="484.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.spw.rr.CarEditView">
+    <children>
+        <GridPane hgap="5.0" layoutY="18.0" prefHeight="610.0" prefWidth="484.0" vgap="2.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Car ID" />
+                <Label fx:id="carId" text="" GridPane.columnIndex="1" />
+                <Label text="Reporting Mark" GridPane.rowIndex="1" />
+                <ComboBox fx:id="carReportingMark" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="Tag Number" GridPane.rowIndex="2" />
+                <Label fx:id="carTag" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label text="Car Number" GridPane.rowIndex="3" />
+                <TextField id="carNumber" fx:id="carNumber" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="Car Type" GridPane.rowIndex="4" />
+                <ChoiceBox fx:id="carType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label text="AAR Type" GridPane.rowIndex="5" />
+                <ChoiceBox fx:id="carAARType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label text="PRR Type" GridPane.rowIndex="6" />
+                <ChoiceBox fx:id="carPRRType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <Label text="Type of Coupler" GridPane.rowIndex="7" />
+                <ChoiceBox fx:id="carCouplerType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <Label text="Type of Kit" GridPane.rowIndex="8" />
+                <ChoiceBox fx:id="carKitType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <Label text="Length of car" GridPane.rowIndex="9" />
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="9">
+                    <children>
+                        <TextField id="carLength" fx:id="carLength" />
+                        <ChoiceBox fx:id="carLengthUnits" prefWidth="150.0" />
+                    </children>
+                </HBox>
+                <Label text="Weight of Car" GridPane.rowIndex="10" />
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="10">
+                    <children>
+                        <TextField id="carWeight" fx:id="carWeight" />
+                        <ChoiceBox fx:id="carWeightUnits" prefWidth="150.0" />
+                    </children>
+                </HBox>
+                <Label text="Description" GridPane.rowIndex="22" />
+                <Label text="Type of Wheels" GridPane.rowIndex="11" />
+                <Label text="Color of Car" GridPane.rowIndex="12" />
+                <Label text="Date Purchased" GridPane.rowIndex="16" />
+                <Label text="Date Placed in service" GridPane.rowIndex="17" />
+                <Label text="Built Date on car" GridPane.rowIndex="21" />
+                <TextField fx:id="carWheels" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                <TextField fx:id="carColor" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                <Label text="Resistance wheels?" GridPane.rowIndex="13" />
+                <Label text="Weathered?" GridPane.rowIndex="14" />
+                <CheckBox fx:id="resistWheels" mnemonicParsing="false" text="Resistors in wheels?" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                <CheckBox fx:id="weathered" mnemonicParsing="false" text="Weathered?" GridPane.columnIndex="1" GridPane.rowIndex="14" /><ComboBox fx:id="manufacturer" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                <DatePicker fx:id="datePuchased" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                <DatePicker fx:id="inServiceDate" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                <Label text="Purchase Price" GridPane.rowIndex="18" />
+                <Label text="Purchased from:" GridPane.rowIndex="19" />
+                <TextField fx:id="purchasePrice" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                <ComboBox fx:id="vendor" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="19" />
+                <Label text="Manufacturer of car or kit:" GridPane.rowIndex="15" />
+                <Label text="Date Kit Built" GridPane.rowIndex="20" />
+                <DatePicker fx:id="kitBuiltDate" GridPane.columnIndex="1" GridPane.rowIndex="20" />
+                <TextField fx:id="carBltDate" GridPane.columnIndex="1" GridPane.rowIndex="21" />
+                <Button fx:id="cancelChangesActionTarget" mnemonicParsing="false" text="Cancel Car Changes" GridPane.halignment="CENTER" GridPane.rowIndex="23" />
+                <Button fx:id="saveChangesActionTarget" mnemonicParsing="false" text="Save Car" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="23" />
+                <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="90.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="22">
+                    <content>
+                        <TextArea fx:id="carDescription" prefHeight="200.0" prefWidth="200.0" />
+                    </content>
+                </ScrollPane>
+                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="24">
+                    <children>
+                        <Label text="Message: ">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding></Label>
+                        <Label fx:id="messageText">
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding></Label>
+                    </children>
+                </HBox>
+
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>
