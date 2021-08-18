@@ -99,6 +99,7 @@ class PrefsController {
         model.dbUsername.set(currentPrefs.dbUsername)
         model.dbPassword.set(currentPrefs.dbPassword)
         model.dbURL.set(currentPrefs.dbURL)
+        model.message.set("")
         if (model.dbURL.value.startsWith(JDBC_PRE) &
                 model.dbURL.value.endsWith(JDBC_POST)) {
             view.useDbLoc.selected = true
@@ -152,8 +153,16 @@ class PrefsController {
         String url = model.dbURL.value
         String user = model.dbUsername.value
         String pw = model.dbPassword.value
-        propertyService.setDbItems([dbURL: url, dbUsername: user, dbPassword: pw])
         if (model.dbChangeListener.getChanged()) {
+            DbSetup dbSetup = DbSetup.getInstance()
+            String retValue = dbSetup.dbStart(url, user, pw)
+            if (retValue != null) {
+                runInsideUISync {
+
+                }
+                    return
+            }
+            propertyService.setDbItems([dbURL: url, dbUsername: user, dbPassword: pw])
             runInsideUISync {
                 Alert alert = new Alert(Alert.AlertType.WARNING)
                 alert.setContentText("The Database information has changed: Press OKAY to terminate and allow a restart, otherwise " +

@@ -376,15 +376,26 @@ class CarEditController {
         return null
     }
 
+    String fieldValues(String testValue) {
+        if (testValue == null) {
+            return null
+        }
+        String retValue = testValue.trim()
+        if (retValue.length() == 0) {
+            return null
+        }
+        return retValue
+    }
+
     void refreshModel(RRCar car) {
         if (model.carTag.isNotEmpty()) {
             car.RFIDtag = model.carTag.getValue()
         }
-        car.description = decodeText(model.carDescription)
-        car.carNumber = decodeText(model.carNumber)
-        car.bltDate = decodeText(model.bltDate)
-        car.carWheels = decodeText(model.carWheels)
-        car.carColor = decodeText(model.carColor)
+        car.description = fieldValues(decodeText(model.carDescription))
+        car.carNumber = fieldValues(decodeText(model.carNumber))
+        car.bltDate = fieldValues(decodeText(model.bltDate))
+        car.carWheels = fieldValues(decodeText(model.carWheels))
+        car.carColor = fieldValues(decodeText(model.carColor))
         if (!model.carLength.get().equals("")) {
             if (model.obsLengthUnits.get() == 0) {
                 // have English, leave alone

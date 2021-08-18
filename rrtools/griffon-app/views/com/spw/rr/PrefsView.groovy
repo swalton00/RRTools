@@ -10,6 +10,7 @@ import javafx.scene.control.ChoiceBox
 import javafx.scene.control.PasswordField
 import javafx.scene.control.RadioButton
 import javafx.scene.control.TextField
+import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import javafx.stage.Modality
@@ -45,6 +46,7 @@ class PrefsView extends AbstractJavaFXGriffonView {
     @FXML TextField databaseURL
     @FXML RadioButton useDbLoc
     @FXML RadioButton useUrl
+    @FXML Label prefsMessage
 
     Stage prefsStage
 
@@ -70,6 +72,7 @@ class PrefsView extends AbstractJavaFXGriffonView {
         getApplication().getWindowManager().attach("prefsWindow", stage);
         model.useDbUrl.bindBidirectional(useUrl.selectedProperty())
         model.useDbLocation.bindBidirectional(useDbLoc.selectedProperty())
+        model.message.bindBidirectional(prefsMessage.textProperty())
     }
 
 

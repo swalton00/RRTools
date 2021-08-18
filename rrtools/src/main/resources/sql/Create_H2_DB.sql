@@ -232,7 +232,7 @@ CREATE TABLE
         date_entered   DATE NOT NULL,
         date_closed    DATE,
         description    VARCHAR(2000),
-        last_updated   TIMESTAMP DEFAULT CURRENT TIMESTAMP NOT NULL,
+        last_updated   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         CONSTRAINT Bad_order_parent_key FOREIGN KEY (car_Id) REFERENCES car ( id ),
         CONSTRAINT Bad_order_area FOREIGN KEY (area_of_car) REFERENCES car_area ( id ),
         CONSTRAINT Closed_by_key FOREIGN KEY (closed_by) REFERENCES maintenance ( id )

@@ -18,6 +18,28 @@ class ExportImport {
         st.append(",")
     }
 
+    String testValues(String test) {
+        if (test == null) {
+            return ""
+        }
+        String retValue = test.trim()
+        return retValue
+    }
+
+    String testNumber(Integer test) {
+        if (test == null) {
+            return ""
+        }
+        return test.toString()
+    }
+
+    String testNumber(test) {
+        if (test == null) {
+            return ""
+        }
+        return test.toString()
+    }
+
     public void performExport(DBService dbService, Window window, RrToolsController controller) {
         log.debug("Export requested")
         List<ExportCar> list = dbService.exportCarList()
@@ -47,13 +69,13 @@ class ExportImport {
             outputLine.append(",")
             outputLine.append(it.reporting.trim())
             outputLine.append(",")
-            outputLine.append(it.carType.trim())
+            outputLine.append(testValues(it.carType))
             outputLine.append(",")
-            doOne(outputLine, it.carLength)
-            doOne(outputLine, it.carWeight)
-            doOne(outputLine, it.carColor)
+            doOne(outputLine, testNumber(it.carLength))
+            doOne(outputLine, testNumber(it.carWeight))
+            doOne(outputLine, testValues(it.carColor))
             outputLine.append(",")
-            doOne(outputLine, it.builtDate)
+            doOne(outputLine, testValues(it.builtDate))
             outputLine.append(",")            // Location
             outputLine.append("-,")           // empty
             outputLine.append(",")            // track

@@ -30,6 +30,8 @@ class PrefsModel {
 
     SimpleStringProperty dbName = new SimpleStringProperty("")
 
+    SimpleStringProperty message = new SimpleStringProperty("")
+
     SimpleBooleanProperty useDbLocation = new SimpleBooleanProperty(true)
 
     SimpleBooleanProperty useDbUrl = new SimpleBooleanProperty(false)

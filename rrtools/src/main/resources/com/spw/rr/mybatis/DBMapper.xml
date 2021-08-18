@@ -350,14 +350,14 @@
     </update>
     <select id="listCarsForExport" resultType="com.spw.rr.model.ExportCar">
         SELECT
-            car_number as carNumber,
-            mark as reporting,
-            t.type as carType,
-            LENGTH as carLength,
-            weight as carWeight,
-            car_color as carColor,
-            blt_date as builtDate,
-            rfid_tag as idTag
+            car_number AS carNumber,
+            mark       AS reporting,
+            t.type     AS carType,
+            LENGTH     AS carLength,
+            weight     AS carWeight,
+            car_color  AS carColor,
+            blt_date   AS builtDate,
+            rfid_tag   AS idTag
         FROM
             car c
                 INNER JOIN
@@ -365,9 +365,9 @@
             ON
                 c.rpt_mark = m.id
                 LEFT OUTER JOIN
-            aar_type t
+            car_type t
             ON
-                c.aar_type = t.id
+                c.car_type = t.id
         ORDER BY
             mark,
             car_number
