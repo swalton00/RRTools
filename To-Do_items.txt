@@ -17,3 +17,7 @@
 11. Populate tables in empty database
 12. Documentation (PDF) (asciidoctor)
 13. Help files (shared with documentation?)
+4:47 PM 4/10/2021
+Weight of car needs to be rounded off - showing as 3.89999999999 ounces
+Prefs  - “Prefs Location” should be DB Location
+Prefs - wider columns in in wider window

@@ -1,6 +1,7 @@
 package com.spw.rr
 
 import com.spw.rr.model.BadOrder
+import com.spw.rr.model.CarType
 import com.spw.rr.model.ExportCar
 import com.spw.rr.model.Inspection
 import com.spw.rr.model.MaintenanceItem
@@ -11,6 +12,7 @@ import com.spw.rr.model.ReportingMark
 import com.spw.rr.model.Vendor
 import com.spw.rr.model.ViewCar
 import com.spw.rr.parameter.BadOrderUpdateParameter
+import com.spw.rr.parameter.CarParameter
 import com.spw.rr.parameter.ViewParameter
 import griffon.core.artifact.GriffonService
 import griffon.metadata.ArtifactProviderFor
@@ -201,6 +203,37 @@ class DBService {
             DBMapper mapper = session.getMapper(DBMapper.class)
             mapper.updateBadOrders(boParm)
         })
+    }
+
+    RRCar findCar(int reportingMark, String carNumber) {
+        log.debug("looking for mark " + reportingMark.toString() + " car number " + carNumber)
+        RRCar carFound = null
+        CarParameter parm = new CarParameter()
+        parm.reportingMark = reportingMark
+        parm.carNumber = carNumber
+        mybatisHandler.withSqlSession( {String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            carFound = mapper.findCar(parm)
+        })
+    }
+
+    CarType findType(String carType) {
+        log.debug("looking up car type of " + carType)
+         CarType retValue = null
+        mybatisHandler.withSqlSession( {String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            retValue = mapper.findType(carType)
+        })
+        return retValue
+    }
+
+    CarType addCarType(CarType carType) {
+        log.debug("adding a new car Type: " + carType.toString())
+        mybatisHandler.withSqlSession( {String sessionFactoryName, SqlSession session ->
+            DBMapper mapper = session.getMapper(DBMapper.class)
+            mapper.addCarType(carType)
+        })
+        log.debug("carType is now " + carType.toString())
     }
 
     List<ExportCar> exportCarList() {

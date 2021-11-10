@@ -282,6 +282,8 @@ class RrToolsController {
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     void importAction() {
         log.debug("import requested")
+        ExportImport.instance.performImport(dbService, view.stage, this)
+        buildCarList()
     }
 
     @ControllerAction
