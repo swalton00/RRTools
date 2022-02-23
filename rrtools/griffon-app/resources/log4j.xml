@@ -3,20 +3,25 @@
 <log4j:configuration>
     <appender name="console" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%c{2} %d{HH:mm:ss,SSS} %m%n"/>
+            <param name="ConversionPattern" value="%p %c{2} %d{HH:mm:ss,SSS} %m%n"/>
         </layout>
+        <filter class="org.apache.log4j.varia.LevelMatchFilter">
+            <param name="levelToMatch" value="error"/>
+            <param name="acceptOnMatch" value="true"/>
+        </filter>
     </appender>
     <appender name="file" class="org.apache.log4j.FileAppender">
         <param name="file" value="rrtools.log"/>
         <param name="append" value="false"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%c{2} %d{HH:mm:ss,SSS} %m%n"/>
+            <param name="ConversionPattern" value="%p %c{2} %d{HH:mm:ss,SSS} %m%n"/>
         </layout>
     </appender>
     <logger name="con.spw.rr.tools" additivity="false">
         <appender-ref ref="file"/>
     </logger>
     <logger name="console" additivity="false">
+        <level value="error"/>
         <appender-ref ref="console"/>
     </logger>
     <root>
