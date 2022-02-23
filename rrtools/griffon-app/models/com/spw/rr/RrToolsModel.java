@@ -6,13 +6,13 @@ import org.codehaus.griffon.runtime.core.artifact.AbstractGriffonModel;
 
 @ArtifactProviderFor(GriffonModel.class)
 public class RrToolsModel extends AbstractGriffonModel {
-    private int clickCount = 0;
+    private boolean itemSelected = false;
 
-    public int getClickCount() {
-        return clickCount;
+    public boolean getItemSelected() {
+        return itemSelected;
     }
 
-    public void setClickCount(int clickCount) {
-        firePropertyChange("clickCount", this.clickCount, this.clickCount = clickCount);
+    public void setItemSelected(boolean selected) {
+       firePropertyChange("selected", itemSelected, itemSelected = selected);
     }
 }
