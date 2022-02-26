@@ -105,6 +105,7 @@ public class RrToolsView extends AbstractSwingGriffonView {
         helpMenu.add(new JMenuItem((javax.swing.Action) actionMap.get("help").getToolkitAction()));
         menuBar.add(helpMenu);
         window.getContentPane().add(menuBar);
+
     }
 
     private Image getImage(String path) {

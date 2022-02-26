@@ -23,7 +23,7 @@ INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('GT', 'Same as Class GB except 
 INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('HD', 'Same as Class HE except doors are hinged to dump outside the rails. (R)');
 INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('HE', 'Not a self-clearing car. Has level bottom, hinged crossways to dump between the rails. (R)');
 INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('HF', 'Same as Class HM except for hoppers extending from the end of the car over the bolsters, with doors hinged lengthwise of car, to dump outside the rails. (R)');
-INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('HFA', 'Same as Class HMA except for the hopper doors in ends, as in Class HF. ®');
+INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('HFA', 'Same as Class HMA except for the hopper doors in ends, as in Class HF. Â®');
 INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('HFB', 'An open top, self-clearing hopper with doors hinged lengthwise of car. Has cross hoppers at ends of car with doors to dump either between, or between and outside the rails while center hoppers dump outside the rails. (R)');
 INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('HK', 'Same as Class HE except can dump either inside or outside the rails. (R)');
 INSERT INTO AAR_TYPE (TYPE, DESCRIPTION) VALUES ('HM', 'Self-clearing, open top car with fixed sides and ends. Bottom has two hoppers with doors hinged crosswise of car to dump between rails.');
