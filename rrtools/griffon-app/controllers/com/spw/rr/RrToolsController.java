@@ -12,6 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @ArtifactProviderFor(GriffonController.class)
 public class RrToolsController extends AbstractGriffonController {
@@ -25,6 +31,8 @@ public class RrToolsController extends AbstractGriffonController {
     public void setModel(@Nonnull RrToolsModel model) {
         this.model = model;
     }
+
+    private static final String HELP_RESOURCE = "html5/index.html";
 
     private MVCGroup getGroup(MVCGroup group, String groupName) {
         if (group != null) {
@@ -129,10 +137,19 @@ public class RrToolsController extends AbstractGriffonController {
     }
 
     @ControllerAction
-    @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     public void help() {
-        log.debug("showing the Help window now");
-        helpGroup =  getGroup(helpGroup, "help");
-        application.getWindowManager().show("helpWindow");
+        log.debug("showing the Help in a Browser window");
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            URL resource = application.getResourceHandler().getResourceAsURL(HELP_RESOURCE);
+            String filePath = Paths.get(resource.toURI()).toFile().getAbsolutePath();
+            String fullUrl = "file://localhost/" + filePath;
+            String validUrl = fullUrl.replace("\\", "/");
+            log.debug("Using a URL of {}", validUrl);
+            desktop.browse(URI.create(validUrl));
+        } catch (Exception e) {
+            log.error("Exception attempting to show help in a browser window", e);
+        }
     }
 }

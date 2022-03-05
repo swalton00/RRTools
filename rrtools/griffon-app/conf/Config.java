@@ -22,11 +22,6 @@ public class Config extends AbstractMapResourceBundle {
                                 .e("view", "com.spw.rr.RrToolsView")
                                 .e("controller", "com.spw.rr.RrToolsController")
                         )
-                        .e("help", map()
-                                .e("model", "com.spw.rr.HelpModel")
-                                .e("view", "com.spw.rr.HelpView")
-                                .e("controller", "com.spw.rr.HelpController")
-                        )
                 );
 
     }
