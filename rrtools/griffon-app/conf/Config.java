@@ -11,16 +11,23 @@ public class Config extends AbstractMapResourceBundle {
     protected void initialize(@Nonnull Map<String, Object> entries) {
         map(entries)
             .e("application", map()
-                .e("title", "rrTools")
-                .e("startupGroups", asList("rrTools"))
-                .e("autoShutdown", true)
+                    .e("title", "rrTools")
+                    .e("startupGroups", asList("rrTools"))
+                    .e("autoShutdown", true)
+                    .e("startingWindow", "rrTools")
             )
-            .e("mvcGroups", map()
-                .e("rrTools", map()
-                    .e("model", "com.spw.rr.RrToolsModel")
-                    .e("view", "com.spw.rr.RrToolsView")
-                    .e("controller", "com.spw.rr.RrToolsController")
-                )
-            );
+                .e("mvcGroups", map()
+                        .e("rrTools", map()
+                                .e("model", "com.spw.rr.RrToolsModel")
+                                .e("view", "com.spw.rr.RrToolsView")
+                                .e("controller", "com.spw.rr.RrToolsController")
+                        )
+                        .e("help", map()
+                                .e("model", "com.spw.rr.HelpModel")
+                                .e("view", "com.spw.rr.HelpView")
+                                .e("controller", "com.spw.rr.HelpController")
+                        )
+                );
+
     }
 }

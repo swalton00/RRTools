@@ -45,8 +45,6 @@ asciidoctorPdf {
 
 asciidoctor {
     attributes  stylesheet: 'src/docs/styles/special.css'
-
-
     outputOptions {
         backends = ['html5', 'pdf']
     }

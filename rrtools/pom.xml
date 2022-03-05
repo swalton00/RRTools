@@ -41,11 +41,19 @@
     </properties>
 
     <build>
-        <!-- Uncomment if project is versioned using Git
+        <!-- Uncomment if project is versioned using Git -->
         <filters>
             <filter>${project.build.outputDirectory}/git.properties</filter>
-        </filters>
-        -->
+        </filters>  
+        <resources>
+          <resource>
+            <directory>${basedir}/../docs/target/generated-docs</directory>
+          <includes>
+            <include>index.html</include>
+          </includes>
+          </resource>
+        </resources>
+          
     </build>
 
     <dependencies>
