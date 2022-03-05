@@ -1,18 +1,14 @@
 package com.spw.rr;
 
+import com.spw.rr.models.TableModel;
 import griffon.core.artifact.GriffonView;
 import griffon.core.controller.Action;
 import griffon.inject.MVCMember;
 import griffon.metadata.ArtifactProviderFor;
 import org.codehaus.griffon.runtime.swing.artifact.AbstractSwingGriffonView;
 
-import javax.swing.JMenu;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
@@ -22,6 +18,7 @@ import javax.annotation.Nonnull;
 
 import static java.util.Arrays.asList;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import java.awt.BorderLayout;
 
 @ArtifactProviderFor(GriffonView.class)
 public class RrToolsView extends AbstractSwingGriffonView {
@@ -44,7 +41,7 @@ public class RrToolsView extends AbstractSwingGriffonView {
             .createApplicationContainer(Collections.<String,Object>emptyMap());
         window.setName("mainWindow");
         window.setTitle(getApplication().getConfiguration().getAsString("application.title"));
-        window.setSize(320, 120);
+        window.setSize(320, 500);
         window.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         window.setIconImage(getImage("/griffon-icon-48x48.png"));
         window.setIconImages(asList(
@@ -103,8 +100,16 @@ public class RrToolsView extends AbstractSwingGriffonView {
         menuBar.add(viewMenu);
         JMenu helpMenu = new JMenu("Help");
         helpMenu.add(new JMenuItem((javax.swing.Action) actionMap.get("help").getToolkitAction()));
+        menuBar.setSize(320, 15);
         menuBar.add(helpMenu);
         window.getContentPane().add(menuBar);
+        TableModel tableModel = new TableModel(model);
+        JTable table = new JTable(tableModel);
+        table.setFillsViewportHeight(true);
+        JScrollPane tableScrollPane = new JScrollPane(table);
+        tableScrollPane.setPreferredSize(new Dimension(320, 480));
+        tableScrollPane.setMinimumSize(new Dimension(320, 480));
+        window.getContentPane().add(tableScrollPane, BorderLayout.CENTER);
 
     }
 
