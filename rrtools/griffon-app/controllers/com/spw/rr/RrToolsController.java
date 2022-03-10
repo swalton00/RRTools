@@ -1,5 +1,7 @@
 package com.spw.rr;
 
+import griffon.core.GriffonApplication;
+import griffon.core.RunnableWithArgs;
 import griffon.core.artifact.GriffonController;
 import griffon.core.controller.ControllerAction;
 import griffon.core.mvc.MVCGroup;
@@ -12,20 +14,31 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 @ArtifactProviderFor(GriffonController.class)
 public class RrToolsController extends AbstractGriffonController {
-    private RrToolsModel model;
+
+    @Inject
+    RrToolsModel model;
 
     private Logger log = LoggerFactory.getLogger(RrToolsController.class);
 
-    private MVCGroup helpGroup = null;
+    private MVCGroup prefsGroup = null;
+
+    @Inject
+    PropertyService propertyService;
+
+    @Inject
+    SerialDataService dataService;
 
     @MVCMember
     public void setModel(@Nonnull RrToolsModel model) {
@@ -88,8 +101,12 @@ public class RrToolsController extends AbstractGriffonController {
 
     }
 
+    @ControllerAction
+    @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     public void preferences() {
-
+        log.debug("Showing the preferences window");
+        prefsGroup = getGroup(prefsGroup, "preferences");
+        application.getWindowManager().show("prefs");
     }
 
     public void carType() {
@@ -135,6 +152,37 @@ public class RrToolsController extends AbstractGriffonController {
     public void viewByRoadName() {
 
     }
+
+
+
+    RunnableWithArgs onShutdownStart = new RunnableWithArgs() {
+        @Override
+        public void run(@Nullable Object... args) {
+            log.debug("shutting down now");
+            propertyService.saveProperties();
+        }
+
+    };
+
+    @Override
+     public void mvcGroupInit(Map<String, Object> args) {
+        log.error("in the init method");
+        if (propertyService == null) {
+            log.error("property service is null");
+        }
+        boolean foundProperties = propertyService.loadValues();
+        log.error("Properties were not found - need to go to preferences");
+    }
+
+    RunnableWithArgs onMvcGroupInit = new RunnableWithArgs() {
+        @Override
+        public void run(@Nullable Object... args) {
+            log.debug("Ready to run -- checking for PropertyService");
+            if (propertyService == null) {
+                log.error("property service is null");
+            }
+        }
+    };
 
     @ControllerAction
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)

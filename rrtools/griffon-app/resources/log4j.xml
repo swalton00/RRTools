@@ -17,10 +17,10 @@
             <param name="ConversionPattern" value="%p %c{2} %d{HH:mm:ss,SSS} %m%n"/>
         </layout>
     </appender>
-    <logger name="con.spw.rr.tools" additivity="false">
+    <logger name="con.spw.rr.tools" additivity="true">
         <appender-ref ref="file"/>
     </logger>
-    <logger name="console" additivity="false">
+    <logger name="console" additivity="true">
         <level value="error"/>
         <appender-ref ref="console"/>
     </logger>

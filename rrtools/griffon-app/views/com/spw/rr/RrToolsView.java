@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 public class RrToolsView extends AbstractSwingGriffonView {
     private RrToolsModel model;
     private RrToolsController controller;
+    private JLabel messages = new JLabel("");
 
     @MVCMember
     public void setModel(@Nonnull RrToolsModel model) {
@@ -41,7 +42,7 @@ public class RrToolsView extends AbstractSwingGriffonView {
             .createApplicationContainer(Collections.<String,Object>emptyMap());
         window.setName("mainWindow");
         window.setTitle(getApplication().getConfiguration().getAsString("application.title"));
-        window.setSize(320, 500);
+        window.setSize(400, 490);
         window.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         window.setIconImage(getImage("/griffon-icon-48x48.png"));
         window.setIconImages(asList(
@@ -82,7 +83,6 @@ public class RrToolsView extends AbstractSwingGriffonView {
         editMenu.add(new JMenuItem((javax.swing.Action) actionMap.get("maintain").getToolkitAction()));
         editMenu.add(new JMenuItem((javax.swing.Action) actionMap.get("preferences").getToolkitAction()));
         menuBar.add(editMenu);
-        window.getContentPane().setLayout(new GridLayout(2, 1));
         JMenu maintainMenu = new JMenu("Maintain");
         maintainMenu.add(new JMenuItem((javax.swing.Action) actionMap.get("carType").getToolkitAction()));
         maintainMenu.add(new JMenuItem((javax.swing.Action) actionMap.get("aarType").getToolkitAction()));
@@ -102,15 +102,26 @@ public class RrToolsView extends AbstractSwingGriffonView {
         helpMenu.add(new JMenuItem((javax.swing.Action) actionMap.get("help").getToolkitAction()));
         menuBar.setSize(320, 15);
         menuBar.add(helpMenu);
-        window.getContentPane().add(menuBar);
+        JPanel panel = new JPanel();
+        window.getContentPane().add(menuBar,BorderLayout.NORTH);
+        window.getContentPane().add(panel, BorderLayout.CENTER);
         TableModel tableModel = new TableModel(model);
         JTable table = new JTable(tableModel);
         table.setFillsViewportHeight(true);
         JScrollPane tableScrollPane = new JScrollPane(table);
-        tableScrollPane.setPreferredSize(new Dimension(320, 480));
-        tableScrollPane.setMinimumSize(new Dimension(320, 480));
-        window.getContentPane().add(tableScrollPane, BorderLayout.CENTER);
-
+        tableScrollPane.setPreferredSize(new Dimension(400, 440));
+        tableScrollPane.setMinimumSize(new Dimension(320, 400));
+        panel.add(tableScrollPane, "cell 0 1");
+        model.addPropertyChangeListener("message", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                runInsideUIAsync(() -> {
+                    messages.setText((String) evt.getNewValue());
+                });
+            }
+        });
+        model.setMessage("this is a message");
+        panel.add(messages, "cell 0 2");
     }
 
     private Image getImage(String path) {
