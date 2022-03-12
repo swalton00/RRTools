@@ -6,6 +6,7 @@ import org.codehaus.griffon.runtime.core.artifact.AbstractGriffonModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 
 @ArtifactProviderFor(GriffonModel.class)
@@ -13,28 +14,49 @@ public class PreferencesModel extends AbstractGriffonModel {
 
     private static final Logger log = LoggerFactory.getLogger(PreferencesModel.class);
 
+    @Inject
+    PropertyService propertyService;
 
+    @Inject
+    SerialDataService dataService;
+
+
+    // data elements to be saved to properties
     String scaleRatio = "";
+    String scaleName = "";
+    String unitSystem = "";
     String inspectionEvery = "";
     String inspectionSelectedUnits = "";
-    protected ArrayList<String> inspectionUnits = new ArrayList<String>();
     String dbUsername = "";
     String dbPassword = "";
+    String dbName = "";
     String dbURL = "";
-    String message = "";
-    ArrayList<String> commPorts;
     String selectedComPort;
+    // end of properties elements
+    // start of ui elements
+    ArrayList<String> commPorts;
+    protected String[] inspectionUnits = {"Months", "Years"};
+    protected String[] unitSystems = {"English", "Metric"};
+    protected String[] scales = {"Z", "N", "HO", "S", "O", "G"};
+    protected String[]inspectionFrequency = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+    String message = "";
 
-    public PreferencesModel() {
-        super();
-        inspectionUnits.add("Months");
-        inspectionUnits.add("Years");
+    public void init() {
+        log.debug("initializing the Preferences Model");
+        commPorts = dataService.getSerialPortList();
+        copyFromProperties();
     }
 
-    public void setCommPortList(ArrayList<String> ports) {
-        log.debug("Setting the com port list");
-        commPorts = ports;
+    private void copyFromProperties() {
+        setSelectedComPort(propertyService.getSavedComPort());
+        setScaleRatio(propertyService.getSavedScaleRatio());
+        setInspectionEvery(propertyService.getSavedInspectFreq());
+        setInspectionSelectedUnits(propertyService.getSavedInspectUnits());
+        setDbPassword(propertyService.getDbPassword());
+        setDbURL(propertyService.getDbURL());
+        setDbUsername(propertyService.getDbUsername());
     }
+
     public String getScaleRatio() {
         return scaleRatio;
     }
