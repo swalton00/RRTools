@@ -25,6 +25,16 @@ public class PreferencesController extends AbstractGriffonController {
 
     private static final Logger log = LoggerFactory.getLogger(PreferencesController.class);
 
+    public void okayAction() {
+        log.debug("saving the preferences");
+        application.getWindowManager().hide("prefs");
+    }
+
+    public void cancelAction() {
+        log.debug("canceling out of the preferences window");
+        application.getWindowManager().hide("prefs");
+    }
+
 
     @Override
     public void mvcGroupInit(Map<String, Object> args) {

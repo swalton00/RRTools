@@ -1,22 +1,29 @@
 package com.spw.rr;
 
+//import griffon.core.controller.Action;
+import javax.swing.Action;
 import griffon.core.artifact.GriffonView;
 import griffon.metadata.ArtifactProviderFor;
-import org.codehaus.griffon.runtime.core.artifact.AbstractGriffonView;
+import org.codehaus.griffon.runtime.swing.artifact.AbstractSwingGriffonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.miginfocom.swing.*;
 import javax.inject.Inject;
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 @ArtifactProviderFor(GriffonView.class)
-public class PreferencesView extends AbstractGriffonView {
+public class PreferencesView extends AbstractSwingGriffonView implements ActionListener {
 
     private static final Logger log = LoggerFactory.getLogger(PreferencesView.class);
 
     @Inject
     PreferencesModel model;
+
+    @Inject
+    PreferencesController controller;
 
     @Inject
     SerialDataService dataService;
@@ -38,6 +45,10 @@ public class PreferencesView extends AbstractGriffonView {
     private JTextField locationValue = new JTextField("");
     private JTextField dbURL = new JTextField("");
     private JTextField messageField = new JTextField("");
+    private JRadioButton radioUseDBName;
+    private JRadioButton radioUseURL;
+    private JButton okayButton;
+    private JButton cancelButton;
 
     @Override
     public void initUI() {
@@ -62,7 +73,6 @@ public class PreferencesView extends AbstractGriffonView {
         panel.add(new JLabel("Scale Ratio"), "align right");
         scaleRatio.setText(model.scaleRatio);
         panel.add(scaleRatio, "wrap");
-        binds.addBinding(scaleRatio, "text", model.scaleRatio);
         panel.add(new JLabel("Scale"), "align right");
         scale = new JComboBox<String>(model.scales);
         panel.add(scale, "wrap");
@@ -74,18 +84,57 @@ public class PreferencesView extends AbstractGriffonView {
         panel.add(new JLabel("Database Username"), "align right");
         dbUser.setText(model.dbUsername);
         panel.add(dbUser, "wrap");
-        binds.addBinding(dbUser, "text", model.dbUsername);
         panel.add(new JLabel("Database password"), "align right");
         dbPassword.setText(model.dbPassword);
         panel.add(dbPassword, "wrap");
-        binds.addBinding(dbPassword, "text", model.dbPassword);
+        radioUseDBName = new JRadioButton("Use Database Name");
+        radioUseURL = new JRadioButton("Use Database URL");
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(radioUseURL);
+        buttonGroup.add(radioUseDBName);
+        panel.add(radioUseDBName, "wrap");
         panel.add(new JLabel("Database name"), "align right");
         dbName.setText(model.dbName);
         panel.add(dbName, "wrap");
-        binds.addBinding(dbName, "text", model.dbName);
+        panel.add(radioUseURL, "wrap");
+        panel.add(new JLabel("Database URL"));
+        dbURL.setText(model.dbURL);
+        panel.add(dbURL, "wrap");
+        Action action = toolkitActionFor(controller, "cancel");
+        cancelButton = new JButton(action);
+        cancelButton.setName("Cancel entries");
+        panel.add(cancelButton);
+        Action okayAction = toolkitActionFor(controller, "okay");
+        okayButton = new JButton(okayAction);
+        okayButton.setName("Confirm Choices");
+        panel.add(okayButton);
         // elements have been added, set the drop-downs to the defaults or prior values
+        commPort.setSelectedItem(model.selectedComPort);
+        unitSystem.setSelectedItem(model.selectedUnitSystem);
+        scale.setSelectedItem(model.scaleName);
+        // now add listeners
+        binds.addBinding(scaleRatio, "text", model.scaleRatio);
+        binds.addBinding(dbUser, "text", model.dbUsername);
+        binds.addBinding(dbPassword, "text", model.dbPassword);
+        binds.addBinding(dbName, "text", model.dbName);
+        binds.addBinding(dbURL, "text", model.dbURL);
+        // and selection listeners for combo boxes
+        commPort.addActionListener(this);
+        unitSystem.addActionListener(this);
+        scale.addActionListener(this);
+    }
 
-
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JComboBox<String> src = (JComboBox) e.getSource();
+        if (src == commPort) {
+            model.selectedComPort = (String) src.getSelectedItem();
+        } else if (src == unitSystem) {
+            model.selectedUnitSystem = (String) src.getSelectedItem();
+        } else if (src == scale) {
+            model.scaleName = (String) src.getSelectedItem();
+        } else {
+            log.error("unrecognized source for Combo Box listener source");
+        }
     }
 }

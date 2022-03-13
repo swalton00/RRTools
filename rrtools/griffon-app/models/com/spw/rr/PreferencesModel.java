@@ -20,11 +20,13 @@ public class PreferencesModel extends AbstractGriffonModel {
     @Inject
     SerialDataService dataService;
 
+    @Inject
+    DbInfoService dbInfo;
 
     // data elements to be saved to properties
     String scaleRatio = "";
     String scaleName = "";
-    String unitSystem = "";
+    String selectedUnitSystem = "";
     String inspectionEvery = "";
     String inspectionSelectedUnits = "";
     String dbUsername = "";
@@ -40,21 +42,26 @@ public class PreferencesModel extends AbstractGriffonModel {
     protected String[] scales = {"Z", "N", "HO", "S", "O", "G"};
     protected String[]inspectionFrequency = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
     String message = "";
+    // UI elements
+
 
     public void init() {
         log.debug("initializing the Preferences Model");
         commPorts = dataService.getSerialPortList();
         copyFromProperties();
+        dbInfo.setDatabaseInfo(dbURL, dbUsername, dbPassword);
     }
 
     private void copyFromProperties() {
-        setSelectedComPort(propertyService.getSavedComPort());
+        selectedComPort = propertyService.getSavedComPort();
         setScaleRatio(propertyService.getSavedScaleRatio());
         setInspectionEvery(propertyService.getSavedInspectFreq());
-        setInspectionSelectedUnits(propertyService.getSavedInspectUnits());
-        setDbPassword(propertyService.getDbPassword());
-        setDbURL(propertyService.getDbURL());
-        setDbUsername(propertyService.getDbUsername());
+        inspectionSelectedUnits = propertyService.getSavedInspectUnits();
+        dbPassword =propertyService.getDbPassword();
+        dbURL = propertyService.getDbURL();
+        dbUsername = propertyService.getDbUsername();
+        selectedUnitSystem = unitSystems[propertyService.getSavedUnits()];
+        scaleName = propertyService.getSavedScaleName();
     }
 
     public String getScaleRatio() {
