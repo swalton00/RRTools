@@ -24,16 +24,22 @@ public class PreferencesModel extends AbstractGriffonModel {
     DbInfoService dbInfo;
 
     // data elements to be saved to properties
+    String selectedComPort;
     String scaleRatio = "";
     String scaleName = "";
     String selectedUnitSystem = "";
     String inspectionEvery = "";
     String inspectionSelectedUnits = "";
+    String dbName = "";
+    String dbLocation = "";
+    String dbURL = "";
     String dbUsername = "";
     String dbPassword = "";
-    String dbName = "";
-    String dbURL = "";
-    String selectedComPort;
+    Boolean modedDbName = false;
+    Boolean modedDbLocation = false;
+    Boolean modedDbURL = false;
+    Boolean modedDbUsername = false;
+    Boolean modedDbPassword = false;
     // end of properties elements
     // start of ui elements
     ArrayList<String> commPorts;
@@ -50,6 +56,9 @@ public class PreferencesModel extends AbstractGriffonModel {
         commPorts = dataService.getSerialPortList();
         copyFromProperties();
         dbInfo.setDatabaseInfo(dbURL, dbUsername, dbPassword);
+        dbLocation = dbInfo.getDbLocation();
+        dbName = dbInfo.getDatabaseName();
+
     }
 
     private void copyFromProperties() {
@@ -128,5 +137,23 @@ public class PreferencesModel extends AbstractGriffonModel {
         this.inspectionSelectedUnits = inspectionSelectedUnits;
     }
 
+    public Boolean getModedDbName() {
+        return modedDbName;
+    }
 
+    public Boolean getModedDbLocation() {
+        return modedDbLocation;
+    }
+
+    public Boolean getModedDbURL() {
+        return modedDbURL;
+    }
+
+    public Boolean getModedDbUsername() {
+        return modedDbUsername;
+    }
+
+    public Boolean getModedDbPassword() {
+        return modedDbPassword;
+    }
 }

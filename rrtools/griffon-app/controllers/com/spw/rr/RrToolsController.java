@@ -78,6 +78,10 @@ public class RrToolsController extends AbstractGriffonController {
 
     public void close() {
         log.debug("shutting down now");
+        if (prefsGroup != null) {
+            application.getWindowManager().hide("prefs");
+            prefsGroup.destroy();
+        }
         getApplication().shutdown();
     }
 
@@ -153,6 +157,7 @@ public class RrToolsController extends AbstractGriffonController {
 
     }
 
+/*
 
 
     RunnableWithArgs onShutdownStart = new RunnableWithArgs() {
@@ -163,6 +168,11 @@ public class RrToolsController extends AbstractGriffonController {
         }
 
     };
+
+*/
+    public void onShutdownStart() {
+        log.debug("shutting down now");
+    }
 
     @Override
      public void mvcGroupInit(Map<String, Object> args) {

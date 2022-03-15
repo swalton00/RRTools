@@ -31,6 +31,9 @@ public class PreferencesView extends AbstractSwingGriffonView implements ActionL
     @Inject
     PropertyService propertyService;
 
+    @Inject
+    DbInfoService dbInfo;
+
     Bindings binds = Bindings.getInstance();
 
     private JComboBox<String> commPort;
@@ -49,11 +52,13 @@ public class PreferencesView extends AbstractSwingGriffonView implements ActionL
     private JRadioButton radioUseURL;
     private JButton okayButton;
     private JButton cancelButton;
+    private JButton locationButton;
 
     @Override
     public void initUI() {
         model.init();
         JFrame window = new JFrame();
+        window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         application.getWindowManager().attach("prefs", window);
         window.setTitle("RrTools Preferences");
         window.setSize(new Dimension(450, 800));
@@ -96,8 +101,12 @@ public class PreferencesView extends AbstractSwingGriffonView implements ActionL
         panel.add(new JLabel("Database name"), "align right");
         dbName.setText(model.dbName);
         panel.add(dbName, "wrap");
+        panel.add(new JLabel("Location"), "align right");
+        Action locationAction = toolkitActionFor(controller, "location");
+        locationValue.setText(model.dbLocation);
+        panel.add(locationValue, "wrap");
         panel.add(radioUseURL, "wrap");
-        panel.add(new JLabel("Database URL"));
+        panel.add(new JLabel("Database URL"), "align right");
         dbURL.setText(model.dbURL);
         panel.add(dbURL, "wrap");
         Action action = toolkitActionFor(controller, "cancel");
@@ -112,12 +121,18 @@ public class PreferencesView extends AbstractSwingGriffonView implements ActionL
         commPort.setSelectedItem(model.selectedComPort);
         unitSystem.setSelectedItem(model.selectedUnitSystem);
         scale.setSelectedItem(model.scaleName);
+        if (dbInfo.urlRequired()) {
+            radioUseURL.setSelected(true);
+        } else {
+            radioUseDBName.setSelected(true);
+        }
         // now add listeners
         binds.addBinding(scaleRatio, "text", model.scaleRatio);
-        binds.addBinding(dbUser, "text", model.dbUsername);
+        binds.addBinding(dbUser, "text", model.dbUsername, model.modedDbUsername);
         binds.addBinding(dbPassword, "text", model.dbPassword);
-        binds.addBinding(dbName, "text", model.dbName);
-        binds.addBinding(dbURL, "text", model.dbURL);
+        binds.addBinding(dbName, "text", model.dbName, model.modedDbName);
+        binds.addBinding(dbURL, "text", model.dbURL, model.modedDbURL);
+        binds.addBinding(locationValue, "text", model.dbLocation, model.modedDbLocation);
         // and selection listeners for combo boxes
         commPort.addActionListener(this);
         unitSystem.addActionListener(this);

@@ -5,11 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 import java.awt.*;
-import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Hashtable;
-import java.util.concurrent.Callable;
 
 @Singleton
 public class Bindings implements PropertyChangeListener {
@@ -25,12 +23,20 @@ public class Bindings implements PropertyChangeListener {
     private static final Logger log = LoggerFactory.getLogger(Bindings.class);
     private Hashtable<Component, Bind> sources = new Hashtable<>();
 
+    public void addBinding(Component source, String sourceName, Object target, Boolean modFlag) {
+        Bind newBind = new Bind(source, sourceName, target, modFlag);
+        doBind(newBind, source, sourceName, target);
+    }
+
+    private void doBind(Bind newBind, Component source, String sourceName, Object target) {
+        sources.put(source, newBind);
+        source.addPropertyChangeListener(sourceName, this);
+        log.debug("adding a binding for {}, {}", source, sourceName);
+    }
 
     public void addBinding(Component source, String sourceName, Object target) {
         Bind binding = new Bind(source, sourceName, target);
-        sources.put(source, binding);
-        source.addPropertyChangeListener(sourceName, this);
-        log.debug("adding a binding for {}, {}", source, sourceName);
+        doBind(binding, source, sourceName, target);
     }
 
     public void removeBinding(Object obj) {
@@ -60,6 +66,9 @@ public class Bindings implements PropertyChangeListener {
             if (sourceVal != null) {
                 Object theTarget = sourceVal.getTarget();
                 theTarget = evt.getPropertyName();
+                if (sourceVal.modFlag != null) {
+                    sourceVal.modFlag = true;
+                }
             }
         }
     }
@@ -68,11 +77,22 @@ public class Bindings implements PropertyChangeListener {
         Component source;
         String sourceName;
         Object target;
+        Boolean modFlag = null;
 
-        public Bind(Component source, String sourceName, Object target) {
+        private void setup(Component source, String sourceName, Object target) {
             this.source = source;
             this.sourceName = sourceName;
             this.target = target;
+        }
+
+        public Bind(Component source, String sourceName, Object target, Boolean modified) {
+            modFlag = modified;
+            setup(source, sourceName, target);
+        }
+
+        public Bind(Component source, String sourceName, Object target) {
+            setup(source, sourceName, target);
+
         }
 
         Component getSource() {
@@ -85,6 +105,10 @@ public class Bindings implements PropertyChangeListener {
 
         Object getTarget() {
             return target;
+        }
+
+        Boolean getModFlag() {
+            return modFlag;
         }
 
     }
