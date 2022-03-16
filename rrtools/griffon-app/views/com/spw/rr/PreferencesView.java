@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import net.miginfocom.swing.*;
 import javax.inject.Inject;
 import javax.swing.*;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -57,7 +57,8 @@ public class PreferencesView extends AbstractSwingGriffonView implements ActionL
     @Override
     public void initUI() {
         model.init();
-        JFrame window = new JFrame();
+        Window parent = (Window) application.getWindowManager().findWindow("mainWindow");
+        JDialog window = new JDialog(parent, "RrTools Preferences", Dialog.ModalityType.APPLICATION_MODAL);
         window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         application.getWindowManager().attach("prefs", window);
         window.setTitle("RrTools Preferences");
