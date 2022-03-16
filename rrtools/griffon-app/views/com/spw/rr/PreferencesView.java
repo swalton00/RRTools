@@ -122,10 +122,13 @@ public class PreferencesView extends AbstractSwingGriffonView implements ActionL
         commPort.setSelectedItem(model.selectedComPort);
         unitSystem.setSelectedItem(model.selectedUnitSystem);
         scale.setSelectedItem(model.scaleName);
+        inspectionUnits.setSelectedItem(model.inspectionSelectedUnits);
+        inspectionEvery.setSelectedItem(model.inspectionEvery);
         if (dbInfo.urlRequired()) {
             radioUseURL.setSelected(true);
         } else {
             radioUseDBName.setSelected(true);
+
         }
         // now add listeners
         binds.addBinding(scaleRatio, "text", model.scaleRatio);
