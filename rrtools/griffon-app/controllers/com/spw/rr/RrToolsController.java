@@ -40,12 +40,17 @@ public class RrToolsController extends AbstractGriffonController {
     @Inject
     SerialDataService dataService;
 
+    @Inject
+    DbInfoService dbInfoService;
+
     @MVCMember
     public void setModel(@Nonnull RrToolsModel model) {
         this.model = model;
     }
 
     private static final String HELP_RESOURCE = "html5/index.html";
+    private boolean preferencesGood = false;
+    private static boolean inited = false;
 
     private MVCGroup getGroup(MVCGroup group, String groupName) {
         if (group != null) {
@@ -157,21 +162,26 @@ public class RrToolsController extends AbstractGriffonController {
 
     }
 
-/*
-
-
-    RunnableWithArgs onShutdownStart = new RunnableWithArgs() {
-        @Override
-        public void run(@Nullable Object... args) {
-            log.debug("shutting down now");
-            propertyService.saveProperties();
-        }
-
-    };
-
-*/
     public void onShutdownStart() {
         log.debug("shutting down now");
+    }
+
+    public void onWindowShown(String name, Window window) {
+        if (name.equals("mainWindow")) {
+            if (!preferencesGood) {
+                preferences();
+            } else {
+                if (!inited) {
+                    inited = true;
+                    String comPort = propertyService.getSavedComPort();
+                    if (!comPort.isEmpty()) {
+                        log.debug("Setting comport to {}", comPort);
+                        dataService.setCommPort(comPort);
+                    }
+                }
+            }
+
+        }
     }
 
     @Override
@@ -181,18 +191,18 @@ public class RrToolsController extends AbstractGriffonController {
             log.error("property service is null");
         }
         boolean foundProperties = propertyService.loadValues();
-        log.error("Properties were not found - need to go to preferences");
-    }
-
-    RunnableWithArgs onMvcGroupInit = new RunnableWithArgs() {
-        @Override
-        public void run(@Nullable Object... args) {
-            log.debug("Ready to run -- checking for PropertyService");
-            if (propertyService == null) {
-                log.error("property service is null");
-            }
+        if (!foundProperties) {
+            log.error("Properties were not found - need to go to preferences");
+            preferencesGood = false;
+        } else {
+            preferencesGood = dbInfoService.getDbProperties();
         }
-    };
+        if (preferencesGood) {
+
+        } else {
+
+        }
+    }
 
     @ControllerAction
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)

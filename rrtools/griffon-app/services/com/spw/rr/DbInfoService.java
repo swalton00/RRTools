@@ -6,6 +6,7 @@ import org.codehaus.griffon.runtime.core.artifact.AbstractGriffonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -14,6 +15,8 @@ public class DbInfoService  extends AbstractGriffonService {
     private static final Logger log = LoggerFactory.getLogger(DbInfoService.class);
     private static final String URL_START = "jdbc:";
     private boolean valuesSet = false;
+    @Inject
+    PropertyService propertyService;
 
     private void checkInit() {
         if (!valuesSet) {
@@ -28,6 +31,30 @@ public class DbInfoService  extends AbstractGriffonService {
     private String dbms;
     private String dbLocation;
     private boolean urlRequired;
+
+
+    /**
+     *          load the database information from the properties file
+     *          Return true if good values were found
+     * @return  false if no valid database information is available
+     */
+    public boolean getDbProperties() {
+        boolean retVal = false;
+        String tempURL = propertyService.getDbURL();
+        String tempUser = propertyService.getDbUsername();
+        String tempPw = propertyService.getDbPassword();
+        if (tempURL.isEmpty() || tempUser.isEmpty() || tempPw.isEmpty()) {
+            return false;
+        }
+        testUrl(tempURL, true);
+        retVal = testDbData(tempURL, tempUser, tempPw);
+        if (retVal) {
+            url = tempURL;
+            dbUsername = tempUser;
+            dbPassword = tempPw;
+        }
+        return retVal;
+    }
 
     public void setDatabaseInfo(String dbUrl, String dbUser, String dbPassword) {
         url = dbUrl;

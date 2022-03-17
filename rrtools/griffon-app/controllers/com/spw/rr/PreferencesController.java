@@ -59,7 +59,7 @@ public class PreferencesController extends AbstractGriffonController {
     }
 
     public void onShutdownStart() {
-        log.debug("closing out the Prefrences group");
+        log.debug("closing out the Preferences group");
 
     }
 

@@ -213,7 +213,13 @@ public class PropertyService extends AbstractGriffonService {
         savedInspectUnits = checkProperty(PROP_INSPECT_UNITS);
         dbURL = checkProperty(PROP_DB_URL);
         dbUsername = checkProperty(PROP_DB_USER);
-        dbPassword = Arrays.toString(DatatypeConverter.parseHexBinary(checkProperty(PROP_DB_PASS)));
+        String temp = checkProperty(PROP_DB_PASS);
+        byte[] t2 = DatatypeConverter.parseHexBinary(temp);
+        try {
+            dbPassword = new String(t2, "UTF-8");
+        } catch (UnsupportedEncodingException ue) {
+            log.error("error attempting to convert db password");
+        }
         inited = true;
     }
 }
