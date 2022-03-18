@@ -39,20 +39,44 @@
         <build_time>${git.build.time}</build_time>
         <build_revision>${git.commit.id}</build_revision>
     </properties>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.codehaus.griffon.plugins</groupId>
+                <artifactId>griffon-miglayout-plugin</artifactId>
+                <version>2.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.griffon.plugins</groupId>
+                <artifactId>griffon-datasource-plugin</artifactId>
+                <version>2.1.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.griffon.plugins</groupId>
+                <artifactId>griffon-mybatis-plugin</artifactId>
+                <version>2.1.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <!-- Uncomment if project is versioned using Git -->
         <filters>
             <filter>${project.build.outputDirectory}/git.properties</filter>
         </filters>  
-        <resources>
+      <!--  <resources>
           <resource>
             <directory>${basedir}/../docs/target/generated-docs</directory>
           <includes>
             <include>index.html</include>
           </includes>
           </resource>
-        </resources>
+        </resources>-->
           
     </build>
 
@@ -89,10 +113,37 @@
             <artifactId>griffon-fest-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
+<!--        <dependency>
     		<groupId>javax.annotation</groupId>
     		<artifactId>javax.annotation-api</artifactId>
     		<version>1.3.2</version>
-		</dependency>
+		</dependency>-->
+        <dependency>
+            <groupId>org.codehaus.griffon.plugins</groupId>
+            <artifactId>griffon-datasource-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.griffon.plugins</groupId>
+            <artifactId>griffon-mybatis-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-swing</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.purejavacomm</groupId>
+            <artifactId>purejavacomm</artifactId>
+            <version>1.0.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+        </dependency>
     </dependencies>
 </project>

@@ -4,14 +4,14 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import griffon.core.Configuration;
+
 import org.codehaus.griffon.runtime.core.configuration.ResourceBundleConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
+
 
 public class MutableDataSourceConfiguration extends ResourceBundleConfiguration {
 
@@ -47,7 +47,7 @@ public class MutableDataSourceConfiguration extends ResourceBundleConfiguration 
         if (key.equals("dataSource")) {
             log.debug("MutableDataSource - returning a new configuration value");
             config = (Map<String, Object>) super.get("dataSource");
-            String url = propertyService.getDbUrl();
+            String url = propertyService.getDbURL();
             config.put("url", url);
             String dbClassname = "";
             if (url.contains("db2")) {

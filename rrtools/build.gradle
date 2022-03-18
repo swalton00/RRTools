@@ -47,6 +47,11 @@ configurations.runtimeClasspath {
     resolutionStrategy.force 'org.slf4j:slf4j-api:1.7.32'
 }
 
+configurations.runtime {
+    resolutionStrategy.force 'org.slf4j:slf4j-api:1.7.32'
+}
+
+
 
 enforce {
     rule(enforcer.rules.AlwaysPass) { r ->
@@ -82,6 +87,8 @@ apply from: 'gradle/code-quality.gradle'
 apply plugin: 'com.github.ben-manes.versions'
 
 dependencies {
+    annotationProcessor 'org.kordamp.jipsy:jipsy-processor:1.1.1'
+    compileOnly 'org.kordamp.jipsy:jipsy-annotations:1.1.1'
     api "org.codehaus.griffon:griffon-guice:${griffon.version.get()}"
     runtimeOnly group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.32'
     //runtimeOnly "org.slf4j:slf4j-simple:${slf4jVersion}"
@@ -90,6 +97,7 @@ dependencies {
     griffon 'org.codehaus.griffon.plugins:griffon-datasource-plugin:2.1.0'
     compile 'org.codehaus.griffon.plugins:griffon-datasource-core:2.1.0'
     compile 'org.codehaus.griffon.plugins:griffon-mybatis-core:2.1.0'
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
     compile 'com.miglayout:miglayout-swing:5.0'
     testImplementation "org.codehaus.griffon:griffon-fest-test:${griffon.version.get()}"
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"

@@ -24,6 +24,8 @@ public class PreferencesModel extends AbstractGriffonModel {
     DbInfoService dbInfo;
 
     // data elements to be saved to properties
+    protected enum DbDefType {NONE, URL, NAME}
+    DbDefType dbDefType;
     String selectedComPort;
     String scaleRatio = "";
     String scaleName = "";
@@ -50,6 +52,21 @@ public class PreferencesModel extends AbstractGriffonModel {
     String message = "";
     // UI elements
 
+    // original values
+    String oldComPort;
+    String oldScaleRatio;
+    String oldScaleName;
+    String oldInspectionEvery;
+    String oldInspectionUnits;
+    String oldDbName;
+    String oldDbUser;
+    String oldDbUrl;
+    String oldDbPass;
+    String oldDbLocation;
+    // end of original
+
+    // do we require a change?
+    boolean changeRequired = false;
 
     public void init() {
         log.debug("initializing the Preferences Model");
@@ -58,7 +75,13 @@ public class PreferencesModel extends AbstractGriffonModel {
         dbInfo.setDatabaseInfo(dbURL, dbUsername, dbPassword);
         dbLocation = dbInfo.getDbLocation();
         dbName = dbInfo.getDatabaseName();
-
+        if (dbInfo.urlRequired()) {
+            dbDefType = dbDefType.URL;
+        } else if (dbURL.isEmpty()) {
+            dbDefType = dbDefType.NAME;
+        } else {
+            dbDefType = dbDefType.NONE;
+        }
     }
 
     private void copyFromProperties() {
@@ -111,14 +134,6 @@ public class PreferencesModel extends AbstractGriffonModel {
 
     public void setDbURL(String dbURL) {
         this.dbURL = dbURL;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getSelectedComPort() {

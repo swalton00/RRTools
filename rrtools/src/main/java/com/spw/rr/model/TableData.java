@@ -1,4 +1,4 @@
-package com.spw.rr.models;
+package com.spw.rr.model;
 
 public class TableData {
     public String getReportingMark() {

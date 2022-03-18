@@ -1,4 +1,4 @@
-package com.spw.rr.models;
+package com.spw.rr.model;
 
 import com.spw.rr.RrToolsModel;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ public class TableModel extends AbstractTableModel {
     protected static final int CAR_NUMBER = 1;
     protected static final int CAR_TYPE = 2;
     protected static final int AAR_TYPE = 3;
-    private Logger log = LoggerFactory.getLogger(com.spw.rr.models.TableModel.class);
+    private Logger log = LoggerFactory.getLogger(com.spw.rr.model.TableModel.class);
 
 
     @Override

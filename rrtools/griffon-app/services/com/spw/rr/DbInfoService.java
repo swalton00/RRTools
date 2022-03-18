@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -53,6 +54,24 @@ public class DbInfoService  extends AbstractGriffonService {
             dbUsername = tempUser;
             dbPassword = tempPw;
         }
+        return retVal;
+    }
+
+    public String createUrl(String dbName, String dbLocation) {
+        // since we are creating a URL from a name and location, it must be using H2
+        File databaseLocation = null;
+        try {
+            databaseLocation = new File(dbLocation);
+            if (!databaseLocation.isDirectory()) {
+                log.error("requested location is not a directory {}", dbLocation);
+                return null;
+            }
+        } catch (Exception e) {
+            log.error("Exception attempting to verify selected db location", e);
+            return null;
+        }
+        String retVal = "jdbc:h2:file:" + databaseLocation.toString() +
+                "/" + dbName + ";MODE=DB2;";
         return retVal;
     }
 

@@ -1,6 +1,6 @@
 package com.spw.rr;
 
-import com.spw.rr.models.TableModel;
+import com.spw.rr.model.TableModel;
 import griffon.core.artifact.GriffonView;
 import griffon.core.controller.Action;
 import griffon.inject.MVCMember;

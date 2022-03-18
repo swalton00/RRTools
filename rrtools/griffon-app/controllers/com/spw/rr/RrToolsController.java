@@ -1,7 +1,8 @@
 package com.spw.rr;
 
-import griffon.core.GriffonApplication;
-import griffon.core.RunnableWithArgs;
+import com.spw.rr.model.TableData;
+import com.spw.rr.model.ViewCar;
+import com.spw.rr.parameter.ViewParameter;
 import griffon.core.artifact.GriffonController;
 import griffon.core.controller.ControllerAction;
 import griffon.core.mvc.MVCGroup;
@@ -14,14 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
-import java.awt.*;
-import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
 @ArtifactProviderFor(GriffonController.class)
@@ -30,7 +28,7 @@ public class RrToolsController extends AbstractGriffonController {
     @Inject
     RrToolsModel model;
 
-    private Logger log = LoggerFactory.getLogger(RrToolsController.class);
+    private static final Logger log = LoggerFactory.getLogger(RrToolsController.class);
 
     private MVCGroup prefsGroup = null;
 
@@ -43,9 +41,29 @@ public class RrToolsController extends AbstractGriffonController {
     @Inject
     DbInfoService dbInfoService;
 
+    @Inject
+    DBService dbService;
+
     @MVCMember
     public void setModel(@Nonnull RrToolsModel model) {
         this.model = model;
+    }
+
+    private void refreshView() {
+        log.debug("rebuilding the list of cars in the current view");
+        ViewParameter viewSelection = new ViewParameter();
+        List<ViewCar> theList = dbService.listViewCars(viewSelection);
+        runInsideUIAsync(() -> {
+            model.tableData.clear();
+            for (ViewCar viewCar : theList) {
+                TableData item = new TableData();
+                item.setReportingMark(viewCar.getReportingMark());
+                item.setCarNumber(viewCar.getCarNumber());
+                item.setCarType(viewCar.getCarType());
+                item.setAarType(viewCar.getAarType());
+                model.tableData.add(item);
+            }
+        });
     }
 
     private static final String HELP_RESOURCE = "html5/index.html";
@@ -166,7 +184,7 @@ public class RrToolsController extends AbstractGriffonController {
         log.debug("shutting down now");
     }
 
-    public void onWindowShown(String name, Window window) {
+    public void onWindowShown(String name, java.awt.Window window) {
         if (name.equals("mainWindow")) {
             if (!preferencesGood) {
                 preferences();
@@ -180,7 +198,7 @@ public class RrToolsController extends AbstractGriffonController {
                     }
                 }
             }
-
+            refreshView();
         }
     }
 
@@ -208,7 +226,7 @@ public class RrToolsController extends AbstractGriffonController {
     @Threading(Threading.Policy.OUTSIDE_UITHREAD)
     public void help() {
         log.debug("showing the Help in a Browser window");
-        Desktop desktop = Desktop.getDesktop();
+        java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
         try {
             URL resource = application.getResourceHandler().getResourceAsURL(HELP_RESOURCE);
             String filePath = Paths.get(resource.toURI()).toFile().getAbsolutePath();
