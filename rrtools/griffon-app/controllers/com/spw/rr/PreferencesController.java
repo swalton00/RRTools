@@ -57,7 +57,7 @@ public class PreferencesController extends AbstractGriffonController {
             // some database information changed - verify and restart if good
         }
         String testUrl;
-        if (model.dbDefType == PreferencesModel.DbDefType.NAME) {
+        if (  model.dbDefType == PreferencesModel.DbDefType.NAME) {
             String newUrl = dbInfo.createUrl(model.dbName, model.dbLocation);
             if ( newUrl == null) {
                 view.setErrorMessage("Verification failed for database name and location");
@@ -78,6 +78,7 @@ public class PreferencesController extends AbstractGriffonController {
             propertyService.setDbUsername(model.dbUsername);
             propertyService.setDbPassword(model.dbPassword);
             model.changeRequired = false;
+            propertyService.saveProperties();
             Object[] options = {"OK", "Cancel"};
             JOptionPane.showConfirmDialog(view.window, "Database Elements have changed - Press Okay to restart");
             application.shutdown();

@@ -35,19 +35,33 @@ public class PropertyService extends AbstractGriffonService {
     /* the default properties externalized to the properties file */
     String savedScaleName = "HO";  // key = savedScale
     int savedInspectFreq = 6;     // key = savedInspectFreq
-    String savedInspectUnits = "Months"; // key = saveInspectUnits
+    String savedInspectUnits = "Months"; // key = savedInspectUnits
     String dbURL = "";   // key = dbURL -- URL to database (no default)
     String dbUsername = "";   // key = dbUsername
     String dbPassword = "";   // key = dbPassword -- obscured but not encrypted
-    /* end of externalized properties */
-
     String savedComPort = "<None>";  // key = savedComPort
     int savedUnits = 0;         // key = savedUnits - 0 = English, 1 = Metric
     int savedScaleRatio = 87;     // key = savedScaleRatio - 1:x
+    /* end of externalized properties */
+
 
     public String getSavedComPort() {
         initTest();
         return savedComPort;
+    }
+
+    private void storeValues() {
+        log.debug("populating the properties file");
+        properties.setProperty(PROP_SCALE_NAME, savedScaleName);
+        properties.setProperty(PROP_INSPECT_FREQ, Integer.toString(savedInspectFreq));
+        properties.setProperty(PROP_INSPECT_UNITS, savedInspectUnits);
+        properties.setProperty(PROP_COM_PORT, savedComPort);
+        properties.setProperty(PROP_SCALE, Integer.toString(savedScaleRatio));
+        properties.setProperty(PROP_UNITS, Integer.toString(savedUnits));
+        properties.setProperty(PROP_DB_USER, dbUsername);
+        byte[] tempBytes = dbPassword.getBytes();
+        properties.setProperty(PROP_DB_PASS, DatatypeConverter.printHexBinary(tempBytes));
+        properties.setProperty(PROP_DB_URL, dbURL);
     }
 
 
@@ -153,6 +167,7 @@ public class PropertyService extends AbstractGriffonService {
             log.debug("Properties were never inited, not saving");
             return;
         }
+        storeValues();
         try {
             FileOutputStream propertyStream = new FileOutputStream(PROPERTY_FILE_NAME);
             properties.store(propertyStream, "The saved RrTools Properties file");

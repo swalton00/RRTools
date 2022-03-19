@@ -35,16 +35,16 @@ public class PreferencesView extends AbstractSwingGriffonView implements ActionL
 
     private JComboBox<String> commPort;
     private JComboBox<String> unitSystem;
-    private JTextField scaleRatio = new JTextField("");
+    private JTextField scaleRatio = new JTextField("", 4);
     private JComboBox<String> scale;
     private JComboBox<String> inspectionEvery;
     private JComboBox<String> inspectionUnits;
-    private JTextField dbUser = new JTextField("");
-    private JPasswordField dbPassword = new JPasswordField("xxxx");
-    private JTextField dbName = new JTextField("");
-    private JTextField locationValue = new JTextField("");
-    private JTextField dbURL = new JTextField("");
-    private JTextField messageField = new JTextField("");
+    private JTextField dbUser = new JTextField("", 8);
+    private JPasswordField dbPassword = new JPasswordField("", 8);
+    private JTextField dbName = new JTextField("", 8);
+    private JTextField locationValue = new JTextField("",60);
+    private JTextField dbURL = new JTextField("", 80);
+    private JTextField messageField = new JTextField("", 90);
     private JRadioButton radioUseDBName;
     private JRadioButton radioUseURL;
     private JButton okayButton;
