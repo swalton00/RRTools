@@ -24,20 +24,18 @@ public class DBService extends AbstractGriffonService {
     @Inject
     MybatisHandler mybatisHandler;
 
-    Object returnVariable = null;
+    List<ViewCar> returnVariable = null;
 
     List<ViewCar> listViewCars(ViewParameter theView) {
         log.debug("Returning a list of cars with the view: {}", theView);
-        mybatisHandler.withSqlSession(new MybatisCallback<String>() {
-                    public String handle(@Nonnull String sessionFactoryName, @Nonnull SqlSession session) {
-                        DBMapper mapper = session.getMapper(DBMapper.class);
-                        returnVariable = mapper.listViewCars(theView);
-                        return "";
-                    }
-            });
-        log.debug("returning a list of size {}", ((List<ViewCar>)returnVariable).size());
-        return (List<ViewCar>) returnVariable;
-
+        List<ViewCar> returnVariable = mybatisHandler.withSqlSession(new MybatisCallback<List<ViewCar>>() {
+            public List<ViewCar> handle(@Nonnull String sessionFactoryName, @Nonnull SqlSession session) {
+                DBMapper mapper = session.getMapper(DBMapper.class);
+                return mapper.listViewCars(theView);
+            }
+        });
+        log.debug("The return list is size {}", returnVariable.size());
+        return  returnVariable;
     }
 
 }

@@ -10,7 +10,8 @@ public class Mybatis extends AbstractMapResourceBundle {
     protected void initialize(@Nonnull Map<String, Object> entries) {
         map(entries)
                 .e("sessionFactory", map()
-                        .e("lazyLoadingEnabled", "false"))
+                        .e("lazyLoadingEnabled", "false")
+                        .e("cacheEnabled", "false"))
                 .e("environments", map()
                         .e("development", map()
                                 .e("sessionFactory", map()
@@ -24,6 +25,8 @@ public class Mybatis extends AbstractMapResourceBundle {
                         .e("production", map()
                                 .e("sessionFactory", map()
                                         .e("lazyLoadingEnabled", "false"))))
+                .e("mappers", map()
+                        .e("class", "com.spw.rr.DBMapper"))
 
         ;
     }

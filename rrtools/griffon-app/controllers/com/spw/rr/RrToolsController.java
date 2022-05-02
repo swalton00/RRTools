@@ -9,7 +9,7 @@ import griffon.core.mvc.MVCGroup;
 import griffon.inject.MVCMember;
 import griffon.metadata.ArtifactProviderFor;
 import org.codehaus.griffon.runtime.core.artifact.AbstractGriffonController;
-
+import org.apache.ibatis.session.Configuration;
 import griffon.transform.Threading;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -198,6 +198,7 @@ public class RrToolsController extends AbstractGriffonController {
                     }
                 }
             }
+            // add the mapper
             refreshView();
         }
     }

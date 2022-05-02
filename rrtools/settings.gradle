@@ -1,1 +1,29 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.kordamp.gradle:insight-gradle-plugin:$kordampPluginVersion"
+        classpath "org.kordamp.gradle:enforcer-gradle-plugin:$enforcerPluginVersion"
+    }
+}
+
+apply plugin: 'org.kordamp.gradle.enforcer'
+apply plugin: 'org.kordamp.gradle.insight'
+
 rootProject.name = 'rrtools'
+
+
+
+enforce {
+    rule(enforcer.rules.ForceDependencies) { r ->
+        r.dependencies.addAll "org.codehaus.groovy:groovy:$groovyVersion",
+                "junit:junit:$junitVersion",
+                "org.easytesting:fest-util:1.1.3",
+                "org.objenesis:objenesis:3.2",
+                "org.slf4j:slf4j-api:$slf4jVersion",
+                "org.codehaus.griffon:griffon-core:$griffonVersion",
+                "org.codehaus.griffon:griffon-core-compile:$griffonVersion"
+    }
+}

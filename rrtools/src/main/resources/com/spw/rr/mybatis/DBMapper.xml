@@ -73,7 +73,7 @@
         VALUES (#{manufacturer},
                 #{description})
     </insert>
-    <select id="listViewCars" resultType="com.spw.rr.com.spw.rr.model.ViewCar"
+    <select id="listViewCars" resultType="com.spw.rr.model.ViewCar"
             parameterType="com.spw.rr.parameter.ViewParameter">
         SELECT c.id,
         car_number as carNumber,
