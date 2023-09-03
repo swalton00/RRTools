@@ -21,3 +21,8 @@
 Weight of car needs to be rounded off - showing as 3.89999999999 ounces
 Prefs  - “Prefs Location” should be DB Location
 Prefs - wider columns in in wider window
+
+4:34 PM 9/3/2023
+bugs:
+   1. new database didn’t force schema
+      a. nor AUTO_SERVER=TRUE

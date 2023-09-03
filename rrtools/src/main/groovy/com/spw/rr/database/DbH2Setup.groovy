@@ -30,7 +30,7 @@ class DbH2Setup {
         return schema
     }
 
-    boolean setup(String url, String user, String pw) {
+    String setup(String url, String user, String pw) {
         log.debug("Starting H2 Setup")
         String schema = findSchema(url)
         ApplyResources resourceExecutor = null
@@ -45,7 +45,7 @@ class DbH2Setup {
             log.debug("successful connection to {}", url)
         } catch (Exception e) {
             log.error("Connection failed", e)
-            return false
+            return "Unsuccessful connection"
         }
         if (conn != null) {
             try {
@@ -72,7 +72,7 @@ class DbH2Setup {
                         if (resourceExecutor == null)
                             resourceExecutor = new ApplyResources()
                         resourceExecutor.excuteSQLResource(conn, "sql/Create_H2_DB.sql" )
-                        resourceExecutor.excuteSQLResource(conn, "sql/Insert_Date")
+                        resourceExecutor.excuteSQLResource(conn, "sql/Insert_Data.sql")
                     }
                 }
                 conn.close()
@@ -81,9 +81,10 @@ class DbH2Setup {
                     log.debug("got a connection with full URL")
 
                 }
+                return null
             } catch (Exception e) {
                 log.error("Exception attempting to test for schema", e)
-                return false
+                return "Schema does not exist"
             }
         }
     }

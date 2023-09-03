@@ -158,9 +158,9 @@ class PrefsController {
             String retValue = dbSetup.dbStart(url, user, pw)
             if (retValue != null) {
                 runInsideUISync {
-
+                    model.message.setValue(retValue)
                 }
-                    return
+                return
             }
             propertyService.setDbItems([dbURL: url, dbUsername: user, dbPassword: pw])
             runInsideUISync {

@@ -24,8 +24,7 @@ class DbSetup {
             Statement stmt = conn.createStatement()
             boolean res = stmt.execute("select count(*) from cars")
             if (res) {
-                return null
-            }
+                return ""            }
         } catch (Exception e) {
             if (e instanceof SQLException) {
                 if (((SQLException) e).getSQLState().equals("28000") ) {
@@ -43,6 +42,7 @@ class DbSetup {
             log.error("Unsupported database in URL {}", url)
             return "Unsupported database or Invalid database URL"
         }
+        return ""
     }
 
 }

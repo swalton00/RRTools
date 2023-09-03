@@ -162,6 +162,13 @@ class SerialDataService {
 
         try {
             CommPortIdentifier cpi = CommPortIdentifier.getPortIdentifier(port)
+            if (commOpen) {
+                try {
+                    serialPort.close()
+                } catch ( Exception e) {
+                    log.error("Error closing serial port", e)
+                }
+            }
             serialPort =  cpi.open("RR Tools", 1500)
             commOpen = true
             savedCommPort = port
