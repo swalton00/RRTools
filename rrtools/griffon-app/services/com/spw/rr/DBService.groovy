@@ -219,10 +219,13 @@ class DBService {
 
     CarType findType(String carType) {
         log.debug("looking up car type of " + carType)
-         CarType retValue = null
+        CarType retValue = null
         mybatisHandler.withSqlSession( {String sessionFactoryName, SqlSession session ->
             DBMapper mapper = session.getMapper(DBMapper.class)
-            retValue = mapper.findType(carType)
+            CarType tempValue = mapper.findType(carType)
+            log.debug("tempValue was ${tempValue}")
+            retValue = tempValue
+            log.debug("value found was ${retValue}")
         })
         return retValue
     }

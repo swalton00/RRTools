@@ -128,6 +128,34 @@
         ORDER BY reportingMark,
         car_number
     </select>
+    <select id="findCar" parameterType="com.spw.rr.parameter.CarParameter" resultType="com.spw.rr.model.RRCar">
+        SELECT
+            id,
+            prr_type,
+            cplr_type,
+            car_type,
+            source,
+            manufacturer,
+            kit_built,
+            in_service,
+            purchase_price,
+            LENGTH,
+            weight,
+            rpt_mark,
+            aar_type,
+            blt_date,
+            resist_wheels,
+            weathered,
+            car_color,
+            description,
+            wheels,
+            last_updated
+        FROM
+            car
+        WHERE
+            rpt_mark = #{reportingMark}
+          AND car_number = #{carNumber}
+    </select>
     <insert id="addInspection" parameterType="com.spw.rr.model.Inspection" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO Inspection
         (car_ID,
@@ -332,6 +360,32 @@
                 #{badOrdersClosed},
                 #{problemDescription},
                 #{workPerformed})
+    </insert>
+    <select id="findType" parameterType="String" resultType="com.spw.rr.model.CarType">
+        SELECT
+            ID as typeId,
+            type as carType,
+            Description as desciption,
+            last_updated as lastUpdated
+        FROM
+            car_Type
+        WHERE
+            type = #{parameter}
+    </select>
+    <insert id="addCarType" parameterType="com.spw.rr.model.CarType" useGeneratedKeys="true" keyProperty="typeId">
+        INSERT INTO
+            CAR_Type
+        (
+            Type,
+            Description,
+            Last_updated
+        )
+        VALUES
+            (
+                #{carType},
+                #{description},
+                CURRENT TIMESTAMP
+            )
     </insert>
     <update id="updateBadOrders" parameterType="com.spw.rr.parameter.BadOrderUpdateParameter">
         UPDATE

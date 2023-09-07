@@ -166,6 +166,7 @@ class ExportImport {
             carFound = true
         }
         CarType typeOfCar = database.findType(carType)
+        log.debug("car type found was ${typeOfCar}")
         if (typeOfCar == null) {
             typeOfCar = new CarType()
             typeOfCar.carType = carType
@@ -229,6 +230,24 @@ class ExportImport {
         if (!(newTag.length() == 0) & !newTag.equals(oldCar.RFIDtag)) {
             oldCar.RFIDtag = newTag
             carUpdated = true
+        }
+        if (oldCar.resistanceWheels == null) {
+            oldCar.resistanceWheels = false
+            carUpdated = true
+        }
+        if (oldCar.weathered == null) {
+            old.weathered = false
+            carUpdated = true
+        }
+        if (oldCar.weathered) {
+            oldCar.setWeathered = 1
+        } else {
+            oldCar.setWeathered = 0
+        }
+        if (oldCar.resistanceWheels) {
+            oldCar.setResistanceWheels = 1
+        } else {
+            oldCar.setResistanceWheels = 0
         }
         if (carFound) {
             if (carUpdated) {

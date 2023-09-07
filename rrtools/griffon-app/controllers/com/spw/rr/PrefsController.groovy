@@ -155,6 +155,7 @@ class PrefsController {
         String pw = model.dbPassword.value
         if (model.dbChangeListener.getChanged()) {
             DbSetup dbSetup = DbSetup.getInstance()
+            url = dbSetup.checkURL(url, user, pw)
             String retValue = dbSetup.dbStart(url, user, pw)
             if (retValue != null) {
                 runInsideUISync {
