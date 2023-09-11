@@ -1,4 +1,6 @@
 = RR Tools
+Author J. Scott Walton jscottwalton@gmail.com
+v1.0.4
 :toc: left
 A Tool for tracking your Model Railroad Cars
 :imagesdir: src/docs/asciidoc/images
@@ -18,11 +20,17 @@ Keep track of cars needing maintenance and perform regular inspections using RrT
 == Starting RrTools
 
 === Starting
+Unzip the distribution to an empty folder and change into the "bin" directory.
+Run either rrtools.bat or rrtools (depending on your Operating System).
+This will use the Java referenced by the JAVA_HOME environment variable, or if
+that is not set, the Java found in the PATH.
+
 [WARNING]
-You must use Java 1.8 to run RRTools. The program uses JavaFX and this is not
-included in the current Java.
-It is possible to run with Java 11, but the JavaFX module must be
-separately downloaded and correctly linked.
+You must use a Java distribution which includes JavaFX to run RRTools. The program uses JavaFX and this is not
+included in most Java 11 distributions. The Azule "with FX" distribution does include it.
+It is possible to run with with a seperately installed JavaFX, but the setup is not trivial.
+Your best best is to either use Java 1.8 or download from
+https://www.azul.com/downloads/?version=java-11-lts&os=windows&package=jdk-fx#zulu
 
 Use "Java -version" to make sure you are running the correct version of Java.
 Run the program entering:
@@ -38,8 +46,18 @@ The first time you run the program, you must enter some required information
 (primarily the name and location for the database).
 If the database information is not present, the Preferences page will be
 opened.
+Set the database name to any word of your choice.
+Choose an empty directory for the location of the database.
+Enter a user name and password for the database. These will be created when the
+database is created and will be saved in a properties file. There is no  need to
+remember them unless you want to use a tool to look at the information in the database.
+
+If you have an RFID reader connected, select the appropriate serial port for the reader.
+
 After you enter the requested information and click on "Done", the program will end.
 When the program next starts, you will be viewing the main page.
+
+
 
 === After the first time
 
@@ -53,12 +71,12 @@ image::basic_screen.png[]
 
 1. The list of cars
 2. Drop down list for view selection
-3. Message area (Status line)
+3. Message area -- status line
 
 Across the top are the usual Menu items.
 The far right of the menu contains elements that allow you to select
 a subset of the cars, based on individual characteristics.
-The body of a the page contains a table of your railroad cars,
+The body of the page contains a table of your railroad cars,
 with a heading describing the columns.
 If you have not yet entered any cars, the body will show "No Content in Table."
 
@@ -75,8 +93,7 @@ An additional click will undo the sort.
 Drag the divider left or right to make the column larger or smaller.
 Drag the entire column to a new position.
 
-When you change the column characteristics, the columns will revert to
-the standard position and size the next time you start the program.
+When you change the column characteristics, the columns will revert to the standard position and size the next time you start the program.
 
 ==== Column Contents
 
@@ -222,6 +239,15 @@ and choose that file.
 == About RFID
 
 == Using RFID with RrTools
+
+== Building RRTools
+
+To build the program, clone the GIT source. You must use Java 1.8 to build the program
+as the Gradle build tools require the ant JavaFX module which is only included in Java 1.8.
+Once built, you can run with Java 11 or Java 8 (as long as JavaFX is included).
+
+The program is setup to use Gradle as a build tool. Use the Gradle Wrapper to run (./gradlew or gradlew.bat).
+
 
 
 
