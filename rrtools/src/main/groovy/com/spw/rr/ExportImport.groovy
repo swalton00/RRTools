@@ -286,6 +286,11 @@ class ExportImport {
             if (firstLine) {
                 firstLine = false
                 log.debug("import elements are: " + carElements.toString())
+                if (!carElements[0].equals("Number")) {
+                    log.error("doesn't look like an OperationsPro car export")
+                    return 
+                }
+
             } else {
                 log.debug("split elements are: " + carElements.toString())
                 // elements should be:

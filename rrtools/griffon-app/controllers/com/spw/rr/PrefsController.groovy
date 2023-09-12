@@ -30,9 +30,8 @@ class PrefsController {
     String dbClassname = ""
     String JDBC_PRE = "jdbc:h2:file:"
     String JDBC_POST_1 = "AUTO_SERVER=TRUE;"
-    String JDBC_POST_2 = "SCHEMA=RR;"
     String JDBC_POST_3 = "MODE=DB2;"
-    String JDBC_POST = JDBC_POST_1 + JDBC_POST_2 + JDBC_POST_3
+    String JDBC_POST = JDBC_POST_1 + JDBC_POST_3
 
 
     @Inject

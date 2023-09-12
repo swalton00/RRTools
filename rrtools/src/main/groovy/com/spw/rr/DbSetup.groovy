@@ -20,22 +20,12 @@ class DbSetup {
     String checkURL(String url, String user, String pw) {
         String fixedURL = url
         if (url.startsWith("jdbc:h2:")) {
-            if (!url.contains("SCHEMA=")) {
-                fixedURL = fixedURL + "SCHEMA=RR;"
-            }
             if (url.startsWith("jdbc:h2:file:") & (!url.contains("AUTO_SERVER=TRUE;"))) {
                 fixedURL = fixedURL + "AUTO_SERVER=TRUE;"
             }
             log.debug("about to test URL and, if necessary, create RR schema")
-            int schemaPos = fixedURL.indexOf("SCHEMA=RR;")
-            String leftString = fixedURL.substring(0, schemaPos)
-            String rightString = fixedURL.substring(schemaPos + "SCHEMA=RR:".length())
-            log.debug("left String is ${leftString}")
-            log.debug("right String is ${rightString}")
-            String tempURL = leftString + rightString
-            log.debug("testing with ${tempURL}")
             try {
-                Connection conn = DriverManager.getConnection(tempURL, user, pw)
+                Connection conn = DriverManager.getConnection(fixedURL, user, pw)
                 PreparedStatement stmt = conn.prepareStatement("CREATE SCHEMA IF NOT EXISTS RR")
                 stmt.execute()
             } catch (Exception e) {
