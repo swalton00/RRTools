@@ -280,15 +280,20 @@ class ExportImport {
         // dispose of header line
         boolean firstLine = true
         ArrayList<ReportingMark> marks = database.getReportingMarks()
+        boolean skipImport = false
 
         rdr.lines().forEach({
             String[] carElements = it.split(",")
+            if (skipImport) {
+                return
+            }
             if (firstLine) {
                 firstLine = false
                 log.debug("import elements are: " + carElements.toString())
                 if (!carElements[0].equals("Number")) {
                     log.error("doesn't look like an OperationsPro car export")
-                    return 
+                    skipImport = true
+                    return
                 }
 
             } else {
